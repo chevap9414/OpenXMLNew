@@ -35,19 +35,8 @@ namespace ReadExcel
             //IExcelImportFactory factory = new ExcelFileImport();
             //ImportExcel import = new ImportExcel(factory);
             //import.MTList(uploadModel);
-            string plant = string.Empty;
+            
             var model = ReadExcel(uploadModel);
-
-            using (ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities())
-            {
-                foreach (var sheet in model.ModelTypeTempSheetModels)
-                {
-                    entities.M_Equipment.Add(new M_Equipment
-                    {
-                        EquipmentName = entities.M_ModelTypeTempSheet.Where(s)
-                    });
-                }
-            }
 
             Console.WriteLine($"Plant name: { plant }");
 
