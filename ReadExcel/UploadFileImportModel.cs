@@ -1,4 +1,6 @@
-﻿namespace ReadExcel
+﻿using System;
+
+namespace ReadExcel
 {
     public class UploadFileImportModel
     {
@@ -8,5 +10,6 @@
         public string SavePathSuccess { get; set; }
         public string SavePathFailed { get; set; }
         public string UploadBy { get; set; }
+        public DateTime UploadDate { get; set; }
     }
 }

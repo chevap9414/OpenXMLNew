@@ -26,11 +26,37 @@ namespace ReadExcel
             {
                 FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Import\\Test.xlsx"),
                 UploadBy = "SYSTEM",
+                UploadDate = DateTime.Now
+                
             };
-            IExcelImportFactory factory = new ExcelFileImport();
-            ImportExcel import = new ImportExcel(factory);
-            import.MTList(uploadModel);
+
+
+            string plant = string.Empty;
+            //IExcelImportFactory factory = new ExcelFileImport();
+            //ImportExcel import = new ImportExcel(factory);
+            //import.MTList(uploadModel);
+            string plant = string.Empty;
+            var model = ReadExcel(uploadModel);
+
+            using (ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities())
+            {
+                foreach (var sheet in model.ModelTypeTempSheetModels)
+                {
+                    entities.M_Equipment.Add(new M_Equipment
+                    {
+                        EquipmentName = entities.M_ModelTypeTempSheet.Where(s)
+                    });
+                }
+            }
+
+            Console.WriteLine($"Plant name: { plant }");
+
             Console.Read();
+        }
+
+        private static void AddToMaster()
+        {
+
         }
 
         private static void StagingTest(UploadFileImportModel uploadModel)
@@ -61,7 +87,7 @@ namespace ReadExcel
                         RowNo = row.RowNo,
                         PNo = row.PNo,
                         VIN = row.VIN,
-                        ErrorMessage = row.ErrorMesage,
+                        ErrorMessage = row.ErrorMessage,
                         // Add M_ModelTypeTempEngine
                         M_ModelTypeTempEngine = row.ModelTypeTempEngines.Select(engine => new M_ModelTypeTempEngine
                         {

@@ -42,7 +42,7 @@ namespace ReadExcel.Services
                             RowNo = row.RowNo,
                             PNo = row.PNo,
                             VIN = row.VIN,
-                            ErrorMessage = row.ErrorMesage,
+                            ErrorMessage = row.ErrorMessage,
                             // Add M_ModelTypeTempEngine
                             M_ModelTypeTempEngine = row.ModelTypeTempEngines.Select(engine => new M_ModelTypeTempEngine
                             {
