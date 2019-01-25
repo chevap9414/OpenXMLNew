@@ -24,6 +24,7 @@ namespace DataLayer
         public string Shipment { get; set; }
         public string ReceiveMonth { get; set; }
         public Nullable<int> WorkingDayTotal { get; set; }
-        public string ErrorMessage { get; set; }
+    
+        public virtual T_LogisticDayHeader T_LogisticDayHeader { get; set; }
     }
 }

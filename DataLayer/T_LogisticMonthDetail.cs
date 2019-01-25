@@ -25,6 +25,7 @@ namespace DataLayer
         public Nullable<int> Ocean { get; set; }
         public int Inland { get; set; }
         public int Total { get; set; }
-        public string ErrorMessage { get; set; }
+    
+        public virtual T_LogisticMonthHeader T_LogisticMonthHeader { get; set; }
     }
 }

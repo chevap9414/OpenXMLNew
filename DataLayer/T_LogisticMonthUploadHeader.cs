@@ -14,6 +14,12 @@ namespace DataLayer
     
     public partial class T_LogisticMonthUploadHeader
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public T_LogisticMonthUploadHeader()
+        {
+            this.T_LogisticMonthUploadDetail = new HashSet<T_LogisticMonthUploadDetail>();
+        }
+    
         public int LogisticMonthUploadHeaderID { get; set; }
         public int CompanyID { get; set; }
         public int Month { get; set; }
@@ -33,9 +39,14 @@ namespace DataLayer
         public int ResultTotal { get; set; }
         public int ResultSuccess { get; set; }
         public int ResultFailure { get; set; }
-        public string ErrorMessage { get; set; }
         public int LastPlantStatusID { get; set; }
         public string LastUpdatedBy { get; set; }
         public System.DateTime LastUpdatedDate { get; set; }
+    
+        public virtual M_Company M_Company { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<T_LogisticMonthUploadDetail> T_LogisticMonthUploadDetail { get; set; }
+        public virtual T_LogisticMonthUploadHeader T_LogisticMonthUploadHeader1 { get; set; }
+        public virtual T_LogisticMonthUploadHeader T_LogisticMonthUploadHeader2 { get; set; }
     }
 }

@@ -69,7 +69,6 @@ namespace DataLayer
         public virtual DbSet<M_ModelTypeUpload> M_ModelTypeUpload { get; set; }
         public virtual DbSet<M_PartMaker> M_PartMaker { get; set; }
         public virtual DbSet<M_Permission> M_Permission { get; set; }
-        public virtual DbSet<M_Permissions> M_Permissions { get; set; }
         public virtual DbSet<M_Region> M_Region { get; set; }
         public virtual DbSet<M_Shipment> M_Shipment { get; set; }
         public virtual DbSet<M_User> M_User { get; set; }
@@ -97,7 +96,6 @@ namespace DataLayer
         public virtual DbSet<T_Maker> T_Maker { get; set; }
         public virtual DbSet<T_Part> T_Part { get; set; }
         public virtual DbSet<T_PartCapacityDetail> T_PartCapacityDetail { get; set; }
-        public virtual DbSet<T_PartCapacityErrorRow> T_PartCapacityErrorRow { get; set; }
         public virtual DbSet<T_PartCapacityHeader> T_PartCapacityHeader { get; set; }
         public virtual DbSet<T_PartCapacityTemp> T_PartCapacityTemp { get; set; }
         public virtual DbSet<T_PartCapacityUploadHistory> T_PartCapacityUploadHistory { get; set; }
@@ -132,5 +130,7 @@ namespace DataLayer
         public virtual DbSet<T_SUBOTempUploadError> T_SUBOTempUploadError { get; set; }
         public virtual DbSet<temp_GetUserDomain> temp_GetUserDomain { get; set; }
         public virtual DbSet<z_M_Function> z_M_Function { get; set; }
+        public virtual DbSet<M_Permissions> M_Permissions { get; set; }
+        public virtual DbSet<T_PartCapacityErrorRow> T_PartCapacityErrorRow { get; set; }
     }
 }

@@ -14,6 +14,12 @@ namespace DataLayer
     
     public partial class T_LogisticDayWiseHeader
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public T_LogisticDayWiseHeader()
+        {
+            this.T_LogisticDayWiseDetail = new HashSet<T_LogisticDayWiseDetail>();
+        }
+    
         public int LogisticDayWiseHeaderID { get; set; }
         public int CompanyID { get; set; }
         public int Month { get; set; }
@@ -33,9 +39,12 @@ namespace DataLayer
         public int ResultTotal { get; set; }
         public int ResultSuccess { get; set; }
         public int ResultFailure { get; set; }
-        public string ErrorMessage { get; set; }
         public int LastPlantStatusID { get; set; }
         public string LastUpdatedBy { get; set; }
         public System.DateTime LastUpdatedDate { get; set; }
+    
+        public virtual M_Company M_Company { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<T_LogisticDayWiseDetail> T_LogisticDayWiseDetail { get; set; }
     }
 }

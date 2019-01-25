@@ -33,7 +33,7 @@ namespace DataLayer
         public Nullable<System.DateTime> ProcessEnd { get; set; }
         public string ProcessID { get; set; }
         public string ProcessName { get; set; }
-        public Nullable<int> ProcessStatusID { get; set; }
+        public Nullable<int> SubProcessStatusID { get; set; }
         public Nullable<bool> IsCancel { get; set; }
         public Nullable<System.DateTime> CancelDate { get; set; }
         public string CancelBy { get; set; }

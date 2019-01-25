@@ -26,5 +26,7 @@ namespace DataLayer
         public int Inland { get; set; }
         public int Total { get; set; }
         public string ErrorMessage { get; set; }
+    
+        public virtual T_LogisticMonthUploadHeader T_LogisticMonthUploadHeader { get; set; }
     }
 }
