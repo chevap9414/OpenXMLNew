@@ -26,8 +26,12 @@ namespace ReadExcel
             {
                 FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Import\\Test.xlsx"),
                 UploadBy = "SYSTEM",
+                UploadDate = DateTime.Now,
+                CreatedBy = "SYSTEM",
+                CreatedDate = DateTime.Now
+                
             };
-            IExcelImportFactory factory = new ExcelFileImport();
+            IImportExcelFactory factory = new ImportExcelFactory();
             ImportExcel import = new ImportExcel(factory);
             import.MTList(uploadModel);
             Console.Read();
@@ -61,7 +65,7 @@ namespace ReadExcel
                         RowNo = row.RowNo,
                         PNo = row.PNo,
                         VIN = row.VIN,
-                        ErrorMessage = row.ErrorMesage,
+                        ErrorMessage = row.ErrorMessage,
                         // Add M_ModelTypeTempEngine
                         M_ModelTypeTempEngine = row.ModelTypeTempEngines.Select(engine => new M_ModelTypeTempEngine
                         {

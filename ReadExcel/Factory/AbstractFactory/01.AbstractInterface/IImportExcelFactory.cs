@@ -1,4 +1,5 @@
 ﻿using ReadExcel.Factory.AbstractFactory._03.AbstractProduct;
+using ReadExcel.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace ReadExcel.Factory.AbstractFactory._01.AbstractInterface
 {
-    interface IExcelImportFactory
+    interface IImportExcelFactory
     {
         IModelTypeList ImportModelTypeList();
         IKDLogisticLT ImportKDLogistic();
+        IModelTypeUploadService AddModelTypeUpload();
     }
 }

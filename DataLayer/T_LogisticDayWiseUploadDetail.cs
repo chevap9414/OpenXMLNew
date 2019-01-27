@@ -31,5 +31,7 @@ namespace DataLayer
         public Nullable<int> WorkingDay2 { get; set; }
         public Nullable<int> WorkingDay3 { get; set; }
         public string ErrorMessage { get; set; }
+    
+        public virtual T_LogisticDayWiseUploadHeader T_LogisticDayWiseUploadHeader { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReadExcel.IServices
 {
-    interface IModelTypeUploadService
+    public interface IModelTypeUploadService
     {
         bool AddModelTypeUpload(ModelTypeUploadModel model);
     }

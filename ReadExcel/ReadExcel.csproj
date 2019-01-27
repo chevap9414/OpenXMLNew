@@ -111,9 +111,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Factory\AbstractFactory\01.AbstractInterface\IExcelImportFactory.cs" />
+    <Compile Include="Factory\AbstractFactory\01.AbstractInterface\IImportExcelFactory.cs" />
     <Compile Include="Factory\AbstractFactory\01.AbstractInterface\IMobilePhone.cs" />
-    <Compile Include="Factory\AbstractFactory\02.ConcreateFactory\ExcelFileImport.cs" />
+    <Compile Include="Factory\AbstractFactory\02.ConcreateFactory\ImportExcelFactory.cs" />
     <Compile Include="Factory\AbstractFactory\02.ConcreateFactory\Nokia.cs" />
     <Compile Include="Factory\AbstractFactory\03.AbstractProduct\IKDLogisticLT.cs" />
     <Compile Include="Factory\AbstractFactory\03.AbstractProduct\IModelTypeList.cs" />

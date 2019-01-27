@@ -1,7 +1,9 @@
 ﻿using DataLayer;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using ReadExcel.Factory.AbstractFactory._01.AbstractInterface;
 using ReadExcel.Factory.AbstractFactory._03.AbstractProduct;
+using ReadExcel.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +14,10 @@ using System.Threading.Tasks;
 
 namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
 {
-    class ModelTypeListExcel : IModelTypeList
+    public class ModelTypeListExcel : IModelTypeList
     {
-        readonly List<string> cellHeaderValueChecks = new List<string>() { "A6", "B6", "C6", "E6", "F6" }; // Read From Config
-        private Thread thReadExcel;
+        readonly List<string> engineColumn = new List<string>() { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
+        readonly List<string> cellHeaderValueChecks = new List<string>() { "A6", "B6", "C6", "D6", "E6", "F6" }; // Read From Config
 
         public ModelTypeListExcel()
         {
@@ -27,16 +29,15 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
             return new List<string>() { };
         }
 
-        public int Import(UploadFileImportModel uploadFileImportModel)
+        public ModelTypeUploadModel Import(UploadFileImportModel uploadFileImportModel)
         {
             // Todo Logic here
             ModelTypeUploadModel model = new ModelTypeUploadModel();
-            if (!IsHeaderValidate(uploadFileImportModel))
+            if (IsHeaderValidate(uploadFileImportModel))
             {
-                return 7; // Read from Config
+                model = ReadExcel(uploadFileImportModel);
             }
-
-            return ReadExcelOnThread(uploadFileImportModel);
+            return model;
         }
 
         private bool IsHeaderValidate(UploadFileImportModel uploadFileImportModel)
@@ -60,17 +61,17 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
             }
             return IsValid;
         }
-        private int ReadExcelOnThread(UploadFileImportModel model)
-        {
-            ModelTypeUploadModel value = new ModelTypeUploadModel();
-            thReadExcel = new Thread(() => { value = ReadExcel(model); });
-            thReadExcel.Start();
-            return value.UploadStatusID ?? 44; // wait edit
-        }
 
         public ModelTypeUploadModel ReadExcel(UploadFileImportModel model)
         {
-            ModelTypeUploadModel modelTypeUpload = new ModelTypeUploadModel();
+            ModelTypeUploadModel modelTypeUpload = new ModelTypeUploadModel
+            {
+                UpdatedBy = model.UploadBy,
+                UpdatedDate = model.UploadDate,
+                CreatedBy = model.CreatedBy,
+                CreatedDate = model.CreatedDate
+            };
+
 
             List<ModelTypeTempSheetModel> sheetModels = new List<ModelTypeTempSheetModel>();
             ModelTypeTempSheetModel sheetModel;
@@ -102,7 +103,7 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                     // Assign header value
                     foreach (Cell cell in rows.ElementAt(5).Descendants<Cell>())
                     {
-                        if (new[] { "A6", "B6", "C6", "E6", "F6" }.Contains(cell.CellReference.Value))
+                        if (cellHeaderValueChecks.Contains(cell.CellReference.Value))
                         {
                             string value = GetCellValue(workbookPart, sheet, cell.CellReference);
                             switch (cell.CellReference.Value)
@@ -115,6 +116,9 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                                     break;
                                 case "C6":
                                     sheetModel.Door = value;
+                                    break;
+                                case "D6":
+                                    sheetModel.Engine = value;
                                     break;
                                 case "E6":
                                     sheetModel.Plant = value;
@@ -174,15 +178,18 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                         engineModel = new ModelTypeTempEngineModel();
 
                         modelTypeTempRowModel.RowNo = i + 1;
+                        int seqEquipment = 1;
+                        int seqType = 1;
+
                         foreach (Cell cell in rows.ElementAt(i).Cast<Cell>())
                         {
                             string currentColumn = GetColumnName(cell.CellReference);
                             int currentIndex = GetColumnIndex(cell.CellReference);
                             string currentCellValue = GetCellValue(workbookPart, sheet, cell.CellReference);
-                            int sequence = 1;
+                            
 
                             #region Engine
-                            if (new[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" }.Contains(GetColumnName(cell.CellReference)))
+                            if (engineColumn.Contains(GetColumnName(cell.CellReference)))
                             {
 
                                 #region  Replace Value
@@ -271,10 +278,10 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                                 {
                                     EquipmentName = GetCellValue(workbookPart, sheet, currentColumn + 9),
                                     EquipmentValue = currentCellValue,
-                                    Sequence = sequence
+                                    Sequence = seqEquipment
                                 };
 
-                                sequence++;
+                                seqEquipment++;
                                 equipmentModels.Add(equipmentModel);
                             }
                             #endregion
@@ -293,8 +300,9 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                                 {
                                     ModelType = GetCellValue(workbookPart, sheet, currentColumn + 9),
                                     ModelCode = currentCellValue,
-                                    Sequence = sequence
+                                    Sequence = seqType
                                 };
+                                seqType++;
                                 typeModels.Add(typeModel);
                             }
                             #endregion
@@ -322,7 +330,7 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                 }
             }
             modelTypeUpload.UploadStatusID = 44; // wait edit
-            StagingTest(modelTypeUpload);
+            //StagingTest(modelTypeUpload);
             return modelTypeUpload;
         }
 
@@ -351,7 +359,7 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                         RowNo = row.RowNo,
                         PNo = row.PNo,
                         VIN = row.VIN,
-                        ErrorMessage = row.ErrorMesage,
+                        ErrorMessage = row.ErrorMessage,
                         // Add M_ModelTypeTempEngine
                         M_ModelTypeTempEngine = row.ModelTypeTempEngines.Select(engine => new M_ModelTypeTempEngine
                         {

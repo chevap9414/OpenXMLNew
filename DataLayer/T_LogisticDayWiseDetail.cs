@@ -30,6 +30,7 @@ namespace DataLayer
         public Nullable<int> WorkingDay1 { get; set; }
         public Nullable<int> WorkingDay2 { get; set; }
         public Nullable<int> WorkingDay3 { get; set; }
-        public string ErrorMessage { get; set; }
+    
+        public virtual T_LogisticDayWiseHeader T_LogisticDayWiseHeader { get; set; }
     }
 }

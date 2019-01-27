@@ -26,6 +26,11 @@ namespace DataLayer
             this.M_PartMaker = new HashSet<M_PartMaker>();
             this.M_User = new HashSet<M_User>();
             this.T_PartCapacityUploadHistory = new HashSet<T_PartCapacityUploadHistory>();
+            this.T_LogisticDayHeader = new HashSet<T_LogisticDayHeader>();
+            this.T_LogisticDayUploadHeader = new HashSet<T_LogisticDayUploadHeader>();
+            this.T_LogisticDayWiseUploadHeader = new HashSet<T_LogisticDayWiseUploadHeader>();
+            this.T_LogisticMonthHeader = new HashSet<T_LogisticMonthHeader>();
+            this.T_LogisticMonthUploadHeader = new HashSet<T_LogisticMonthUploadHeader>();
         }
     
         public int CompanyID { get; set; }
@@ -62,5 +67,16 @@ namespace DataLayer
         public virtual ICollection<M_User> M_User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<T_PartCapacityUploadHistory> T_PartCapacityUploadHistory { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<T_LogisticDayHeader> T_LogisticDayHeader { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<T_LogisticDayUploadHeader> T_LogisticDayUploadHeader { get; set; }
+        public virtual T_LogisticDayWiseHeader T_LogisticDayWiseHeader { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<T_LogisticDayWiseUploadHeader> T_LogisticDayWiseUploadHeader { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<T_LogisticMonthHeader> T_LogisticMonthHeader { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<T_LogisticMonthUploadHeader> T_LogisticMonthUploadHeader { get; set; }
     }
 }

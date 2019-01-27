@@ -2,6 +2,7 @@
 using ReadExcel.IServices;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,30 +11,27 @@ namespace ReadExcel.Services
 {
     public class ModelTypeUploadService : IModelTypeUploadService
     {
-
         public bool AddModelTypeUpload(ModelTypeUploadModel model)
         {
             try
             {
                 bool IsSucceed = false;
-
                 ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities();
+
                 // Add ModelTypeUpload
                 entities.M_ModelTypeUpload.Add(new M_ModelTypeUpload
                 {
-                    Version = model.Version,
-                    Door = model.Door,
-                    Engine = model.Engine,
                     CreatedBy = model.CreatedBy,
-                    CreatedDate = model.CreatedDate,
+                    CreatedDate = DateTime.Now,
                     UpdatedBy = model.UpdatedBy,
-                    UpdatedDate = model.UpdatedDate,
+                    UpdatedDate = DateTime.Now,
                     M_ModelTypeTempSheet = model.ModelTypeTempSheetModels.Select(sheet => new M_ModelTypeTempSheet
                     {
                         SheetNo = sheet.SheetNo,
                         YM = sheet.YM,
                         Model = sheet.Model,
                         Door = sheet.Door,
+                        Engine = sheet.Engine,
                         Plant = sheet.Plant,
                         Status = sheet.Status,
                         // Add M_ModelTypeTempRow
@@ -42,7 +40,7 @@ namespace ReadExcel.Services
                             RowNo = row.RowNo,
                             PNo = row.PNo,
                             VIN = row.VIN,
-                            ErrorMessage = row.ErrorMesage,
+                            ErrorMessage = row.ErrorMessage,
                             // Add M_ModelTypeTempEngine
                             M_ModelTypeTempEngine = row.ModelTypeTempEngines.Select(engine => new M_ModelTypeTempEngine
                             {
@@ -79,7 +77,21 @@ namespace ReadExcel.Services
                 IsSucceed = true;
                 return IsSucceed;
             }
-            catch(Exception e)
+            catch(DbEntityValidationException e)
+            {
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw;
+            }
+            catch (Exception e)
             {
                 throw e;
             }

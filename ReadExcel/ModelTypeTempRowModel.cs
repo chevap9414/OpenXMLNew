@@ -13,7 +13,7 @@ namespace ReadExcel
         public int RowNo { get; set; }
         public string PNo { get; set; }
         public string VIN { get; set; }
-        public string ErrorMesage { get; set; }
+        public string ErrorMessage { get; set; }
 
         public List<ModelTypeTempEngineModel> ModelTypeTempEngines { get; set; } = new List<ModelTypeTempEngineModel>();
         public List<ModelTypeTempEquipmentModel> ModelTypeTempEquipmentModels { get; set; } = new List<ModelTypeTempEquipmentModel>();
