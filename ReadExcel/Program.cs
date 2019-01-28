@@ -22,19 +22,54 @@ namespace ReadExcel
     {
         static void Main(string[] args)
         {
-            var uploadModel = new UploadFileImportModel
-            {
-                FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Import\\Test.xlsx"),
-                UploadBy = "SYSTEM",
-                UploadDate = DateTime.Now,
-                CreatedBy = "SYSTEM",
-                CreatedDate = DateTime.Now
-                
-            };
-            IImportExcelFactory factory = new ImportExcelFactory();
-            ImportExcel import = new ImportExcel(factory);
-            import.MTList(uploadModel);
-            Console.Read();
+            //ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities();
+
+            //entities.M_YM.Add(new M_YM
+            //{
+
+            //});
+
+
+            //var CountryList = entities.M_Country.Add(new M_Country()); .ToList();
+
+            //CountryList.Add(new M_Country());
+            //entities.SaveChanges();
+
+            //CountryList[11].CountryID;
+
+            //entities.M_CountryMapping.Add(new M_CountryMapping()
+            //{
+            //    SaleGroupName = "Test",
+            //    CreatedBy = "Test",
+            //    CreatedDate = DateTime.Now,
+            //    UpdatedBy = "Test",
+            //    UpdatedDate = DateTime.Now,
+            //    M_CountryMappingDetail = new List<M_CountryMappingDetail>()
+            //    {
+
+            //        new M_CountryMappingDetail()
+            //        {
+            //            CountryID = CountryList.First().CountryID,
+            //            M_Country = CountryList.Where(za => za.CountryName =  ) ? new M_Country(){ } : CountryList.First()
+            //        },
+            //    },
+            //});
+
+            //entities.SaveChanges();
+
+            //var uploadModel = new UploadFileImportModel
+            //{
+            //    FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Import\\Test.xlsx"),
+            //    UploadBy = "SYSTEM",
+            //    UploadDate = DateTime.Now,
+            //    CreatedBy = "SYSTEM",
+            //    CreatedDate = DateTime.Now
+
+            //};
+            //IImportExcelFactory factory = new ImportExcelFactory();
+            //ImportExcel import = new ImportExcel(factory);
+            //import.MTList(uploadModel);
+            //Console.Read();
         }
 
         private static void StagingTest(UploadFileImportModel uploadModel)
@@ -67,7 +102,7 @@ namespace ReadExcel
                         VIN = row.VIN,
                         ErrorMessage = row.ErrorMessage,
                         // Add M_ModelTypeTempEngine
-                        M_ModelTypeTempEngine = row.ModelTypeTempEngines.Select(engine => new M_ModelTypeTempEngine
+                        M_ModelTypeTempEngine = row.ModelTypeTempEngineModels.Select(engine => new M_ModelTypeTempEngine
                         {
                             SS = engine.SS,
                             DISP = engine.DISP,
@@ -385,7 +420,7 @@ namespace ReadExcel
                         // End Cell
                         preRow = cellValues;
                         rowValues.Add(cellValues);
-                        modelTypeTempRowModel.ModelTypeTempEngines.Add(engineModel);
+                        modelTypeTempRowModel.ModelTypeTempEngineModels.Add(engineModel);
                         modelTypeTempRowModel.ModelTypeTempEquipmentModels.AddRange(equipmentModels);
                         modelTypeTempRowModel.ModelTypeTempTypeModels.AddRange(typeModels);
                         sheetModel.ModelTypeTempRowModels.Add(modelTypeTempRowModel);

@@ -15,7 +15,7 @@ namespace ReadExcel
         public string VIN { get; set; }
         public string ErrorMessage { get; set; }
 
-        public List<ModelTypeTempEngineModel> ModelTypeTempEngines { get; set; } = new List<ModelTypeTempEngineModel>();
+        public List<ModelTypeTempEngineModel> ModelTypeTempEngineModels { get; set; } = new List<ModelTypeTempEngineModel>();
         public List<ModelTypeTempEquipmentModel> ModelTypeTempEquipmentModels { get; set; } = new List<ModelTypeTempEquipmentModel>();
         public List<ModelTypeTempTypeModel> ModelTypeTempTypeModels { get; set; } = new List<ModelTypeTempTypeModel>();
 

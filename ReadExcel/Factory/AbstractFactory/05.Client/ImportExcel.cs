@@ -1,4 +1,5 @@
-﻿using ReadExcel.Factory.AbstractFactory._01.AbstractInterface;
+﻿using DataLayer;
+using ReadExcel.Factory.AbstractFactory._01.AbstractInterface;
 using ReadExcel.Factory.AbstractFactory._03.AbstractProduct;
 using ReadExcel.IServices;
 using System;
@@ -15,19 +16,19 @@ namespace ReadExcel.Factory.AbstractFactory._05.Client
         Thread threadImport;
         IModelTypeList modelTypeList;
         IKDLogisticLT kDLogisticLT;
-        IModelTypeUploadService modelTypeUploadService;
-        private UploadFileImportModel uploadFileImportModel;
+        readonly IModelTypeUploadService modelTypeUploadService;
+        private UploadFileImportModel UploadFileImportModel { get; set; } = new UploadFileImportModel();
 
         public ImportExcel(IImportExcelFactory factory)
         {
             modelTypeList = factory.ImportModelTypeList();
             kDLogisticLT = factory.ImportKDLogistic();
-            modelTypeUploadService = factory.AddModelTypeUpload();
+            modelTypeUploadService = factory.ModelTypeUploadService();
         }
 
         public int MTList(UploadFileImportModel uploadFileImportModel)
         {
-            this.uploadFileImportModel = uploadFileImportModel;
+            this.UploadFileImportModel = uploadFileImportModel;
             this.threadImport = new Thread(new ThreadStart(CallThreadMTList));
             this.threadImport.Start();
             return 41; // return UploadStatusID
@@ -35,23 +36,29 @@ namespace ReadExcel.Factory.AbstractFactory._05.Client
 
         private void CallThreadMTList()
         {
-            ModelTypeUploadModel model = modelTypeList.Import(this.uploadFileImportModel);
-            if(model != null)
+            if (modelTypeList.IsHeaderValidate(this.UploadFileImportModel))
             {
-                this.AddModelTypeUpload(model);
+                var model = modelTypeList.Import(this.UploadFileImportModel);
+                var stagingModel = AddModelTypeUploadToStaging(model);
+                // Full Validate
+
+                // AddModelTypeUploadToMaster
+                AddModelTypeUploadToMaster(stagingModel);
+            }
+            else
+            {
+                // Critical Error
             }
         }
 
-        public ModelTypeUploadModel KDLogistic(UploadFileImportModel uploadFileImportModel)
+        private void AddModelTypeUploadToMaster(M_ModelTypeUpload stagingModel)
         {
-            return kDLogisticLT.ReadExcelFile(uploadFileImportModel);
+            this.modelTypeUploadService.AddModelTypeUpload(stagingModel);
         }
 
-        private bool AddModelTypeUpload(ModelTypeUploadModel model)
+        private M_ModelTypeUpload AddModelTypeUploadToStaging(ModelTypeUploadModel model)
         {
-            bool IsSucceed = false;
-            this.modelTypeUploadService.AddModelTypeUpload(model);
-            return IsSucceed;
+            return this.modelTypeUploadService.AddModelTypeUploadToStaging(model);
         }
     }
 }

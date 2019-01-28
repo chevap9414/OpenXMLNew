@@ -31,16 +31,10 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
 
         public ModelTypeUploadModel Import(UploadFileImportModel uploadFileImportModel)
         {
-            // Todo Logic here
-            ModelTypeUploadModel model = new ModelTypeUploadModel();
-            if (IsHeaderValidate(uploadFileImportModel))
-            {
-                model = ReadExcel(uploadFileImportModel);
-            }
-            return model;
+            return ReadExcel(uploadFileImportModel);
         }
 
-        private bool IsHeaderValidate(UploadFileImportModel uploadFileImportModel)
+        public bool IsHeaderValidate(UploadFileImportModel uploadFileImportModel)
         {
             bool IsValid = true;
             using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(uploadFileImportModel.FileName, false))
@@ -186,7 +180,7 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                             string currentColumn = GetColumnName(cell.CellReference);
                             int currentIndex = GetColumnIndex(cell.CellReference);
                             string currentCellValue = GetCellValue(workbookPart, sheet, cell.CellReference);
-                            
+
 
                             #region Engine
                             if (engineColumn.Contains(GetColumnName(cell.CellReference)))
@@ -318,7 +312,7 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                         }
                         // End Cell
                         preRow = cellValues;
-                        modelTypeTempRowModel.ModelTypeTempEngines.Add(engineModel);
+                        modelTypeTempRowModel.ModelTypeTempEngineModels.Add(engineModel);
                         modelTypeTempRowModel.ModelTypeTempEquipmentModels.AddRange(equipmentModels);
                         modelTypeTempRowModel.ModelTypeTempTypeModels.AddRange(typeModels);
                         sheetModel.ModelTypeTempRowModels.Add(modelTypeTempRowModel);
@@ -333,7 +327,6 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
             //StagingTest(modelTypeUpload);
             return modelTypeUpload;
         }
-
         private void StagingTest(ModelTypeUploadModel model)
         {
             ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities();
@@ -361,7 +354,7 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                         VIN = row.VIN,
                         ErrorMessage = row.ErrorMessage,
                         // Add M_ModelTypeTempEngine
-                        M_ModelTypeTempEngine = row.ModelTypeTempEngines.Select(engine => new M_ModelTypeTempEngine
+                        M_ModelTypeTempEngine = row.ModelTypeTempEngineModels.Select(engine => new M_ModelTypeTempEngine
                         {
                             SS = engine.SS,
                             DISP = engine.DISP,
@@ -467,8 +460,5 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
             return mergecellPosition;
         }
 
-        
-
-        
     }
 }

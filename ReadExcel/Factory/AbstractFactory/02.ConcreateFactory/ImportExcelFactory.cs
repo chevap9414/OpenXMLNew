@@ -17,7 +17,7 @@ namespace ReadExcel.Factory.AbstractFactory._02.ConcreateFactory
         {
         }
 
-        public IModelTypeUploadService AddModelTypeUpload()
+        public IModelTypeUploadService ModelTypeUploadService()
         {
             return new ModelTypeUploadService();
         }

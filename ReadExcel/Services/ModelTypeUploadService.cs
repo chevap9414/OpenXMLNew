@@ -11,15 +11,46 @@ namespace ReadExcel.Services
 {
     public class ModelTypeUploadService : IModelTypeUploadService
     {
-        public bool AddModelTypeUpload(ModelTypeUploadModel model)
+        public bool AddModelTypeUpload(M_ModelTypeUpload model)
+        {
+            /*
+            Get ModelTypeUploadID from tempSheet
+            Update ModelTypeUpload
+            ModelTypeUpload Relation
+               - Add M_ModelType
+               - 
+            */
+            try
+            {
+                using (ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities())
+                {
+                    var enModelTypeUpload = entities.M_ModelTypeUpload
+                                            .Where(m => m.ModelTypeUploadID == model.ModelTypeUploadID).First();
+                    var enYM = entities.M_YM.Add(new M_YM
+                    {
+                        YMName = entities.M_ModelTypeTempSheet
+                                .Where(s => s.ModelTypeUploadID == enModelTypeUpload.ModelTypeUploadID)
+                                .Select(s => s.YM).First(),
+
+                    });
+                }
+
+                return true;
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public M_ModelTypeUpload AddModelTypeUploadToStaging(ModelTypeUploadModel model)
         {
             try
             {
-                bool IsSucceed = false;
                 ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities();
 
                 // Add ModelTypeUpload
-                entities.M_ModelTypeUpload.Add(new M_ModelTypeUpload
+                M_ModelTypeUpload enModel = entities.M_ModelTypeUpload.Add(new M_ModelTypeUpload
                 {
                     CreatedBy = model.CreatedBy,
                     CreatedDate = DateTime.Now,
@@ -42,7 +73,7 @@ namespace ReadExcel.Services
                             VIN = row.VIN,
                             ErrorMessage = row.ErrorMessage,
                             // Add M_ModelTypeTempEngine
-                            M_ModelTypeTempEngine = row.ModelTypeTempEngines.Select(engine => new M_ModelTypeTempEngine
+                            M_ModelTypeTempEngine = row.ModelTypeTempEngineModels.Select(engine => new M_ModelTypeTempEngine
                             {
                                 SS = engine.SS,
                                 DISP = engine.DISP,
@@ -74,10 +105,9 @@ namespace ReadExcel.Services
                 });
 
                 entities.SaveChanges();
-                IsSucceed = true;
-                return IsSucceed;
+                return enModel;
             }
-            catch(DbEntityValidationException e)
+            catch (DbEntityValidationException e)
             {
                 foreach (var eve in e.EntityValidationErrors)
                 {

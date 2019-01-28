@@ -12,6 +12,6 @@ namespace ReadExcel.Factory.AbstractFactory._01.AbstractInterface
     {
         IModelTypeList ImportModelTypeList();
         IKDLogisticLT ImportKDLogistic();
-        IModelTypeUploadService AddModelTypeUpload();
+        IModelTypeUploadService ModelTypeUploadService();
     }
 }

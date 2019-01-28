@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ReadExcel
 {
     public class ModelTypeUploadModel
     {
+        [Required()]
         public int ModelTypeUploadID { get; set; }
         public int? CompanyID { get; set; }
         public int? ModelID { get; set; }
