@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ReadExcel.Factory.AbstractFactory._01.AbstractInterface
 {
-    interface IExcelImportFactory
+    interface IImportExcelFactory
     {
         IModelTypeList ImportModelTypeList();
         IKDLogisticLT ImportKDLogistic();

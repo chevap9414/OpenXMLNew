@@ -13,7 +13,7 @@ namespace ReadExcel.Factory.AbstractFactory._05.Client
         IModelTypeList modelTypeList;
         IKDLogisticLT kDLogisticLT;
 
-        public ImportExcel(IExcelImportFactory factory)
+        public ImportExcel(IImportExcelFactory factory)
         {
             modelTypeList = factory.ImportModelTypeList();
             kDLogisticLT = factory.ImportKDLogistic();

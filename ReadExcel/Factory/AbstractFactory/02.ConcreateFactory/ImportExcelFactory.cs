@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace ReadExcel.Factory.AbstractFactory._02.ConcreateFactory
 {
-    class ExcelFileImport : IExcelImportFactory
+    class ImportExcelFactory : IImportExcelFactory
     {
-        public ExcelFileImport()
+        public ImportExcelFactory()
         {
         }
 
