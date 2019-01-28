@@ -5,7 +5,7 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ASHAOP_DEVModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="_M_Menu">
+        <EntityType Name="C_M_Menu">
           <Key>
             <PropertyRef Name="MenuID" />
           </Key>
@@ -530,8 +530,6 @@
           <Property Name="ControlName" Type="nvarchar" MaxLength="255" />
           <Property Name="ActionName" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ASHAOP_DEV.dbo.M_Permissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="M_Permissions">
           <Key>
             <PropertyRef Name="PermissionID" />
@@ -627,7 +625,7 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.M_Permissions' does not have a prim
           <Property Name="YMID" Type="int" Nullable="false" />
           <Property Name="YMName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="PartDemandDetail">
+        <EntityType Name="PartDemandDetails">
           <Key>
             <PropertyRef Name="PartDemandDetailID" />
           </Key>
@@ -638,7 +636,7 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.M_Permissions' does not have a prim
           <Property Name="DemandMonth" Type="int" />
           <Property Name="Demand" Type="int" />
         </EntityType>
-        <EntityType Name="PartDemandHeader">
+        <EntityType Name="PartDemandHeaders">
           <Key>
             <PropertyRef Name="PartDemandHeaderID" />
           </Key>
@@ -1001,8 +999,6 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.M_Permissions' does not have a prim
           <Property Name="UpdatedDate" Type="datetime" />
           <Property Name="UpdatedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="T_PartCapacityErrorRow">
           <Key>
             <PropertyRef Name="PartCapacityErrorRowID" />
@@ -1389,8 +1385,8 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           <Property Name="DestinationID" Type="int" Nullable="false" />
           <Property Name="YM" Type="int" Nullable="false" />
           <Property Name="SEDFlow" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="StartUp" Type="date" />
-          <Property Name="BuildOut" Type="date" />
+          <Property Name="StartUp" Type="datetime" />
+          <Property Name="BuildOut" Type="datetime" />
           <Property Name="IsDiscon" Type="bit" />
           <Property Name="IsASHUpdate" Type="bit" />
         </EntityType>
@@ -1448,7 +1444,7 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           <Property Name="FileNameSystem" Type="nvarchar" MaxLength="100" />
           <Property Name="UploadResult" Type="int" Nullable="false" />
           <Property Name="UploadedBy" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="UploadedDate" Type="date" Nullable="false" />
+          <Property Name="UploadedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="T_SUBOTempUploadError">
           <Key>
@@ -2096,24 +2092,24 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
         </Association>
         <Association Name="FK_PartDemandDetail_M_PartMaker1">
           <End Role="M_PartMaker" Type="Self.M_PartMaker" Multiplicity="0..1" />
-          <End Role="PartDemandDetail" Type="Self.PartDemandDetail" Multiplicity="*" />
+          <End Role="PartDemandDetails" Type="Self.PartDemandDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="M_PartMaker">
               <PropertyRef Name="PartMakerID" />
             </Principal>
-            <Dependent Role="PartDemandDetail">
+            <Dependent Role="PartDemandDetails">
               <PropertyRef Name="PartMakerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PartDemandDetail_PartDemandHeader">
-          <End Role="PartDemandHeader" Type="Self.PartDemandHeader" Multiplicity="0..1" />
-          <End Role="PartDemandDetail" Type="Self.PartDemandDetail" Multiplicity="*" />
+          <End Role="PartDemandHeaders" Type="Self.PartDemandHeaders" Multiplicity="0..1" />
+          <End Role="PartDemandDetails" Type="Self.PartDemandDetails" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="PartDemandHeader">
+            <Principal Role="PartDemandHeaders">
               <PropertyRef Name="PartDemandHeaderID" />
             </Principal>
-            <Dependent Role="PartDemandDetail">
+            <Dependent Role="PartDemandDetails">
               <PropertyRef Name="PartDemandHeaderID" />
             </Dependent>
           </ReferentialConstraint>
@@ -2683,7 +2679,7 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ASHAOP_DEVModelStoreContainer">
-          <EntitySet Name="_M_Menu" EntityType="Self._M_Menu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="C_M_Menu" EntityType="Self.C_M_Menu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="L_InputOutput" EntityType="Self.L_InputOutput" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="L_SystemLog" EntityType="Self.L_SystemLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="L_Transaction" EntityType="Self.L_Transaction" Schema="dbo" store:Type="Tables" />
@@ -2727,14 +2723,15 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           <EntitySet Name="M_ModelTypeUpload" EntityType="Self.M_ModelTypeUpload" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_PartMaker" EntityType="Self.M_PartMaker" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_Permission" EntityType="Self.M_Permission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="M_Permissions" EntityType="Self.M_Permissions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_Region" EntityType="Self.M_Region" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_Shipment" EntityType="Self.M_Shipment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_User" EntityType="Self.M_User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_UserRole" EntityType="Self.M_UserRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_UserRolePermission" EntityType="Self.M_UserRolePermission" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_YM" EntityType="Self.M_YM" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PartDemandDetail" EntityType="Self.PartDemandDetail" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PartDemandHeader" EntityType="Self.PartDemandHeader" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PartDemandDetails" EntityType="Self.PartDemandDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PartDemandHeaders" EntityType="Self.PartDemandHeaders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_ComparePartKadai" EntityType="Self.T_ComparePartKadai" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_CompareProductionPlan" EntityType="Self.T_CompareProductionPlan" Schema="dbo" store:Type="Tables" />
@@ -2754,6 +2751,7 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           <EntitySet Name="T_Maker" EntityType="Self.T_Maker" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Part" EntityType="Self.T_Part" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_PartCapacityDetail" EntityType="Self.T_PartCapacityDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_PartCapacityErrorRow" EntityType="Self.T_PartCapacityErrorRow" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_PartCapacityHeader" EntityType="Self.T_PartCapacityHeader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_PartCapacityTemp" EntityType="Self.T_PartCapacityTemp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_PartCapacityUploadHistory" EntityType="Self.T_PartCapacityUploadHistory" Schema="dbo" store:Type="Tables" />
@@ -2788,23 +2786,6 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           <EntitySet Name="T_SUBOTempUploadError" EntityType="Self.T_SUBOTempUploadError" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="temp_GetUserDomain" EntityType="Self.temp_GetUserDomain" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="z_M_Function" EntityType="Self.z_M_Function" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="M_Permissions" EntityType="Self.M_Permissions" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [M_Permissions].[PermissionID] AS [PermissionID], 
-    [M_Permissions].[MenuID] AS [MenuID], 
-    [M_Permissions].[PermissionName] AS [PermissionName], 
-    [M_Permissions].[ControlName] AS [ControlName], 
-    [M_Permissions].[ActionName] AS [ActionName]
-    FROM [dbo].[M_Permissions] AS [M_Permissions]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="T_PartCapacityErrorRow" EntityType="Self.T_PartCapacityErrorRow" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [T_PartCapacityErrorRow].[PartCapacityErrorRowID] AS [PartCapacityErrorRowID], 
-    [T_PartCapacityErrorRow].[PartCapacityUploadHistoryID] AS [PartCapacityUploadHistoryID], 
-    [T_PartCapacityErrorRow].[RowNumber] AS [RowNumber], 
-    [T_PartCapacityErrorRow].[ErrorMessage] AS [ErrorMessage]
-    FROM [dbo].[T_PartCapacityErrorRow] AS [T_PartCapacityErrorRow]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_CapacityCheckHeader_M_Company" Association="Self.FK_CapacityCheckHeader_M_Company">
             <End Role="M_Company" EntitySet="M_Company" />
             <End Role="T_PartCapacityHeader" EntitySet="T_PartCapacityHeader" />
@@ -3007,11 +2988,11 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           </AssociationSet>
           <AssociationSet Name="FK_PartDemandDetail_M_PartMaker1" Association="Self.FK_PartDemandDetail_M_PartMaker1">
             <End Role="M_PartMaker" EntitySet="M_PartMaker" />
-            <End Role="PartDemandDetail" EntitySet="PartDemandDetail" />
+            <End Role="PartDemandDetails" EntitySet="PartDemandDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_PartDemandDetail_PartDemandHeader" Association="Self.FK_PartDemandDetail_PartDemandHeader">
-            <End Role="PartDemandHeader" EntitySet="PartDemandHeader" />
-            <End Role="PartDemandDetail" EntitySet="PartDemandDetail" />
+            <End Role="PartDemandHeaders" EntitySet="PartDemandHeaders" />
+            <End Role="PartDemandDetails" EntitySet="PartDemandDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_T_CapacityCheckDetail_T_CapacityCheckHeader" Association="Self.FK_T_CapacityCheckDetail_T_CapacityCheckHeader">
             <End Role="T_PartCapacityHeader" EntitySet="T_PartCapacityHeader" />
@@ -3251,6 +3232,7 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           <EntitySet Name="M_ModelTypeUpload" EntityType="ASHAOP_DEVModel.M_ModelTypeUpload" />
           <EntitySet Name="M_PartMaker" EntityType="ASHAOP_DEVModel.M_PartMaker" />
           <EntitySet Name="M_Permission" EntityType="ASHAOP_DEVModel.M_Permission" />
+          <EntitySet Name="M_Permissions" EntityType="ASHAOP_DEVModel.M_Permissions" />
           <EntitySet Name="M_Region" EntityType="ASHAOP_DEVModel.M_Region" />
           <EntitySet Name="M_Shipment" EntityType="ASHAOP_DEVModel.M_Shipment" />
           <EntitySet Name="M_User" EntityType="ASHAOP_DEVModel.M_User" />
@@ -3278,6 +3260,7 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           <EntitySet Name="T_Maker" EntityType="ASHAOP_DEVModel.T_Maker" />
           <EntitySet Name="T_Part" EntityType="ASHAOP_DEVModel.T_Part" />
           <EntitySet Name="T_PartCapacityDetail" EntityType="ASHAOP_DEVModel.T_PartCapacityDetail" />
+          <EntitySet Name="T_PartCapacityErrorRow" EntityType="ASHAOP_DEVModel.T_PartCapacityErrorRow" />
           <EntitySet Name="T_PartCapacityHeader" EntityType="ASHAOP_DEVModel.T_PartCapacityHeader" />
           <EntitySet Name="T_PartCapacityTemp" EntityType="ASHAOP_DEVModel.T_PartCapacityTemp" />
           <EntitySet Name="T_PartCapacityUploadHistory" EntityType="ASHAOP_DEVModel.T_PartCapacityUploadHistory" />
@@ -3312,8 +3295,6 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           <EntitySet Name="T_SUBOTempUploadError" EntityType="ASHAOP_DEVModel.T_SUBOTempUploadError" />
           <EntitySet Name="temp_GetUserDomain" EntityType="ASHAOP_DEVModel.temp_GetUserDomain" />
           <EntitySet Name="z_M_Function" EntityType="ASHAOP_DEVModel.z_M_Function" />
-          <EntitySet Name="M_Permissions" EntityType="ASHAOP_DEVModel.M_Permissions" />
-          <EntitySet Name="T_PartCapacityErrorRow" EntityType="ASHAOP_DEVModel.T_PartCapacityErrorRow" />
           <AssociationSet Name="FK_M_AdditionalConditionCriteria_M_AdditionalCondition" Association="ASHAOP_DEVModel.FK_M_AdditionalConditionCriteria_M_AdditionalCondition">
             <End Role="M_AdditionalCondition" EntitySet="M_AdditionalCondition" />
             <End Role="M_AdditionalConditionCriteria" EntitySet="M_AdditionalConditionCriteria" />
@@ -3614,13 +3595,13 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
             <End Role="T_PartCapacityHeader" EntitySet="T_PartCapacityHeader" />
             <End Role="T_PartCapacityDetail" EntitySet="T_PartCapacityDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK_T_PartCapacityTemp_T_PartCapacityUploadHistory" Association="ASHAOP_DEVModel.FK_T_PartCapacityTemp_T_PartCapacityUploadHistory">
-            <End Role="T_PartCapacityUploadHistory" EntitySet="T_PartCapacityUploadHistory" />
-            <End Role="T_PartCapacityTemp" EntitySet="T_PartCapacityTemp" />
-          </AssociationSet>
           <AssociationSet Name="FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory" Association="ASHAOP_DEVModel.FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory">
             <End Role="T_PartCapacityUploadHistory" EntitySet="T_PartCapacityUploadHistory" />
             <End Role="T_PartCapacityErrorRow" EntitySet="T_PartCapacityErrorRow" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PartCapacityTemp_T_PartCapacityUploadHistory" Association="ASHAOP_DEVModel.FK_T_PartCapacityTemp_T_PartCapacityUploadHistory">
+            <End Role="T_PartCapacityUploadHistory" EntitySet="T_PartCapacityUploadHistory" />
+            <End Role="T_PartCapacityTemp" EntitySet="T_PartCapacityTemp" />
           </AssociationSet>
           <AssociationSet Name="FK_T_PartDemand_T_PartDemandFileUploadDetail" Association="ASHAOP_DEVModel.FK_T_PartDemand_T_PartDemandFileUploadDetail">
             <End Role="T_PartDemandFileUploadDetail" EntitySet="T_PartDemandFileUploadDetail" />
@@ -4336,6 +4317,18 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           <Property Name="ActionName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="M_Menu" Relationship="ASHAOP_DEVModel.FK_M_Permission_M_Menu" FromRole="M_Permission" ToRole="M_Menu" />
         </EntityType>
+        <EntityType Name="M_Permissions">
+          <Key>
+            <PropertyRef Name="PermissionID" />
+            <PropertyRef Name="MenuID" />
+            <PropertyRef Name="PermissionName" />
+          </Key>
+          <Property Name="PermissionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MenuID" Type="Int32" Nullable="false" />
+          <Property Name="PermissionName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ControlName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ActionName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="M_Region">
           <Key>
             <PropertyRef Name="RegionID" />
@@ -4834,6 +4827,16 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           <NavigationProperty Name="M_PartMaker" Relationship="ASHAOP_DEVModel.FK_T_PartCapacityDetail_M_PartMaker" FromRole="T_PartCapacityDetail" ToRole="M_PartMaker" />
           <NavigationProperty Name="T_PartCapacityHeader" Relationship="ASHAOP_DEVModel.FK_T_CapacityCheckDetail_T_CapacityCheckHeader" FromRole="T_PartCapacityDetail" ToRole="T_PartCapacityHeader" />
         </EntityType>
+        <EntityType Name="T_PartCapacityErrorRow">
+          <Key>
+            <PropertyRef Name="PartCapacityErrorRowID" />
+          </Key>
+          <Property Name="PartCapacityErrorRowID" Type="Int32" Nullable="false" />
+          <Property Name="PartCapacityUploadHistoryID" Type="Int32" />
+          <Property Name="RowNumber" Type="Int32" />
+          <Property Name="ErrorMessage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="T_PartCapacityUploadHistory" Relationship="ASHAOP_DEVModel.FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory" FromRole="T_PartCapacityErrorRow" ToRole="T_PartCapacityUploadHistory" />
+        </EntityType>
         <EntityType Name="T_PartCapacityHeader">
           <Key>
             <PropertyRef Name="PartCapacityHeaderID" />
@@ -4886,8 +4889,8 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           <Property Name="FailRecords" Type="Int32" />
           <NavigationProperty Name="M_Company" Relationship="ASHAOP_DEVModel.FK_T_CapacityCheckUploadHistory_M_Company" FromRole="T_PartCapacityUploadHistory" ToRole="M_Company" />
           <NavigationProperty Name="M_FileManager" Relationship="ASHAOP_DEVModel.FK_T_CapacityCheckUploadHistory_M_FileManager" FromRole="T_PartCapacityUploadHistory" ToRole="M_FileManager" />
-          <NavigationProperty Name="T_PartCapacityTemp" Relationship="ASHAOP_DEVModel.FK_T_PartCapacityTemp_T_PartCapacityUploadHistory" FromRole="T_PartCapacityUploadHistory" ToRole="T_PartCapacityTemp" />
           <NavigationProperty Name="T_PartCapacityErrorRow" Relationship="ASHAOP_DEVModel.FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory" FromRole="T_PartCapacityUploadHistory" ToRole="T_PartCapacityErrorRow" />
+          <NavigationProperty Name="T_PartCapacityTemp" Relationship="ASHAOP_DEVModel.FK_T_PartCapacityTemp_T_PartCapacityUploadHistory" FromRole="T_PartCapacityUploadHistory" ToRole="T_PartCapacityTemp" />
         </EntityType>
         <EntityType Name="T_PartDemand">
           <Key>
@@ -5267,8 +5270,8 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           <Property Name="DestinationID" Type="Int32" Nullable="false" />
           <Property Name="YM" Type="Int32" Nullable="false" />
           <Property Name="SEDFlow" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="StartUp" Type="DateTime" Precision="0" />
-          <Property Name="BuildOut" Type="DateTime" Precision="0" />
+          <Property Name="StartUp" Type="DateTime" Precision="3" />
+          <Property Name="BuildOut" Type="DateTime" Precision="3" />
           <Property Name="IsDiscon" Type="Boolean" />
           <Property Name="IsASHUpdate" Type="Boolean" />
         </EntityType>
@@ -5326,7 +5329,7 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           <Property Name="FileNameSystem" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UploadResult" Type="Int32" Nullable="false" />
           <Property Name="UploadedBy" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="UploadedDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UploadedDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="T_SUBOTempUploadError">
           <Key>
@@ -5371,28 +5374,6 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           <Property Name="ActionName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="RoleTypeID" Type="Int32" />
           <Property Name="RoleType" Type="Int32" />
-        </EntityType>
-        <EntityType Name="M_Permissions">
-          <Key>
-            <PropertyRef Name="PermissionID" />
-            <PropertyRef Name="MenuID" />
-            <PropertyRef Name="PermissionName" />
-          </Key>
-          <Property Name="PermissionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MenuID" Type="Int32" Nullable="false" />
-          <Property Name="PermissionName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ControlName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ActionName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="T_PartCapacityErrorRow">
-          <Key>
-            <PropertyRef Name="PartCapacityErrorRowID" />
-          </Key>
-          <Property Name="PartCapacityErrorRowID" Type="Int32" Nullable="false" />
-          <Property Name="PartCapacityUploadHistoryID" Type="Int32" />
-          <Property Name="RowNumber" Type="Int32" />
-          <Property Name="ErrorMessage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="T_PartCapacityUploadHistory" Relationship="ASHAOP_DEVModel.FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory" FromRole="T_PartCapacityErrorRow" ToRole="T_PartCapacityUploadHistory" />
         </EntityType>
         <Association Name="FK_M_AdditionalConditionCriteria_M_AdditionalCondition">
           <End Type="ASHAOP_DEVModel.M_AdditionalCondition" Role="M_AdditionalCondition" Multiplicity="1" />
@@ -6294,18 +6275,6 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_T_PartCapacityTemp_T_PartCapacityUploadHistory">
-          <End Type="ASHAOP_DEVModel.T_PartCapacityUploadHistory" Role="T_PartCapacityUploadHistory" Multiplicity="0..1" />
-          <End Type="ASHAOP_DEVModel.T_PartCapacityTemp" Role="T_PartCapacityTemp" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_PartCapacityUploadHistory">
-              <PropertyRef Name="PartCapacityUploadHistoryID" />
-            </Principal>
-            <Dependent Role="T_PartCapacityTemp">
-              <PropertyRef Name="PartCapacityUploadHistoryID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory">
           <End Type="ASHAOP_DEVModel.T_PartCapacityUploadHistory" Role="T_PartCapacityUploadHistory" Multiplicity="0..1" />
           <End Type="ASHAOP_DEVModel.T_PartCapacityErrorRow" Role="T_PartCapacityErrorRow" Multiplicity="*" />
@@ -6314,6 +6283,18 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
               <PropertyRef Name="PartCapacityUploadHistoryID" />
             </Principal>
             <Dependent Role="T_PartCapacityErrorRow">
+              <PropertyRef Name="PartCapacityUploadHistoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PartCapacityTemp_T_PartCapacityUploadHistory">
+          <End Type="ASHAOP_DEVModel.T_PartCapacityUploadHistory" Role="T_PartCapacityUploadHistory" Multiplicity="0..1" />
+          <End Type="ASHAOP_DEVModel.T_PartCapacityTemp" Role="T_PartCapacityTemp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_PartCapacityUploadHistory">
+              <PropertyRef Name="PartCapacityUploadHistoryID" />
+            </Principal>
+            <Dependent Role="T_PartCapacityTemp">
               <PropertyRef Name="PartCapacityUploadHistoryID" />
             </Dependent>
           </ReferentialConstraint>
@@ -6590,7 +6571,7 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
         <EntityContainerMapping StorageEntityContainer="ASHAOP_DEVModelStoreContainer" CdmEntityContainer="ASHAOP_DEVEntities">
           <EntitySetMapping Name="C_M_Menu">
             <EntityTypeMapping TypeName="ASHAOP_DEVModel.C_M_Menu">
-              <MappingFragment StoreEntitySet="_M_Menu">
+              <MappingFragment StoreEntitySet="C_M_Menu">
                 <ScalarProperty Name="StatusID" ColumnName="StatusID" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
@@ -7156,6 +7137,17 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="M_Permissions">
+            <EntityTypeMapping TypeName="ASHAOP_DEVModel.M_Permissions">
+              <MappingFragment StoreEntitySet="M_Permissions">
+                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+                <ScalarProperty Name="ControlName" ColumnName="ControlName" />
+                <ScalarProperty Name="PermissionName" ColumnName="PermissionName" />
+                <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+                <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="M_Region">
             <EntityTypeMapping TypeName="ASHAOP_DEVModel.M_Region">
               <MappingFragment StoreEntitySet="M_Region">
@@ -7247,7 +7239,7 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           </EntitySetMapping>
           <EntitySetMapping Name="PartDemandDetails">
             <EntityTypeMapping TypeName="ASHAOP_DEVModel.PartDemandDetail">
-              <MappingFragment StoreEntitySet="PartDemandDetail">
+              <MappingFragment StoreEntitySet="PartDemandDetails">
                 <ScalarProperty Name="Demand" ColumnName="Demand" />
                 <ScalarProperty Name="DemandMonth" ColumnName="DemandMonth" />
                 <ScalarProperty Name="Ki" ColumnName="Ki" />
@@ -7259,7 +7251,7 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
           </EntitySetMapping>
           <EntitySetMapping Name="PartDemandHeaders">
             <EntityTypeMapping TypeName="ASHAOP_DEVModel.PartDemandHeader">
-              <MappingFragment StoreEntitySet="PartDemandHeader">
+              <MappingFragment StoreEntitySet="PartDemandHeaders">
                 <ScalarProperty Name="SeihanYear" ColumnName="SeihanYear" />
                 <ScalarProperty Name="SeihanMonth" ColumnName="SeihanMonth" />
                 <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
@@ -7627,6 +7619,16 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
                 <ScalarProperty Name="PartMakerID" ColumnName="PartMakerID" />
                 <ScalarProperty Name="PartCapacityHeaderID" ColumnName="PartCapacityHeaderID" />
                 <ScalarProperty Name="PartCapacityDetailID" ColumnName="PartCapacityDetailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_PartCapacityErrorRow">
+            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_PartCapacityErrorRow">
+              <MappingFragment StoreEntitySet="T_PartCapacityErrorRow">
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="PartCapacityUploadHistoryID" ColumnName="PartCapacityUploadHistoryID" />
+                <ScalarProperty Name="PartCapacityErrorRowID" ColumnName="PartCapacityErrorRowID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8138,27 +8140,6 @@ warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not ha
                 <ScalarProperty Name="FunctionCode" ColumnName="FunctionCode" />
                 <ScalarProperty Name="MenuID" ColumnName="MenuID" />
                 <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="M_Permissions">
-            <EntityTypeMapping TypeName="ASHAOP_DEVModel.M_Permissions">
-              <MappingFragment StoreEntitySet="M_Permissions">
-                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
-                <ScalarProperty Name="ControlName" ColumnName="ControlName" />
-                <ScalarProperty Name="PermissionName" ColumnName="PermissionName" />
-                <ScalarProperty Name="MenuID" ColumnName="MenuID" />
-                <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_PartCapacityErrorRow">
-            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_PartCapacityErrorRow">
-              <MappingFragment StoreEntitySet="T_PartCapacityErrorRow">
-                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
-                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
-                <ScalarProperty Name="PartCapacityUploadHistoryID" ColumnName="PartCapacityUploadHistoryID" />
-                <ScalarProperty Name="PartCapacityErrorRowID" ColumnName="PartCapacityErrorRowID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

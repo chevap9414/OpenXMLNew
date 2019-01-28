@@ -9,6 +9,6 @@ namespace ReadExcel.Factory.AbstractFactory._03.AbstractProduct
     interface IModelTypeList
     {
         List<string> GetIndexHeaders();
-        int Import(UploadFileImportModel uploadFileImportModel);
+        ModelTypeUploadModel Import(UploadFileImportModel uploadFileImportModel);
     }
 }

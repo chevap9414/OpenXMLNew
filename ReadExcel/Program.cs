@@ -26,26 +26,15 @@ namespace ReadExcel
             {
                 FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Import\\Test.xlsx"),
                 UploadBy = "SYSTEM",
-                UploadDate = DateTime.Now
+                UploadDate = DateTime.Now,
+                CreatedBy = "SYSTEM",
+                CreatedDate = DateTime.Now
                 
             };
-
-
-            string plant = string.Empty;
-            //IExcelImportFactory factory = new ExcelFileImport();
-            //ImportExcel import = new ImportExcel(factory);
-            //import.MTList(uploadModel);
-            
-            var model = ReadExcel(uploadModel);
-
-            Console.WriteLine($"Plant name: { plant }");
-
+            IImportExcelFactory factory = new ImportExcelFactory();
+            ImportExcel import = new ImportExcel(factory);
+            import.MTList(uploadModel);
             Console.Read();
-        }
-
-        private static void AddToMaster()
-        {
-
         }
 
         private static void StagingTest(UploadFileImportModel uploadModel)

@@ -1,6 +1,8 @@
 ﻿using ReadExcel.Factory.AbstractFactory._01.AbstractInterface;
 using ReadExcel.Factory.AbstractFactory._03.AbstractProduct;
 using ReadExcel.Factory.AbstractFactory._04.ConcreateProduct;
+using ReadExcel.IServices;
+using ReadExcel.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,11 @@ namespace ReadExcel.Factory.AbstractFactory._02.ConcreateFactory
     {
         public ImportExcelFactory()
         {
+        }
+
+        public IModelTypeUploadService AddModelTypeUpload()
+        {
+            return new ModelTypeUploadService();
         }
 
         public IKDLogisticLT ImportKDLogistic()

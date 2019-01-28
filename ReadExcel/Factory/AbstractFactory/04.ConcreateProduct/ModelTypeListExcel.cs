@@ -1,7 +1,9 @@
 ﻿using DataLayer;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using ReadExcel.Factory.AbstractFactory._01.AbstractInterface;
 using ReadExcel.Factory.AbstractFactory._03.AbstractProduct;
+using ReadExcel.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +14,10 @@ using System.Threading.Tasks;
 
 namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
 {
-    class ModelTypeListExcel : IModelTypeList
+    public class ModelTypeListExcel : IModelTypeList
     {
         readonly List<string> engineColumn = new List<string>() { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
         readonly List<string> cellHeaderValueChecks = new List<string>() { "A6", "B6", "C6", "D6", "E6", "F6" }; // Read From Config
-        private Thread thReadExcel;
 
         public ModelTypeListExcel()
         {
@@ -28,16 +29,15 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
             return new List<string>() { };
         }
 
-        public int Import(UploadFileImportModel uploadFileImportModel)
+        public ModelTypeUploadModel Import(UploadFileImportModel uploadFileImportModel)
         {
             // Todo Logic here
             ModelTypeUploadModel model = new ModelTypeUploadModel();
-            if (!IsHeaderValidate(uploadFileImportModel))
+            if (IsHeaderValidate(uploadFileImportModel))
             {
-                return 7; // Read from Config
+                model = ReadExcel(uploadFileImportModel);
             }
-
-            return ReadExcelOnThread(uploadFileImportModel);
+            return model;
         }
 
         private bool IsHeaderValidate(UploadFileImportModel uploadFileImportModel)
@@ -61,25 +61,20 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
             }
             return IsValid;
         }
-        private int ReadExcelOnThread(UploadFileImportModel model)
-        {
-            ModelTypeUploadModel value = new ModelTypeUploadModel();
-            thReadExcel = new Thread(() => { value = ReadExcel(model); });
-            thReadExcel.Start();
-            return value.UploadStatusID ?? 44; // wait edit
-        }
 
         public ModelTypeUploadModel ReadExcel(UploadFileImportModel model)
         {
-            ModelTypeUploadModel modelTypeUpload = new ModelTypeUploadModel();
+            ModelTypeUploadModel modelTypeUpload = new ModelTypeUploadModel
+            {
+                UpdatedBy = model.UploadBy,
+                UpdatedDate = model.UploadDate,
+                CreatedBy = model.CreatedBy,
+                CreatedDate = model.CreatedDate
+            };
+
 
             List<ModelTypeTempSheetModel> sheetModels = new List<ModelTypeTempSheetModel>();
             ModelTypeTempSheetModel sheetModel;
-
-            modelTypeUpload.CreatedBy = model.UploadBy;
-            modelTypeUpload.CreatedDate = model.UploadDate;
-            modelTypeUpload.UpdatedBy = model.UploadBy;
-            modelTypeUpload.UpdatedDate = model.UploadDate;
 
             using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(model.FileName, false))
             {
@@ -183,12 +178,15 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                         engineModel = new ModelTypeTempEngineModel();
 
                         modelTypeTempRowModel.RowNo = i + 1;
+                        int seqEquipment = 1;
+                        int seqType = 1;
+
                         foreach (Cell cell in rows.ElementAt(i).Cast<Cell>())
                         {
                             string currentColumn = GetColumnName(cell.CellReference);
                             int currentIndex = GetColumnIndex(cell.CellReference);
                             string currentCellValue = GetCellValue(workbookPart, sheet, cell.CellReference);
-                            int sequence = 1;
+                            
 
                             #region Engine
                             if (engineColumn.Contains(GetColumnName(cell.CellReference)))
@@ -280,10 +278,10 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                                 {
                                     EquipmentName = GetCellValue(workbookPart, sheet, currentColumn + 9),
                                     EquipmentValue = currentCellValue,
-                                    Sequence = sequence
+                                    Sequence = seqEquipment
                                 };
 
-                                sequence++;
+                                seqEquipment++;
                                 equipmentModels.Add(equipmentModel);
                             }
                             #endregion
@@ -302,8 +300,9 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                                 {
                                     ModelType = GetCellValue(workbookPart, sheet, currentColumn + 9),
                                     ModelCode = currentCellValue,
-                                    Sequence = sequence
+                                    Sequence = seqType
                                 };
+                                seqType++;
                                 typeModels.Add(typeModel);
                             }
                             #endregion
@@ -330,80 +329,70 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                     modelTypeUpload.ModelTypeTempSheetModels.Add(sheetModel);
                 }
             }
-            modelTypeUpload.UploadStatusID = 41; // wait edit
-            AddToStaging(modelTypeUpload);
+            modelTypeUpload.UploadStatusID = 44; // wait edit
+            //StagingTest(modelTypeUpload);
             return modelTypeUpload;
         }
-        private bool AddToStaging(ModelTypeUploadModel model)
+
+        private void StagingTest(ModelTypeUploadModel model)
         {
-            try
-            {
-                bool IsSucceed = false;
-                ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities();
+            ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities();
 
-                // Add ModelTypeUpload
-                entities.M_ModelTypeUpload.Add(new M_ModelTypeUpload
+            // Add ModelTypeUpload
+            entities.M_ModelTypeUpload.Add(new M_ModelTypeUpload
+            {
+                CreatedBy = "SYSTEM",
+                CreatedDate = DateTime.Now,
+                UpdatedBy = "SYSTEM",
+                UpdatedDate = DateTime.Now,
+                M_ModelTypeTempSheet = model.ModelTypeTempSheetModels.Select(sheet => new M_ModelTypeTempSheet
                 {
-                    CreatedBy = model.CreatedBy,
-                    CreatedDate = DateTime.Now,
-                    UpdatedBy = model.UpdatedBy,
-                    UpdatedDate = DateTime.Now,
-                    M_ModelTypeTempSheet = model.ModelTypeTempSheetModels.Select(sheet => new M_ModelTypeTempSheet
+                    SheetNo = sheet.SheetNo,
+                    YM = sheet.YM,
+                    Model = sheet.Model,
+                    Door = sheet.Door,
+                    Plant = sheet.Plant,
+                    Status = sheet.Status,
+                    // Add M_ModelTypeTempRow
+                    M_ModelTypeTempRow = sheet.ModelTypeTempRowModels.Select(row => new M_ModelTypeTempRow
                     {
-                        SheetNo = sheet.SheetNo,
-                        YM = sheet.YM,
-                        Model = sheet.Model,
-                        Door = sheet.Door,
-                        Engine = sheet.Engine,
-                        Plant = sheet.Plant,
-                        Status = sheet.Status,
-                        // Add M_ModelTypeTempRow
-                        M_ModelTypeTempRow = sheet.ModelTypeTempRowModels.Select(row => new M_ModelTypeTempRow
+                        RowNo = row.RowNo,
+                        PNo = row.PNo,
+                        VIN = row.VIN,
+                        ErrorMessage = row.ErrorMessage,
+                        // Add M_ModelTypeTempEngine
+                        M_ModelTypeTempEngine = row.ModelTypeTempEngines.Select(engine => new M_ModelTypeTempEngine
                         {
-                            RowNo = row.RowNo,
-                            PNo = row.PNo,
-                            VIN = row.VIN,
-                            ErrorMessage = row.ErrorMessage,
-                            // Add M_ModelTypeTempEngine
-                            M_ModelTypeTempEngine = row.ModelTypeTempEngines.Select(engine => new M_ModelTypeTempEngine
-                            {
-                                SS = engine.SS,
-                                DISP = engine.DISP,
-                                COMCARB = engine.COMCARB,
-                                Grade = engine.Grade,
-                                Mis = engine.Mis,
-                                ModelCode01 = engine.ModelCode01,
-                                ModelCode02 = engine.ModelCode02,
-                                ModelCode03 = engine.ModelCode03,
-                                ModelCode04 = engine.ModelCode04,
-                                ModelCode05 = engine.ModelCode05
-                            }).ToList(),
-                            // Add M_ModelTypeTempEquipment
-                            M_ModelTypeTempEquipment = row.ModelTypeTempEquipmentModels.Select(equip => new M_ModelTypeTempEquipment
-                            {
-                                EquipmentName = equip.EquipmentName,
-                                EquipmentValue = equip.EquipmentValue,
-                                Sequence = equip.Sequence
-                            }).ToList(),
-                            // Add M_ModelTypeTempType
-                            M_ModelTypeTempType = row.ModelTypeTempTypeModels.Select(type => new M_ModelTypeTempType
-                            {
-                                ModelType = type.ModelType,
-                                ModelCode = type.ModelCode,
-                                Sequence = type.Sequence
-                            }).ToList()
+                            SS = engine.SS,
+                            DISP = engine.DISP,
+                            COMCARB = engine.COMCARB,
+                            Grade = engine.Grade,
+                            Mis = engine.Mis,
+                            ModelCode01 = engine.ModelCode01,
+                            ModelCode02 = engine.ModelCode02,
+                            ModelCode03 = engine.ModelCode03,
+                            ModelCode04 = engine.ModelCode04,
+                            ModelCode05 = engine.ModelCode05
                         }).ToList(),
-                    }).ToList()
-                });
+                        // Add M_ModelTypeTempEquipment
+                        M_ModelTypeTempEquipment = row.ModelTypeTempEquipmentModels.Select(equip => new M_ModelTypeTempEquipment
+                        {
+                            EquipmentName = equip.EquipmentName,
+                            EquipmentValue = equip.EquipmentValue,
+                            Sequence = equip.Sequence
+                        }).ToList(),
+                        // Add M_ModelTypeTempType
+                        M_ModelTypeTempType = row.ModelTypeTempTypeModels.Select(type => new M_ModelTypeTempType
+                        {
+                            ModelType = type.ModelType,
+                            ModelCode = type.ModelCode,
+                            Sequence = type.Sequence
+                        }).ToList()
+                    }).ToList(),
+                }).ToList()
+            });
 
-                //entities.SaveChanges();
-                IsSucceed = true;
-                return IsSucceed;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            entities.SaveChanges();
         }
 
         private string GetCellValue(WorkbookPart workbookPart, Sheet sheet, string addressName)
@@ -478,5 +467,8 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
             return mergecellPosition;
         }
 
+        
+
+        
     }
 }
