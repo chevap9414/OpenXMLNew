@@ -12,7 +12,7 @@ namespace DataLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class T_LogisticLeadtime
+    public partial class T_LogisticLeadTime
     {
         public int LogisticLTID { get; set; }
         public Nullable<int> WorkDayWiseID { get; set; }

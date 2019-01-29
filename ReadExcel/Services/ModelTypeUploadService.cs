@@ -11,29 +11,79 @@ namespace ReadExcel.Services
 {
     public class ModelTypeUploadService : IModelTypeUploadService
     {
-        public bool AddModelTypeUpload(M_ModelTypeUpload model)
+        public bool AddModelTypeUpload(ModelTypeUploadModel model)
         {
-            /*
-            Get ModelTypeUploadID from tempSheet
-            Update ModelTypeUpload
-            ModelTypeUpload Relation
-               - Add M_ModelType
-               - 
-            */
+
             try
             {
-                using (ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities())
-                {
-                    var enModelTypeUpload = entities.M_ModelTypeUpload
-                                            .Where(m => m.ModelTypeUploadID == model.ModelTypeUploadID).First();
-                    var enYM = entities.M_YM.Add(new M_YM
-                    {
-                        YMName = entities.M_ModelTypeTempSheet
-                                .Where(s => s.ModelTypeUploadID == enModelTypeUpload.ModelTypeUploadID)
-                                .Select(s => s.YM).First(),
+                ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities();
 
+                // Add Equipment
+                M_Equipment equipment;
+                List<string> tempEquipNames = new List<string>();
+                List<string> equipNames = entities.M_Equipment.Select(e => e.EquipmentName).ToList();
+                foreach(var equip in model.ModelTypeTempEquipmentModels)
+                {
+                    // Check Name Exists
+                    if(!equipNames.Contains(equip.EquipmentName) && !tempEquipNames.Contains(equip.EquipmentName))
+                    {
+                        equipment = entities.M_Equipment.Add(new M_Equipment
+                        {
+                            EquipmentName = equip.EquipmentName
+                        });
+                        tempEquipNames.Add(equip.EquipmentName);
+                    }
+                }
+
+                // Add YM
+                List<string> ymNames = entities.M_YM.Select(ym => ym.YMName).ToList();
+                if (!ymNames.Contains(model.YM.YMName))
+                {
+                    entities.M_YM.Add(new M_YM
+                    {
+                        YMName = model.YM.YMName
                     });
                 }
+                // Add Model
+                List<string> modelNames = entities.M_Model.Select(m => m.ModelName).ToList();
+                if (!modelNames.Contains(model.Model.ModelName))
+                {
+                    entities.M_Model.Add(new M_Model
+                    {
+                        ModelName = model.Model.ModelName
+                    });
+                }
+                //entities.SaveChanges();
+
+                // Add ModelType
+                M_ModelType modelType = entities.M_ModelType.Add(new M_ModelType
+                {
+                    ModelTypeUploadID = model.ModelTypeUploadID,
+                    CompanyID = model.Company.CompanyID,
+                    ModelID = entities.M_Model.Where(x => x.ModelName == model.Model.ModelName).First().ModelID,
+                    YMID = entities.M_YM.Where(x => x.YMName == model.YM.YMName).First().YMID,
+                    Version = model.ModelTypeTempSheetModels.Select(s => s.Status).First(),
+                    MTOCStatusID = entities.M_MISC.Where(m => m.MiscType == "MTOCStatus" && m.MiscCode == "A").Select(m => m.MiscID).First(),
+                    M_ModelTypeEngine = model.ModelTypeTempEngineModels.Select(engine => new M_ModelTypeEngine
+                    {
+                        ModelUsed = "test",
+                        ModelGPSP = "test",
+                        SS = engine.SS,
+                        DISP = int.Parse(engine.DISP),
+                        COMCARB = engine.COMCARB,
+                        GRADE = engine.Grade,
+                        MIS = engine.Mis,
+                        ModelCode01 = engine.ModelCode01,
+                        ModelCode02 = engine.ModelCode02,
+                        ModelCode03 = engine.ModelCode03,
+                        ModelCode04 = engine.ModelCode04,
+                        ModelCode05 = engine.ModelCode05,
+                        ModelType = model.ModelTypeTempTypeModels.Select(s => s.ModelType).First(),
+                        ModelCode = model.ModelTypeTempTypeModels.Select(x => x.ModelCode).First()
+                    }).ToList()
+                });
+
+                entities.SaveChanges();
 
                 return true;
             }
@@ -43,10 +93,11 @@ namespace ReadExcel.Services
             }
         }
 
-        public M_ModelTypeUpload AddModelTypeUploadToStaging(ModelTypeUploadModel model)
+        public ModelTypeUploadModel AddModelTypeUploadToStaging(ModelTypeUploadModel model)
         {
             try
             {
+                ModelTypeUploadModel modelReturn = new ModelTypeUploadModel();
                 ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities();
 
                 // Add ModelTypeUpload
@@ -103,24 +154,61 @@ namespace ReadExcel.Services
                         }).ToList(),
                     }).ToList()
                 });
-
                 entities.SaveChanges();
-                return enModel;
-            }
-            catch (DbEntityValidationException e)
-            {
-                foreach (var eve in e.EntityValidationErrors)
+
+                string plant = enModel.M_ModelTypeTempSheet.Select(s => s.Plant).First();
+                int companyID = entities.M_Company.Where(c => c.Plant == plant).Select(c => c.CompanyID).First();
+                string modelName = enModel.M_ModelTypeTempSheet.Select(s => s.Model).First();
+                string ymName = enModel.M_ModelTypeTempSheet.Select(s => s.YM).First();
+
+                modelReturn.ModelTypeUploadID = enModel.ModelTypeUploadID;
+                modelReturn.Company = new CompanyModel() { CompanyID = companyID };
+                modelReturn.Model = new ModelModel() { ModelName = modelName };
+                modelReturn.YM = new YMModel() { YMName = ymName };
+
+                modelReturn.ModelTypeTempSheetModels = model.ModelTypeTempSheetModels;
+                foreach(var sheets in model.ModelTypeTempSheetModels)
                 {
-                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
-                    foreach (var ve in eve.ValidationErrors)
+                    foreach(var row in sheets.ModelTypeTempRowModels)
                     {
-                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
-                            ve.PropertyName, ve.ErrorMessage);
+                        modelReturn.ModelTypeTempRowModels.Add(row);
+                        modelReturn.ModelTypeTempEquipmentModels.AddRange(row.ModelTypeTempEquipmentModels);
+                        modelReturn.ModelTypeTempEngineModels.AddRange(row.ModelTypeTempEngineModels);
+                        List<string> rowModeTypeCodeValue = new List<string>();
+                        foreach(var type in row.ModelTypeTempTypeModels)
+                        {
+                            if (!string.IsNullOrEmpty(type.ModelCode))
+                            {
+                                rowModeTypeCodeValue.Add(type.ModelCode);
+                                if (rowModeTypeCodeValue.Count <= 1)
+                                {
+                                    modelReturn.ModelTypeTempTypeModels.Add(type);
+                                }
+                                else
+                                {
+                                    modelReturn.ModelTypeTempTypeModels = new List<ModelTypeTempTypeModel>();
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
-                throw;
+                return modelReturn;
             }
+            //catch (DbEntityValidationException e)
+            //{
+            //    foreach (var eve in e.EntityValidationErrors)
+            //    {
+            //        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+            //            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+            //        foreach (var ve in eve.ValidationErrors)
+            //        {
+            //            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+            //                ve.PropertyName, ve.ErrorMessage);
+            //        }
+            //    }
+            //    throw;
+            //}
             catch (Exception e)
             {
                 throw e;

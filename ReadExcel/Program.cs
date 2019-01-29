@@ -22,13 +22,6 @@ namespace ReadExcel
     {
         static void Main(string[] args)
         {
-            //ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities();
-
-            //entities.M_YM.Add(new M_YM
-            //{
-
-            //});
-
 
             //var CountryList = entities.M_Country.Add(new M_Country()); .ToList();
 
@@ -57,19 +50,19 @@ namespace ReadExcel
 
             //entities.SaveChanges();
 
-            //var uploadModel = new UploadFileImportModel
-            //{
-            //    FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Import\\Test.xlsx"),
-            //    UploadBy = "SYSTEM",
-            //    UploadDate = DateTime.Now,
-            //    CreatedBy = "SYSTEM",
-            //    CreatedDate = DateTime.Now
+            var uploadModel = new UploadFileImportModel
+            {
+                FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Import\\Test.xlsx"),
+                UploadBy = "SYSTEM",
+                UploadDate = DateTime.Now,
+                CreatedBy = "SYSTEM",
+                CreatedDate = DateTime.Now
 
-            //};
-            //IImportExcelFactory factory = new ImportExcelFactory();
-            //ImportExcel import = new ImportExcel(factory);
-            //import.MTList(uploadModel);
-            //Console.Read();
+            };
+            IImportExcelFactory factory = new ImportExcelFactory();
+            ImportExcel import = new ImportExcel(factory);
+            import.MTList(uploadModel);
+            Console.Read();
         }
 
         private static void StagingTest(UploadFileImportModel uploadModel)

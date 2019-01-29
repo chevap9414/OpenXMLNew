@@ -261,7 +261,7 @@
     <Compile Include="T_LogisticDayWiseUploadHeader.cs">
       <DependentUpon>ASH_RASA.tt</DependentUpon>
     </Compile>
-    <Compile Include="T_LogisticLeadtime.cs">
+    <Compile Include="T_LogisticLeadTime.cs">
       <DependentUpon>ASH_RASA.tt</DependentUpon>
     </Compile>
     <Compile Include="T_LogisticMonthDetail.cs">
@@ -389,32 +389,30 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <EntityDeploy Include="ASH_RASA.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ASH_RASA.Designer.cs</LastGenOutput>
     </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
     <None Include="ASH_RASA.edmx.diagram">
       <DependentUpon>ASH_RASA.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="ASH_RASA.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ASH_RASA.Context.cs</LastGenOutput>
       <DependentUpon>ASH_RASA.edmx</DependentUpon>
+      <LastGenOutput>ASH_RASA.Context.cs</LastGenOutput>
     </Content>
     <Content Include="ASH_RASA.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ASH_RASA.edmx</DependentUpon>
       <LastGenOutput>ASH_RASA.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

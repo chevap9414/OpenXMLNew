@@ -33,6 +33,7 @@ namespace DataLayer
         public Nullable<int> MainProcessStatusID { get; set; }
         public Nullable<System.DateTime> UploadedDate { get; set; }
         public string UploadedBy { get; set; }
+        public Nullable<System.DateTime> SendMailDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<T_PartDemandFileUploadDetail> T_PartDemandFileUploadDetail { get; set; }

@@ -9,7 +9,6 @@ namespace ReadExcel
 {
     public class ModelTypeUploadModel
     {
-        [Required()]
         public int ModelTypeUploadID { get; set; }
         public int? CompanyID { get; set; }
         public int? ModelID { get; set; }
@@ -31,8 +30,15 @@ namespace ReadExcel
         public DateTime UpdatedDate { get; set; }
         public string I_ModelTypeFileNameSystem { get; set; }
 
-        //public virtual M_FileManager M_FileManager { get; set; }
+        public List<ModelTypeTempRowModel> ModelTypeTempRowModels { get; set; } = new List<ModelTypeTempRowModel>();
+        public List<ModelTypeTempEngineModel> ModelTypeTempEngineModels { get; set; } = new List<ModelTypeTempEngineModel>();
+        public List<ModelTypeTempEquipmentModel> ModelTypeTempEquipmentModels { get; set; } = new List<ModelTypeTempEquipmentModel>();
+        public List<ModelTypeTempTypeModel> ModelTypeTempTypeModels { get; set; } = new List<ModelTypeTempTypeModel>();
         public List<ModelTypeTempSheetModel> ModelTypeTempSheetModels { get; set; } = new List<ModelTypeTempSheetModel>();
+        public YMModel YM { get; set; }
+        public ModelModel Model { get; set; }
+        public CompanyModel Company { get; set; }
+
 
     }
 }

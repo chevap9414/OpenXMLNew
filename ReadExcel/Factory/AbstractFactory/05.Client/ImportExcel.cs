@@ -29,8 +29,12 @@ namespace ReadExcel.Factory.AbstractFactory._05.Client
         public int MTList(UploadFileImportModel uploadFileImportModel)
         {
             this.UploadFileImportModel = uploadFileImportModel;
-            this.threadImport = new Thread(new ThreadStart(CallThreadMTList));
-            this.threadImport.Start();
+            if (modelTypeList.IsHeaderValidate(this.UploadFileImportModel))
+            {
+                this.threadImport = new Thread(new ThreadStart(CallThreadMTList));
+                this.threadImport.Start();
+            }
+
             return 41; // return UploadStatusID
         }
 
@@ -42,6 +46,7 @@ namespace ReadExcel.Factory.AbstractFactory._05.Client
                 var stagingModel = AddModelTypeUploadToStaging(model);
                 // Full Validate
 
+
                 // AddModelTypeUploadToMaster
                 AddModelTypeUploadToMaster(stagingModel);
             }
@@ -51,12 +56,12 @@ namespace ReadExcel.Factory.AbstractFactory._05.Client
             }
         }
 
-        private void AddModelTypeUploadToMaster(M_ModelTypeUpload stagingModel)
+        private void AddModelTypeUploadToMaster(ModelTypeUploadModel stagingModel)
         {
             this.modelTypeUploadService.AddModelTypeUpload(stagingModel);
         }
 
-        private M_ModelTypeUpload AddModelTypeUploadToStaging(ModelTypeUploadModel model)
+        private ModelTypeUploadModel AddModelTypeUploadToStaging(ModelTypeUploadModel model)
         {
             return this.modelTypeUploadService.AddModelTypeUploadToStaging(model);
         }

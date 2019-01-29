@@ -9,7 +9,7 @@ namespace ReadExcel.IServices
 {
     public interface IModelTypeUploadService
     {
-        bool AddModelTypeUpload(M_ModelTypeUpload model);
-        M_ModelTypeUpload AddModelTypeUploadToStaging(ModelTypeUploadModel model);
+        bool AddModelTypeUpload(ModelTypeUploadModel model);
+        ModelTypeUploadModel AddModelTypeUploadToStaging(ModelTypeUploadModel model);
     }
 }

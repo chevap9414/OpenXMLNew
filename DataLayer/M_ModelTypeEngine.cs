@@ -34,7 +34,7 @@ namespace DataLayer
         public string ModelCode03 { get; set; }
         public string ModelCode04 { get; set; }
         public string ModelCode05 { get; set; }
-        public int ModelTypeID1 { get; set; }
+        public string ModelType { get; set; }
         public string ModelCode { get; set; }
     
         public virtual M_ModelType M_ModelType { get; set; }
