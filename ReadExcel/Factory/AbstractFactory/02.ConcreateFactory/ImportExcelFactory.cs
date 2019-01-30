@@ -31,5 +31,10 @@ namespace ReadExcel.Factory.AbstractFactory._02.ConcreateFactory
         {
             return new ModelTypeListExcel();
         }
+
+        public IMISCService MISCService()
+        {
+            return new MISCService();
+        }
     }
 }

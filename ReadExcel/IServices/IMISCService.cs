@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace ReadExcel.IServices
 {
     public interface IMISCService
     {
-
+        M_MISC Get(M_MISC model);
     }
 }

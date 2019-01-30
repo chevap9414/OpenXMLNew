@@ -15,6 +15,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace ReadExcel
 {
@@ -61,8 +62,9 @@ namespace ReadExcel
             };
             IImportExcelFactory factory = new ImportExcelFactory();
             ImportExcel import = new ImportExcel(factory);
+            //int miscID = import.GetMISC(new M_MISC() { MiscType = "MTOCStatus", MiscCode = "A" }).MiscID;
             import.MTList(uploadModel);
-            Console.Read();
+            //Console.Read();
         }
 
         private static void StagingTest(UploadFileImportModel uploadModel)

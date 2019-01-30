@@ -11,16 +11,47 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
 {
     public class ModelTypeListExcel : IModelTypeList
     {
+        struct Engine
+        {
+            private string _ss;
+            private string _disp;
+            private string _comcarb;
+            private string _grade;
+            private string _mis;
+            private string _model01;
+            private string _model02;
+            private string _model03;
+            private string _model04;
+            private string _model05;
+            public string SS { get { return _ss; } set { _ss = value; } }
+            public string DISP { get { return _disp; } set { _disp = value; } }
+            public string COMCARB { get { return _comcarb; } set { _comcarb = value; } }
+            public string GRADE { get { return _grade; } set { _grade = value; } }
+            public string MIS { get { return _mis; } set { _mis = value; } }
+            public string MODELCODE01 { get { return _model01; } set { _model01 = value; } }
+            public string MODELCODE02 { get { return _model02; } set { _model02 = value; } }
+            public string MODELCODE03 { get { return _model03; } set { _model03 = value; } }
+            public string MODELCODE04 { get { return _model04; } set { _model04 = value; } }
+            public string MODELCODE05 { get { return _model05; } set { _model05 = value; } }
+
+        }
+
         readonly List<string> engineColumn = new List<string>() { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
         readonly List<string> cellHeaderValueChecks = new List<string>() { "A6", "B6", "C6", "D6", "E6", "F6" }; // Read From Config
-
+        List<string> columnEquipmentIndexs = new List<string>();
+        List<string> columnEngineIndexs = new List<string>();
+        List<string> columnTypeIndex = new List<string>();
+        Engine en = new Engine();
+        
         public ModelTypeListExcel()
         {
+
         }
 
         public List<string> GetIndexHeaders()
@@ -34,9 +65,9 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
             return ReadExcel(uploadFileImportModel);
         }
 
-        public bool IsHeaderValidate(UploadFileImportModel uploadFileImportModel)
+        public List<string> IsHeaderValidate(UploadFileImportModel uploadFileImportModel)
         {
-            bool IsValid = true;
+            List<string> results = new List<string>();
             using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(uploadFileImportModel.FileName, false))
             {
                 WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
@@ -46,14 +77,104 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                     WorksheetPart worksheetPart = (WorksheetPart)(workbookPart.GetPartById(sheet.Id));
                     foreach (string columnName in cellHeaderValueChecks)
                     {
+                        string result = string.Empty;
                         if (string.IsNullOrEmpty(GetCellValue(workbookPart, sheet, columnName)))
                         {
-                            return IsValid = false;
+                            switch (columnName)
+                            {
+                                case "A6":
+                                    result = columnName + "(YM)";
+                                    break;
+                                case "B6":
+                                    result = columnName + "(Model)";
+                                    break;
+                                case "C6":
+                                    result = columnName + "(Door)";
+                                    break;
+                                case "D6":
+                                    result = columnName + "(Engine)";
+                                    break;
+                                case "E6":
+                                    result = columnName + "(Plant)";
+                                    break;
+                                case "F6":
+                                    result = columnName + "(Status)";
+                                    break;
+                            }
+                            results.Add(result);
                         }
                     }
                 }
             }
-            return IsValid;
+            return results;
+        }
+
+        public ModelTypeUploadModel FullValidate(ModelTypeUploadModel model)
+        {
+            ModelTypeUploadModel completeModel = new ModelTypeUploadModel();
+            // Type: Error Warning Success
+
+            List<string> errorMessage;
+            string requiredColumn = string.Empty;
+            foreach(var row in model.ModelTypeTempRowModels)
+            {
+                #region Error
+                errorMessage = new List<string>();
+                // Check Engine Section are required data {ERR019} Ex => Invalid A10, B10.
+
+                foreach (ModelTypeTempEngineModel engine in row.ModelTypeTempEngineModels)
+                {
+                    if (string.IsNullOrEmpty(engine.SS)) errorMessage.Add("A" + row.RowNo);
+                    if (string.IsNullOrEmpty(engine.DISP)) errorMessage.Add("B" + row.RowNo);
+                    if (string.IsNullOrEmpty(engine.COMCARB)) errorMessage.Add("C" + row.RowNo);
+                    if (string.IsNullOrEmpty(engine.Grade)) errorMessage.Add("D" + row.RowNo);
+                    if (string.IsNullOrEmpty(engine.Mis)) errorMessage.Add("E" + row.RowNo);
+                    if (string.IsNullOrEmpty(engine.ModelCode01)) errorMessage.Add("F" + row.RowNo);
+                    if (string.IsNullOrEmpty(engine.ModelCode02)) errorMessage.Add("G" + row.RowNo);
+                    if (string.IsNullOrEmpty(engine.ModelCode03)) errorMessage.Add("H" + row.RowNo);
+                    if (string.IsNullOrEmpty(engine.ModelCode04)) errorMessage.Add("I" + row.RowNo);
+                    if (string.IsNullOrEmpty(engine.ModelCode05)) errorMessage.Add("J" + row.RowNo);
+                }
+
+                // Check Equipment are "O" or "" {ERR019} Ex => Invalid A10, B10.
+                List<string> equipValue = new List<string>() { "O", "" };
+                
+                for(var i = 0; i < row.ModelTypeTempEquipmentModels.Count; i++)
+                {
+                    if (!equipValue.Contains(row.ModelTypeTempEquipmentModels[i].EquipmentValue))
+                    {
+                        errorMessage.Add(columnEquipmentIndexs[i]);
+                    }
+                }
+
+                // Check Model Code is only one per row {ERR019} Ex => Invalid A10, B10.
+                var listTypeValues = row.ModelTypeTempTypeModels
+                                                              .Where(x => !string.IsNullOrEmpty(x.ModelCode)).ToList();
+                for(var i = 0; i < listTypeValues.Count; i++)
+                {
+                    errorMessage.Add(columnTypeIndex[listTypeValues[i].Sequence - 1]);
+                }
+
+                // Check Duplication Row {ERR021} Ex => Please check duplicate Row10 Row13
+                List<string> dupCols = new List<string>();
+
+                foreach(var engine in row.ModelTypeTempEngineModels)
+                {
+
+                }
+                   
+                //for(var i = 0; i < LsDup.Count; i++)
+                //{
+                //    dupCols.Add(row.RowNo.ToString());
+                //}
+                errorMessage.Add("Please check duplicate " + string.Join(" ", dupCols.ToArray()));                                      
+
+                requiredColumn = string.Join(", ", errorMessage.ToArray());
+                #endregion
+
+            }
+
+            return completeModel;
         }
 
         public ModelTypeUploadModel ReadExcel(UploadFileImportModel model)
@@ -77,6 +198,7 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                 foreach (Sheet sheet in workbookPart.Workbook.Sheets)
                 {
                     sheetModel = new ModelTypeTempSheetModel();
+
                     WorksheetPart worksheetPart = (WorksheetPart)(workbookPart.GetPartById(sheet.Id));
                     Worksheet worksheet = workbookPart.WorksheetParts.First().Worksheet;
                     SheetData sheetData = worksheet.GetFirstChild<SheetData>();
@@ -155,6 +277,34 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                         }
                     }
 
+                    // Set Column Index
+                    foreach (Cell cell in rows.ElementAt(9).Cast<Cell>())
+                    {
+                        string columnEndGetEquipment = GetColumnName(GetEndColumnMergeCell(workbookPart, sheet, "K7"));
+                        int indexMainEquipEnd = GetColumnIndex(columnEndGetEquipment);
+                        int currentIndex = GetColumnIndex(cell.CellReference);
+                        // Set engineIndex
+                        if (currentIndex <= indexMainEquipStart - 1)
+                        {
+                            columnEngineIndexs.Add(cell.CellReference);
+                        }
+                        // Set equip Index
+                        if (currentIndex >= indexMainEquipStart && currentIndex <= indexMainEquipEnd) // Start K Column
+                        {
+                            columnEquipmentIndexs.Add(cell.CellReference);
+                        }
+                        // Set PNo Index
+                        if(currentIndex == indexPNoStart)
+                        {
+
+                        }
+                        // Set Type Index
+                        if(currentIndex >= indexTypeStart && currentIndex <= indexVinStart - 1)
+                        {
+                            columnTypeIndex.Add(cell.CellReference);
+                        }
+                        
+                    }
                     ModelTypeTempRowModel modelTypeTempRowModel;
                     ModelTypeTempEngineModel engineModel;
                     List<ModelTypeTempEquipmentModel> equipmentModels;
@@ -174,13 +324,14 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                         modelTypeTempRowModel.RowNo = i + 1;
                         int seqEquipment = 1;
                         int seqType = 1;
-
+                        
                         foreach (Cell cell in rows.ElementAt(i).Cast<Cell>())
                         {
+                            string columnEndGetEquipment = GetColumnName(GetEndColumnMergeCell(workbookPart, sheet, "K7"));
+                            int indexMainEquipEnd = GetColumnIndex(columnEndGetEquipment);
                             string currentColumn = GetColumnName(cell.CellReference);
                             int currentIndex = GetColumnIndex(cell.CellReference);
                             string currentCellValue = GetCellValue(workbookPart, sheet, cell.CellReference);
-
 
                             #region Engine
                             if (engineColumn.Contains(GetColumnName(cell.CellReference)))
@@ -191,35 +342,35 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                                 {
                                     if (string.IsNullOrEmpty(currentCellValue))
                                     {
-                                        currentCellValue = preRow[0];
+                                        currentCellValue = preRow.Count > 0 ? preRow[0] : currentCellValue;
                                     }
                                 }
                                 if (cell.CellReference == "B" + (i + 1))
                                 {
                                     if (string.IsNullOrEmpty(currentCellValue))
                                     {
-                                        currentCellValue = preRow[1];
+                                        currentCellValue = preRow.Count > 0 ? preRow[1] : currentCellValue;
                                     }
                                 }
                                 if (cell.CellReference == "C" + (i + 1))
                                 {
                                     if (string.IsNullOrEmpty(currentCellValue))
                                     {
-                                        currentCellValue = preRow[2];
+                                        currentCellValue = preRow.Count > 0 ? preRow[2] : currentCellValue;
                                     }
                                 }
                                 if (cell.CellReference == "D" + (i + 1))
                                 {
                                     if (string.IsNullOrEmpty(currentCellValue))
                                     {
-                                        currentCellValue = preRow[3];
+                                        currentCellValue = preRow.Count > 0 ? preRow[3] : currentCellValue;
                                     }
                                 }
                                 if (cell.CellReference == "E" + (i + 1))
                                 {
                                     if (string.IsNullOrEmpty(currentCellValue))
                                     {
-                                        currentCellValue = preRow[4];
+                                        currentCellValue = preRow.Count > 0 ? preRow[4] : currentCellValue;
                                     }
                                 }
                                 #endregion
@@ -263,9 +414,6 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                             #endregion
 
                             #region MAIN EQUIPMENT
-                            string columnEndGetEquipment = GetColumnName(GetEndColumnMergeCell(workbookPart, sheet, "K7"));
-                            int indexMainEquipEnd = GetColumnIndex(columnEndGetEquipment);
-
                             if (currentIndex >= indexMainEquipStart && currentIndex <= indexMainEquipEnd) // Start K Column
                             {
                                 equipmentModel = new ModelTypeTempEquipmentModel
@@ -324,68 +472,7 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
                 }
             }
             modelTypeUpload.UploadStatusID = 44; // wait edit
-            //StagingTest(modelTypeUpload);
             return modelTypeUpload;
-        }
-        private void StagingTest(ModelTypeUploadModel model)
-        {
-            ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities();
-
-            // Add ModelTypeUpload
-            entities.M_ModelTypeUpload.Add(new M_ModelTypeUpload
-            {
-                CreatedBy = "SYSTEM",
-                CreatedDate = DateTime.Now,
-                UpdatedBy = "SYSTEM",
-                UpdatedDate = DateTime.Now,
-                M_ModelTypeTempSheet = model.ModelTypeTempSheetModels.Select(sheet => new M_ModelTypeTempSheet
-                {
-                    SheetNo = sheet.SheetNo,
-                    YM = sheet.YM,
-                    Model = sheet.Model,
-                    Door = sheet.Door,
-                    Plant = sheet.Plant,
-                    Status = sheet.Status,
-                    // Add M_ModelTypeTempRow
-                    M_ModelTypeTempRow = sheet.ModelTypeTempRowModels.Select(row => new M_ModelTypeTempRow
-                    {
-                        RowNo = row.RowNo,
-                        PNo = row.PNo,
-                        VIN = row.VIN,
-                        ErrorMessage = row.ErrorMessage,
-                        // Add M_ModelTypeTempEngine
-                        M_ModelTypeTempEngine = row.ModelTypeTempEngineModels.Select(engine => new M_ModelTypeTempEngine
-                        {
-                            SS = engine.SS,
-                            DISP = engine.DISP,
-                            COMCARB = engine.COMCARB,
-                            Grade = engine.Grade,
-                            Mis = engine.Mis,
-                            ModelCode01 = engine.ModelCode01,
-                            ModelCode02 = engine.ModelCode02,
-                            ModelCode03 = engine.ModelCode03,
-                            ModelCode04 = engine.ModelCode04,
-                            ModelCode05 = engine.ModelCode05
-                        }).ToList(),
-                        // Add M_ModelTypeTempEquipment
-                        M_ModelTypeTempEquipment = row.ModelTypeTempEquipmentModels.Select(equip => new M_ModelTypeTempEquipment
-                        {
-                            EquipmentName = equip.EquipmentName,
-                            EquipmentValue = equip.EquipmentValue,
-                            Sequence = equip.Sequence
-                        }).ToList(),
-                        // Add M_ModelTypeTempType
-                        M_ModelTypeTempType = row.ModelTypeTempTypeModels.Select(type => new M_ModelTypeTempType
-                        {
-                            ModelType = type.ModelType,
-                            ModelCode = type.ModelCode,
-                            Sequence = type.Sequence
-                        }).ToList()
-                    }).ToList(),
-                }).ToList()
-            });
-
-            entities.SaveChanges();
         }
 
         private string GetCellValue(WorkbookPart workbookPart, Sheet sheet, string addressName)
@@ -459,6 +546,5 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
             }
             return mergecellPosition;
         }
-
     }
 }

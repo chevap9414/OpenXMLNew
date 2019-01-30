@@ -154,7 +154,7 @@ namespace ReadExcel.Services
                         }).ToList(),
                     }).ToList()
                 });
-                entities.SaveChanges();
+                //entities.SaveChanges();
 
                 string plant = enModel.M_ModelTypeTempSheet.Select(s => s.Plant).First();
                 int companyID = entities.M_Company.Where(c => c.Plant == plant).Select(c => c.CompanyID).First();

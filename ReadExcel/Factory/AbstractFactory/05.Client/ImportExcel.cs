@@ -2,6 +2,7 @@
 using ReadExcel.Factory.AbstractFactory._01.AbstractInterface;
 using ReadExcel.Factory.AbstractFactory._03.AbstractProduct;
 using ReadExcel.IServices;
+using ReadExcel.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace ReadExcel.Factory.AbstractFactory._05.Client
         IModelTypeList modelTypeList;
         IKDLogisticLT kDLogisticLT;
         readonly IModelTypeUploadService modelTypeUploadService;
+        readonly IMISCService mISCService;
         private UploadFileImportModel UploadFileImportModel { get; set; } = new UploadFileImportModel();
 
         public ImportExcel(IImportExcelFactory factory)
@@ -24,36 +26,51 @@ namespace ReadExcel.Factory.AbstractFactory._05.Client
             modelTypeList = factory.ImportModelTypeList();
             kDLogisticLT = factory.ImportKDLogistic();
             modelTypeUploadService = factory.ModelTypeUploadService();
+            mISCService = factory.MISCService();
         }
 
-        public int MTList(UploadFileImportModel uploadFileImportModel)
+        public UploadFileReturnModel MTList(UploadFileImportModel uploadFileImportModel)
         {
             this.UploadFileImportModel = uploadFileImportModel;
-            if (modelTypeList.IsHeaderValidate(this.UploadFileImportModel))
+            var results = modelTypeList.IsHeaderValidate(this.UploadFileImportModel);
+            if (results.Count == 0)
             {
                 this.threadImport = new Thread(new ThreadStart(CallThreadMTList));
                 this.threadImport.Start();
-            }
-
-            return 41; // return UploadStatusID
-        }
-
-        private void CallThreadMTList()
-        {
-            if (modelTypeList.IsHeaderValidate(this.UploadFileImportModel))
-            {
-                var model = modelTypeList.Import(this.UploadFileImportModel);
-                var stagingModel = AddModelTypeUploadToStaging(model);
-                // Full Validate
-
-
-                // AddModelTypeUploadToMaster
-                AddModelTypeUploadToMaster(stagingModel);
+                return new UploadFileReturnModel() { StatusMessage =  ""}; // waiting
             }
             else
             {
-                // Critical Error
+                string errorMessage = string.Join(", ", results.ToArray());
+                return new UploadFileReturnModel() { StatusMessage = $"{ errorMessage } is required." };
             }
+            
+        }
+
+        public M_MISC GetMISC(M_MISC model)
+        {
+            return mISCService.Get(model);
+        }
+
+        #region Private Method
+        private void CallThreadMTList()
+        {
+            // Read File
+            var model = modelTypeList.Import(this.UploadFileImportModel);
+
+            // Add To Staging
+            var stagingModel = AddModelTypeUploadToStaging(model);
+
+            // Full Validate 
+            var modelSuccess = FullValidate(stagingModel);
+
+            // AddModelTypeUploadToMaster
+            //AddModelTypeUploadToMaster(modelSuccess);
+        }
+
+        private ModelTypeUploadModel FullValidate(ModelTypeUploadModel stagingModel)
+        {
+            return this.modelTypeList.FullValidate(stagingModel);
         }
 
         private void AddModelTypeUploadToMaster(ModelTypeUploadModel stagingModel)
@@ -65,5 +82,7 @@ namespace ReadExcel.Factory.AbstractFactory._05.Client
         {
             return this.modelTypeUploadService.AddModelTypeUploadToStaging(model);
         }
+        #endregion
+
     }
 }

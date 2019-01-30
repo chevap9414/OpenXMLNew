@@ -10,6 +10,7 @@ namespace ReadExcel.Factory.AbstractFactory._03.AbstractProduct
     {
         List<string> GetIndexHeaders();
         ModelTypeUploadModel Import(UploadFileImportModel uploadFileImportModel);
-        bool IsHeaderValidate(UploadFileImportModel uploadFileImportModel);
+        List<string> IsHeaderValidate(UploadFileImportModel uploadFileImportModel);
+        ModelTypeUploadModel FullValidate(ModelTypeUploadModel model);
     }
 }
