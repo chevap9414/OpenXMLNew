@@ -12,24 +12,20 @@ namespace DataLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class M_PartMaker
+    public partial class T_PartDemandHeader
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public M_PartMaker()
+        public T_PartDemandHeader()
         {
             this.T_PartDemandDetail = new HashSet<T_PartDemandDetail>();
-            this.T_PartCapacityDetail = new HashSet<T_PartCapacityDetail>();
         }
     
-        public int PartMakerID { get; set; }
-        public int CompanyID { get; set; }
-        public string PartNumber { get; set; }
-        public string MakerCode { get; set; }
+        public int PartDemandHeaderID { get; set; }
+        public Nullable<int> CompanyID { get; set; }
+        public Nullable<int> SeihanMonth { get; set; }
+        public Nullable<int> SeihanYear { get; set; }
     
-        public virtual M_Company M_Company { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<T_PartDemandDetail> T_PartDemandDetail { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<T_PartCapacityDetail> T_PartCapacityDetail { get; set; }
     }
 }

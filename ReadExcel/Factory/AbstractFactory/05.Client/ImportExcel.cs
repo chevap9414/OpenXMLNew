@@ -65,7 +65,7 @@ namespace ReadExcel.Factory.AbstractFactory._05.Client
             var modelSuccess = FullValidate(stagingModel);
 
             // AddModelTypeUploadToMaster
-            //AddModelTypeUploadToMaster(modelSuccess);
+            AddModelTypeUploadToMaster(modelSuccess);
         }
 
         private ModelTypeUploadModel FullValidate(ModelTypeUploadModel stagingModel)

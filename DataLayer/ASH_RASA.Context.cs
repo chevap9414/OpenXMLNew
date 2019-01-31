@@ -69,14 +69,13 @@ namespace DataLayer
         public virtual DbSet<M_ModelTypeUpload> M_ModelTypeUpload { get; set; }
         public virtual DbSet<M_PartMaker> M_PartMaker { get; set; }
         public virtual DbSet<M_Permission> M_Permission { get; set; }
+        public virtual DbSet<M_Permissions> M_Permissions { get; set; }
         public virtual DbSet<M_Region> M_Region { get; set; }
         public virtual DbSet<M_Shipment> M_Shipment { get; set; }
         public virtual DbSet<M_User> M_User { get; set; }
         public virtual DbSet<M_UserRole> M_UserRole { get; set; }
         public virtual DbSet<M_UserRolePermission> M_UserRolePermission { get; set; }
         public virtual DbSet<M_YM> M_YM { get; set; }
-        public virtual DbSet<PartDemandDetail> PartDemandDetails { get; set; }
-        public virtual DbSet<PartDemandHeader> PartDemandHeaders { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<T_ComparePartKadai> T_ComparePartKadai { get; set; }
         public virtual DbSet<T_CompareProductionPlan> T_CompareProductionPlan { get; set; }
@@ -89,6 +88,13 @@ namespace DataLayer
         public virtual DbSet<T_LogisticDayWiseUploadDetail> T_LogisticDayWiseUploadDetail { get; set; }
         public virtual DbSet<T_LogisticDayWiseUploadHeader> T_LogisticDayWiseUploadHeader { get; set; }
         public virtual DbSet<T_LogisticLeadTime> T_LogisticLeadTime { get; set; }
+        public virtual DbSet<T_LogisticLeadTimeDayUpload> T_LogisticLeadTimeDayUpload { get; set; }
+        public virtual DbSet<T_LogisticLeadTimeMonth> T_LogisticLeadTimeMonth { get; set; }
+        public virtual DbSet<T_LogisticLeadTimeMonthDetail> T_LogisticLeadTimeMonthDetail { get; set; }
+        public virtual DbSet<T_LogisticLeadTimeMonthKi> T_LogisticLeadTimeMonthKi { get; set; }
+        public virtual DbSet<T_LogisticLeadTimeMonthTempRow> T_LogisticLeadTimeMonthTempRow { get; set; }
+        public virtual DbSet<T_LogisticLeadTimeMonthTempSheet> T_LogisticLeadTimeMonthTempSheet { get; set; }
+        public virtual DbSet<T_LogisticLeadTimeMonthUpload> T_LogisticLeadTimeMonthUpload { get; set; }
         public virtual DbSet<T_LogisticMonthDetail> T_LogisticMonthDetail { get; set; }
         public virtual DbSet<T_LogisticMonthHeader> T_LogisticMonthHeader { get; set; }
         public virtual DbSet<T_LogisticMonthUploadDetail> T_LogisticMonthUploadDetail { get; set; }
@@ -96,12 +102,15 @@ namespace DataLayer
         public virtual DbSet<T_Maker> T_Maker { get; set; }
         public virtual DbSet<T_Part> T_Part { get; set; }
         public virtual DbSet<T_PartCapacityDetail> T_PartCapacityDetail { get; set; }
+        public virtual DbSet<T_PartCapacityErrorRow> T_PartCapacityErrorRow { get; set; }
         public virtual DbSet<T_PartCapacityHeader> T_PartCapacityHeader { get; set; }
         public virtual DbSet<T_PartCapacityTemp> T_PartCapacityTemp { get; set; }
         public virtual DbSet<T_PartCapacityUploadHistory> T_PartCapacityUploadHistory { get; set; }
         public virtual DbSet<T_PartDemand> T_PartDemand { get; set; }
+        public virtual DbSet<T_PartDemandDetail> T_PartDemandDetail { get; set; }
         public virtual DbSet<T_PartDemandFileUploadDetail> T_PartDemandFileUploadDetail { get; set; }
         public virtual DbSet<T_PartDemandFileUploadHeader> T_PartDemandFileUploadHeader { get; set; }
+        public virtual DbSet<T_PartDemandHeader> T_PartDemandHeader { get; set; }
         public virtual DbSet<T_PartDemandTempUploadError> T_PartDemandTempUploadError { get; set; }
         public virtual DbSet<T_PartKadai> T_PartKadai { get; set; }
         public virtual DbSet<T_ProductionPlan> T_ProductionPlan { get; set; }
@@ -130,7 +139,5 @@ namespace DataLayer
         public virtual DbSet<T_SUBOTempUploadError> T_SUBOTempUploadError { get; set; }
         public virtual DbSet<temp_GetUserDomain> temp_GetUserDomain { get; set; }
         public virtual DbSet<z_M_Function> z_M_Function { get; set; }
-        public virtual DbSet<M_Permissions> M_Permissions { get; set; }
-        public virtual DbSet<T_PartCapacityErrorRow> T_PartCapacityErrorRow { get; set; }
     }
 }

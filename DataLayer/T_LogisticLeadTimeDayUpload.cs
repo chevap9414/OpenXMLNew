@@ -12,14 +12,9 @@ namespace DataLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class L_Transaction
+    public partial class T_LogisticLeadTimeDayUpload
     {
-        public int TransactionID { get; set; }
-        public Nullable<int> MenuID { get; set; }
-        public Nullable<int> PermissionID { get; set; }
-        public Nullable<int> StatusID { get; set; }
-        public Nullable<bool> ControlVersion { get; set; }
-        public string LogBy { get; set; }
-        public Nullable<System.DateTime> LogDate { get; set; }
+        public string LogisticLeadTimeDayUploadID { get; set; }
+        public string LogisticLeadTimeID { get; set; }
     }
 }

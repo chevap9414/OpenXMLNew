@@ -14,7 +14,19 @@ namespace DataLayer
     
     public partial class T_LogisticLeadTime
     {
-        public int LogisticLTID { get; set; }
-        public Nullable<int> WorkDayWiseID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public T_LogisticLeadTime()
+        {
+            this.T_LogisticLeadTimeMonthUpload = new HashSet<T_LogisticLeadTimeMonthUpload>();
+        }
+    
+        public int LogisticLeadTimeID { get; set; }
+        public int Month { get; set; }
+        public string Year { get; set; }
+        public System.DateTime CreateDate { get; set; }
+        public int ActiveStatus { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<T_LogisticLeadTimeMonthUpload> T_LogisticLeadTimeMonthUpload { get; set; }
     }
 }

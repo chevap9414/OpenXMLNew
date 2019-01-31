@@ -17,8 +17,8 @@ namespace DataLayer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public T_PartCapacityUploadHistory()
         {
-            this.T_PartCapacityTemp = new HashSet<T_PartCapacityTemp>();
             this.T_PartCapacityErrorRow = new HashSet<T_PartCapacityErrorRow>();
+            this.T_PartCapacityTemp = new HashSet<T_PartCapacityTemp>();
         }
     
         public int PartCapacityUploadHistoryID { get; set; }
@@ -38,8 +38,8 @@ namespace DataLayer
         public virtual M_Company M_Company { get; set; }
         public virtual M_FileManager M_FileManager { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<T_PartCapacityTemp> T_PartCapacityTemp { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<T_PartCapacityErrorRow> T_PartCapacityErrorRow { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<T_PartCapacityTemp> T_PartCapacityTemp { get; set; }
     }
 }

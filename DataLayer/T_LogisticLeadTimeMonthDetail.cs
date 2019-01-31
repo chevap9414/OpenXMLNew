@@ -12,16 +12,16 @@ namespace DataLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class PartDemandDetail
+    public partial class T_LogisticLeadTimeMonthDetail
     {
-        public int PartDemandDetailID { get; set; }
-        public Nullable<int> PartDemandHeaderID { get; set; }
-        public Nullable<int> PartMakerID { get; set; }
-        public Nullable<int> Ki { get; set; }
-        public Nullable<int> DemandMonth { get; set; }
-        public Nullable<int> Demand { get; set; }
+        public int LogisticLeadTimeMonthDetailID { get; set; }
+        public int LogisticLeadTimeMonthKi { get; set; }
+        public Nullable<int> ImportRegion { get; set; }
+        public string ImportPlant { get; set; }
+        public string ShipAir { get; set; }
+        public int OceanLT { get; set; }
+        public int InlandLT { get; set; }
     
-        public virtual M_PartMaker M_PartMaker { get; set; }
-        public virtual PartDemandHeader PartDemandHeader { get; set; }
+        public virtual T_LogisticLeadTimeMonthKi T_LogisticLeadTimeMonthKi { get; set; }
     }
 }

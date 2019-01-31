@@ -27,6 +27,10 @@ namespace DataLayer
         public int YMID { get; set; }
         public string Version { get; set; }
         public int MTOCStatusID { get; set; }
+        public string CreatedBy { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public string UpdatedBy { get; set; }
+        public Nullable<System.DateTime> UpdatedDate { get; set; }
     
         public virtual M_Company M_Company { get; set; }
         public virtual M_Model M_Model { get; set; }

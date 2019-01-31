@@ -27,6 +27,8 @@ namespace DataLayer
             this.T_LogisticDayUploadHeader = new HashSet<T_LogisticDayUploadHeader>();
             this.T_LogisticDayWiseHeader = new HashSet<T_LogisticDayWiseHeader>();
             this.T_LogisticDayWiseUploadHeader = new HashSet<T_LogisticDayWiseUploadHeader>();
+            this.T_LogisticLeadTimeMonthUpload = new HashSet<T_LogisticLeadTimeMonthUpload>();
+            this.T_LogisticLeadTimeMonthUpload1 = new HashSet<T_LogisticLeadTimeMonthUpload>();
             this.T_LogisticMonthHeader = new HashSet<T_LogisticMonthHeader>();
             this.T_LogisticMonthUploadHeader = new HashSet<T_LogisticMonthUploadHeader>();
         }
@@ -60,6 +62,10 @@ namespace DataLayer
         public virtual ICollection<T_LogisticDayWiseHeader> T_LogisticDayWiseHeader { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<T_LogisticDayWiseUploadHeader> T_LogisticDayWiseUploadHeader { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<T_LogisticLeadTimeMonthUpload> T_LogisticLeadTimeMonthUpload { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<T_LogisticLeadTimeMonthUpload> T_LogisticLeadTimeMonthUpload1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<T_LogisticMonthHeader> T_LogisticMonthHeader { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

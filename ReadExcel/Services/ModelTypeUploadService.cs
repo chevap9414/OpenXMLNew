@@ -33,6 +33,7 @@ namespace ReadExcel.Services
                         });
                         tempEquipNames.Add(equip.EquipmentName);
                     }
+
                 }
 
                 // Add YM
@@ -53,7 +54,7 @@ namespace ReadExcel.Services
                         ModelName = model.Model.ModelName
                     });
                 }
-                //entities.SaveChanges();
+                entities.SaveChanges();
 
                 // Add ModelType
                 M_ModelType modelType = entities.M_ModelType.Add(new M_ModelType
@@ -79,8 +80,16 @@ namespace ReadExcel.Services
                         ModelCode04 = engine.ModelCode04,
                         ModelCode05 = engine.ModelCode05,
                         ModelType = model.ModelTypeTempTypeModels.Select(s => s.ModelType).First(),
-                        ModelCode = model.ModelTypeTempTypeModels.Select(x => x.ModelCode).First()
-                    }).ToList()
+                        ModelCode = model.ModelTypeTempTypeModels.Select(x => x.ModelCode).First(),
+                        M_ModelTypeEquipment = model.ModelTypeTempEquipmentModels.Select(equip => new M_ModelTypeEquipment
+                        {
+                            EquipmentValue = string.IsNullOrEmpty(equip.EquipmentValue) ? 0 : 1,
+
+                        }).ToList()
+                    }).ToList(),
+                    M_ModelTypeUpload = entities.M_ModelTypeUpload.Where(s => s.ModelTypeUploadID == model.ModelTypeUploadID)
+
+                    .First()
                 });
 
                 entities.SaveChanges();
@@ -97,7 +106,13 @@ namespace ReadExcel.Services
         {
             try
             {
-                ModelTypeUploadModel modelReturn = new ModelTypeUploadModel();
+                ModelTypeUploadModel modelReturn = new ModelTypeUploadModel
+                {
+                    CreatedBy = model.CreatedBy,
+                    CreatedDate = DateTime.Now,
+                    UpdatedBy = model.UpdatedBy,
+                    UpdatedDate = DateTime.Now,
+                };
                 ASHAOP_DEVEntities entities = new ASHAOP_DEVEntities();
 
                 // Add ModelTypeUpload
@@ -154,12 +169,12 @@ namespace ReadExcel.Services
                         }).ToList(),
                     }).ToList()
                 });
-                //entities.SaveChanges();
+                entities.SaveChanges();
 
-                string plant = enModel.M_ModelTypeTempSheet.Select(s => s.Plant).First();
-                int companyID = entities.M_Company.Where(c => c.Plant == plant).Select(c => c.CompanyID).First();
-                string modelName = enModel.M_ModelTypeTempSheet.Select(s => s.Model).First();
-                string ymName = enModel.M_ModelTypeTempSheet.Select(s => s.YM).First();
+                string plant = enModel.M_ModelTypeTempSheet.Select(s => s.Plant).FirstOrDefault();
+                int companyID = entities.M_Company.Where(c => c.Plant == plant).Select(c => c.CompanyID).FirstOrDefault();
+                string modelName = enModel.M_ModelTypeTempSheet.Select(s => s.Model).FirstOrDefault();
+                string ymName = enModel.M_ModelTypeTempSheet.Select(s => s.YM).FirstOrDefault();
 
                 modelReturn.ModelTypeUploadID = enModel.ModelTypeUploadID;
                 modelReturn.Company = new CompanyModel() { CompanyID = companyID };

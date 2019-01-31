@@ -12,20 +12,24 @@ namespace DataLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class PartDemandHeader
+    public partial class T_LogisticLeadTimeMonthTempSheet
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PartDemandHeader()
+        public T_LogisticLeadTimeMonthTempSheet()
         {
-            this.PartDemandDetails = new HashSet<PartDemandDetail>();
+            this.T_LogisticLeadTimeMonthTempRow = new HashSet<T_LogisticLeadTimeMonthTempRow>();
         }
     
-        public int PartDemandHeaderID { get; set; }
-        public Nullable<int> CompanyID { get; set; }
-        public Nullable<int> SeihanMonth { get; set; }
-        public Nullable<int> SeihanYear { get; set; }
+        public int LogisticLeadTimeMonthTempSheetID { get; set; }
+        public int LogisticLeadTimeMonthUploadID { get; set; }
+        public int SheetNo { get; set; }
+        public string Month { get; set; }
+        public string Year { get; set; }
+        public string Ki { get; set; }
+        public string CompanyName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PartDemandDetail> PartDemandDetails { get; set; }
+        public virtual ICollection<T_LogisticLeadTimeMonthTempRow> T_LogisticLeadTimeMonthTempRow { get; set; }
+        public virtual T_LogisticLeadTimeMonthUpload T_LogisticLeadTimeMonthUpload { get; set; }
     }
 }
