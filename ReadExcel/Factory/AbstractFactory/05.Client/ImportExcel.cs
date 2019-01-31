@@ -37,7 +37,7 @@ namespace ReadExcel.Factory.AbstractFactory._05.Client
             {
                 this.threadImport = new Thread(new ThreadStart(CallThreadMTList));
                 this.threadImport.Start();
-                return new UploadFileReturnModel() { StatusMessage =  ""}; // waiting
+                return new UploadFileReturnModel() { StatusMessage =  MISC.UploadStatus_Processing}; // waiting
             }
             else
             {

@@ -87,9 +87,7 @@ namespace ReadExcel.Services
 
                         }).ToList()
                     }).ToList(),
-                    M_ModelTypeUpload = entities.M_ModelTypeUpload.Where(s => s.ModelTypeUploadID == model.ModelTypeUploadID)
-
-                    .First()
+                    M_ModelTypeUpload = entities.M_ModelTypeUpload.Where(s => s.ModelTypeUploadID == model.ModelTypeUploadID).First()   
                 });
 
                 entities.SaveChanges();
