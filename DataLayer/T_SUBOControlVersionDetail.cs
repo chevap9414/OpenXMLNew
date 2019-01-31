@@ -27,6 +27,5 @@ namespace DataLayer
         public string ApprovedBy { get; set; }
         public Nullable<System.DateTime> ApprovedDate { get; set; }
         public Nullable<bool> IsFinal { get; set; }
-        public Nullable<System.DateTime> SendMailDate { get; set; }
     }
 }

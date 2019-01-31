@@ -17,7 +17,7 @@ namespace DataLayer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public M_PartMaker()
         {
-            this.T_PartDemandDetail = new HashSet<T_PartDemandDetail>();
+            this.PartDemandDetails = new HashSet<PartDemandDetail>();
             this.T_PartCapacityDetail = new HashSet<T_PartCapacityDetail>();
         }
     
@@ -28,7 +28,7 @@ namespace DataLayer
     
         public virtual M_Company M_Company { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<T_PartDemandDetail> T_PartDemandDetail { get; set; }
+        public virtual ICollection<PartDemandDetail> PartDemandDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<T_PartCapacityDetail> T_PartCapacityDetail { get; set; }
     }

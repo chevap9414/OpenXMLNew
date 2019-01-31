@@ -5,7 +5,7 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ASHAOP_DEVModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="C_M_Menu">
+        <EntityType Name="_M_Menu">
           <Key>
             <PropertyRef Name="MenuID" />
           </Key>
@@ -19,9 +19,9 @@
         </EntityType>
         <EntityType Name="L_InputOutput">
           <Key>
-            <PropertyRef Name="InputOutputID" />
+            <PropertyRef Name="LogID" />
           </Key>
-          <Property Name="InputOutputID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MenuID" Type="int" />
           <Property Name="PermissionID" Type="int" />
           <Property Name="Description" Type="nvarchar(max)" />
@@ -39,9 +39,9 @@
         </EntityType>
         <EntityType Name="L_Transaction">
           <Key>
-            <PropertyRef Name="TransactionID" />
+            <PropertyRef Name="LogID" />
           </Key>
-          <Property Name="TransactionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MenuID" Type="int" />
           <Property Name="PermissionID" Type="int" />
           <Property Name="StatusID" Type="int" />
@@ -392,10 +392,6 @@
           <Property Name="YMID" Type="int" Nullable="false" />
           <Property Name="Version" Type="nvarchar" MaxLength="3" Nullable="false" />
           <Property Name="MTOCStatusID" Type="int" Nullable="false" />
-          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
-          <Property Name="CreatedDate" Type="datetime" />
-          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="50" />
-          <Property Name="UpdatedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="M_ModelTypeEngine">
           <Key>
@@ -423,7 +419,7 @@
             <PropertyRef Name="ModelTypeEquipmentID" />
           </Key>
           <Property Name="ModelTypeEquipmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ModelTypeEngineID" Type="int" Nullable="false" />
+          <Property Name="ModelTypeEngine" Type="int" Nullable="false" />
           <Property Name="EquipmentID" Type="int" Nullable="false" />
           <Property Name="EquipmentValue" Type="int" Nullable="false" />
           <Property Name="Sequence" Type="int" Nullable="false" />
@@ -452,7 +448,7 @@
           <Property Name="ModelTypeTempEquipmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ModelTypeTempRowID" Type="int" Nullable="false" />
           <Property Name="EquipmentName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="EquipmentValue" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EquipmentValue" Type="nvarchar" MaxLength="50" />
           <Property Name="Sequence" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="M_ModelTypeTempRow">
@@ -462,8 +458,8 @@
           <Property Name="ModelTypeTempRowID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ModelTypeTempSheetID" Type="int" Nullable="false" />
           <Property Name="RowNo" Type="int" Nullable="false" />
-          <Property Name="PNo" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="VIN" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="VIN" Type="varchar" MaxLength="50" />
           <Property Name="ErrorMessage" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="M_ModelTypeTempSheet">
@@ -510,10 +506,10 @@
           <Property Name="O_ModelTypeFile" Type="nvarchar" MaxLength="50" />
           <Property Name="UploadStatusID" Type="int" />
           <Property Name="Result" Type="nvarchar" MaxLength="50" />
-          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="UpdatedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="M_PartMaker">
           <Key>
@@ -534,6 +530,8 @@
           <Property Name="ControlName" Type="nvarchar" MaxLength="255" />
           <Property Name="ActionName" Type="nvarchar" MaxLength="255" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ASHAOP_DEV.dbo.M_Permissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="M_Permissions">
           <Key>
             <PropertyRef Name="PermissionID" />
@@ -629,6 +627,26 @@
           <Property Name="YMID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="YMName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="PartDemandDetail">
+          <Key>
+            <PropertyRef Name="PartDemandDetailID" />
+          </Key>
+          <Property Name="PartDemandDetailID" Type="int" Nullable="false" />
+          <Property Name="PartDemandHeaderID" Type="int" />
+          <Property Name="PartMakerID" Type="int" />
+          <Property Name="Ki" Type="int" />
+          <Property Name="DemandMonth" Type="int" />
+          <Property Name="Demand" Type="int" />
+        </EntityType>
+        <EntityType Name="PartDemandHeader">
+          <Key>
+            <PropertyRef Name="PartDemandHeaderID" />
+          </Key>
+          <Property Name="PartDemandHeaderID" Type="int" Nullable="false" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="SeihanMonth" Type="int" />
+          <Property Name="SeihanYear" Type="int" />
+        </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -664,6 +682,8 @@
           <Property Name="LogisticDayDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LogisticDayHeaderID" Type="int" Nullable="false" />
           <Property Name="RowNo" Type="int" Nullable="false" />
+          <Property Name="SupplyRegion" Type="nvarchar" MaxLength="20" />
+          <Property Name="SupplyPlant" Type="nvarchar" MaxLength="20" />
           <Property Name="ReceiveRegion" Type="nvarchar" MaxLength="20" />
           <Property Name="ReceivePlant" Type="nvarchar" MaxLength="20" />
           <Property Name="Shipment" Type="nvarchar" MaxLength="20" />
@@ -680,8 +700,8 @@
           <Property Name="Year" Type="int" Nullable="false" />
           <Property Name="Ki" Type="int" Nullable="false" />
           <Property Name="FileManagerID" Type="int" Nullable="false" />
-          <Property Name="UploadOriginalFile" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="UploadSystemFile" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="UploadOriginalFile" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UploadSystemFile" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="UploadVersion" Type="int" Nullable="false" />
           <Property Name="UploadStatusID" Type="int" Nullable="false" />
           <Property Name="UploadBy" Type="nvarchar" MaxLength="20" Nullable="false" />
@@ -705,6 +725,8 @@
           <Property Name="LogisticDayUploadDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LogisticDayUploadHeaderID" Type="int" Nullable="false" />
           <Property Name="RowNo" Type="int" Nullable="false" />
+          <Property Name="SupplyRegion" Type="nvarchar" MaxLength="20" />
+          <Property Name="SupplyPlant" Type="nvarchar" MaxLength="20" />
           <Property Name="ReceiveRegion" Type="nvarchar" MaxLength="20" />
           <Property Name="ReceivePlant" Type="nvarchar" MaxLength="20" />
           <Property Name="Shipment" Type="nvarchar" MaxLength="20" />
@@ -838,105 +860,12 @@
           <Property Name="LastUpdatedBy" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="T_LogisticLeadTime">
+        <EntityType Name="T_LogisticLeadtime">
           <Key>
-            <PropertyRef Name="LogisticLeadTimeID" />
+            <PropertyRef Name="LogisticLTID" />
           </Key>
-          <Property Name="LogisticLeadTimeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Month" Type="int" Nullable="false" />
-          <Property Name="Year" Type="nchar" MaxLength="10" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime" Nullable="false" />
-          <Property Name="ActiveStatus" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="T_LogisticLeadTimeDayUpload">
-          <Key>
-            <PropertyRef Name="LogisticLeadTimeDayUploadID" />
-          </Key>
-          <Property Name="LogisticLeadTimeDayUploadID" Type="nchar" MaxLength="10" Nullable="false" />
-          <Property Name="LogisticLeadTimeID" Type="nchar" MaxLength="10" />
-        </EntityType>
-        <EntityType Name="T_LogisticLeadTimeMonth">
-          <Key>
-            <PropertyRef Name="LogisticLeadTimeMonthID" />
-          </Key>
-          <Property Name="LogisticLeadTimeMonthID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LogisticLeadTimeMonthUploadID" Type="int" Nullable="false" />
-          <Property Name="ExportRegion" Type="nvarchar" MaxLength="50" />
-          <Property Name="ExportPlant" Type="nvarchar" MaxLength="50" />
-          <Property Name="O_LTPath" Type="int" />
-          <Property Name="O_LTFileName" Type="nvarchar" MaxLength="200" />
-          <Property Name="PlantStatus" Type="int" Nullable="false" />
-          <Property Name="CreatedBy" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="UpdatedBy" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="T_LogisticLeadTimeMonthDetail">
-          <Key>
-            <PropertyRef Name="LogisticLeadTimeMonthDetailID" />
-          </Key>
-          <Property Name="LogisticLeadTimeMonthDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LogisticLeadTimeMonthKi" Type="int" Nullable="false" />
-          <Property Name="ImportRegion" Type="int" />
-          <Property Name="ImportPlant" Type="nvarchar" MaxLength="50" />
-          <Property Name="ShipAir" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="OceanLT" Type="int" Nullable="false" />
-          <Property Name="InlandLT" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="T_LogisticLeadTimeMonthKi">
-          <Key>
-            <PropertyRef Name="LogisticLeadTimeMonthKi" />
-          </Key>
-          <Property Name="LogisticLeadTimeMonthKi" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LogisticLeadTimeMonthID" Type="int" Nullable="false" />
-          <Property Name="Ki" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="T_LogisticLeadTimeMonthTempRow">
-          <Key>
-            <PropertyRef Name="LogisticLeadTimeMonthTempRowID" />
-          </Key>
-          <Property Name="LogisticLeadTimeMonthTempRowID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LogisticLeadTimeMonthTempSheetID" Type="int" Nullable="false" />
-          <Property Name="RowNo" Type="int" Nullable="false" />
-          <Property Name="ExportRegion" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ExportPlant" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ImportRegion" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ImportPlant" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ShipAir" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="OceanLT" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="InlandLT" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="TotalLT" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ErrorMessage" Type="nvarchar" MaxLength="500" />
-        </EntityType>
-        <EntityType Name="T_LogisticLeadTimeMonthTempSheet">
-          <Key>
-            <PropertyRef Name="LogisticLeadTimeMonthTempSheetID" />
-          </Key>
-          <Property Name="LogisticLeadTimeMonthTempSheetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LogisticLeadTimeMonthUploadID" Type="int" Nullable="false" />
-          <Property Name="SheetNo" Type="int" Nullable="false" />
-          <Property Name="Month" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Year" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Ki" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="T_LogisticLeadTimeMonthUpload">
-          <Key>
-            <PropertyRef Name="LogisticLeadTimeMonthUploadID" />
-          </Key>
-          <Property Name="LogisticLeadTimeMonthUploadID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LogisticLeadTimeID" Type="int" Nullable="false" />
-          <Property Name="CompanyID" Type="int" />
-          <Property Name="UploadVersion" Type="int" Nullable="false" />
-          <Property Name="I_LTPath" Type="int" />
-          <Property Name="I_LTFileNameOriginal" Type="nvarchar" MaxLength="200" />
-          <Property Name="I_LTFileNameSystem" Type="nvarchar" MaxLength="200" />
-          <Property Name="I_LTResultPath" Type="int" />
-          <Property Name="I_LTResultFileName" Type="nvarchar" MaxLength="200" />
-          <Property Name="UploadStatusID" Type="int" Nullable="false" />
-          <Property Name="Result" Type="nvarchar" MaxLength="50" />
-          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="LogisticLTID" Type="int" Nullable="false" />
+          <Property Name="WorkDayWiseID" Type="int" />
         </EntityType>
         <EntityType Name="T_LogisticMonthDetail">
           <Key>
@@ -951,9 +880,9 @@
           <Property Name="ImportRegion" Type="nvarchar" MaxLength="20" />
           <Property Name="ImportPlant" Type="nvarchar" MaxLength="20" />
           <Property Name="Shipment" Type="nvarchar" MaxLength="20" />
-          <Property Name="Ocean" Type="nvarchar" MaxLength="20" />
-          <Property Name="Inland" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Total" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Ocean" Type="int" />
+          <Property Name="Inland" Type="int" Nullable="false" />
+          <Property Name="Total" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="T_LogisticMonthHeader">
           <Key>
@@ -995,9 +924,9 @@
           <Property Name="ImportRegion" Type="nvarchar" MaxLength="20" />
           <Property Name="ImportPlant" Type="nvarchar" MaxLength="20" />
           <Property Name="Shipment" Type="nvarchar" MaxLength="20" />
-          <Property Name="Ocean" Type="nvarchar" MaxLength="20" />
-          <Property Name="Inland" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Total" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Ocean" Type="int" />
+          <Property Name="Inland" Type="int" Nullable="false" />
+          <Property Name="Total" Type="int" Nullable="false" />
           <Property Name="ErrorMessage" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="T_LogisticMonthUploadHeader">
@@ -1072,6 +1001,8 @@
           <Property Name="UpdatedDate" Type="datetime" />
           <Property Name="UpdatedBy" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ASHAOP_DEV.dbo.T_PartCapacityErrorRow' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="T_PartCapacityErrorRow">
           <Key>
             <PropertyRef Name="PartCapacityErrorRowID" />
@@ -1165,17 +1096,6 @@
           <Property Name="Space2" Type="nvarchar" MaxLength="100" />
           <Property Name="Space3" Type="nvarchar" MaxLength="100" />
         </EntityType>
-        <EntityType Name="T_PartDemandDetail">
-          <Key>
-            <PropertyRef Name="PartDemandDetailID" />
-          </Key>
-          <Property Name="PartDemandDetailID" Type="int" Nullable="false" />
-          <Property Name="PartDemandHeaderID" Type="int" />
-          <Property Name="PartMakerID" Type="int" />
-          <Property Name="Ki" Type="int" />
-          <Property Name="DemandMonth" Type="int" />
-          <Property Name="Demand" Type="int" />
-        </EntityType>
         <EntityType Name="T_PartDemandFileUploadDetail">
           <Key>
             <PropertyRef Name="UploadDetailID" />
@@ -1214,16 +1134,6 @@
           <Property Name="MainProcessStatusID" Type="int" />
           <Property Name="UploadedDate" Type="datetime" />
           <Property Name="UploadedBy" Type="nvarchar" MaxLength="20" />
-          <Property Name="SendMailDate" Type="datetime" />
-        </EntityType>
-        <EntityType Name="T_PartDemandHeader">
-          <Key>
-            <PropertyRef Name="PartDemandHeaderID" />
-          </Key>
-          <Property Name="PartDemandHeaderID" Type="int" Nullable="false" />
-          <Property Name="CompanyID" Type="int" />
-          <Property Name="SeihanMonth" Type="int" />
-          <Property Name="SeihanYear" Type="int" />
         </EntityType>
         <EntityType Name="T_PartDemandTempUploadError">
           <Key>
@@ -1479,8 +1389,8 @@
           <Property Name="DestinationID" Type="int" Nullable="false" />
           <Property Name="YM" Type="int" Nullable="false" />
           <Property Name="SEDFlow" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="StartUp" Type="datetime" />
-          <Property Name="BuildOut" Type="datetime" />
+          <Property Name="StartUp" Type="date" />
+          <Property Name="BuildOut" Type="date" />
           <Property Name="IsDiscon" Type="bit" />
           <Property Name="IsASHUpdate" Type="bit" />
         </EntityType>
@@ -1501,7 +1411,6 @@
           <Property Name="ApprovedBy" Type="nvarchar" MaxLength="20" />
           <Property Name="ApprovedDate" Type="datetime" />
           <Property Name="IsFinal" Type="bit" />
-          <Property Name="SendMailDate" Type="datetime" />
         </EntityType>
         <EntityType Name="T_SUBOControlVersionHeader">
           <Key>
@@ -1539,7 +1448,7 @@
           <Property Name="FileNameSystem" Type="nvarchar" MaxLength="100" />
           <Property Name="UploadResult" Type="int" Nullable="false" />
           <Property Name="UploadedBy" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="UploadedDate" Type="datetime" Nullable="false" />
+          <Property Name="UploadedDate" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="T_SUBOTempUploadError">
           <Key>
@@ -1969,7 +1878,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_M_ModelTypeEquipment_M_ModelTypeEngine1">
+        <Association Name="FK_M_ModelTypeEquipment_M_ModelTypeEngine">
           <End Role="M_ModelTypeEngine" Type="Self.M_ModelTypeEngine" Multiplicity="1" />
           <End Role="M_ModelTypeEquipment" Type="Self.M_ModelTypeEquipment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1977,7 +1886,7 @@
               <PropertyRef Name="ModelTypeEngineID" />
             </Principal>
             <Dependent Role="M_ModelTypeEquipment">
-              <PropertyRef Name="ModelTypeEngineID" />
+              <PropertyRef Name="ModelTypeEngine" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2187,24 +2096,24 @@
         </Association>
         <Association Name="FK_PartDemandDetail_M_PartMaker1">
           <End Role="M_PartMaker" Type="Self.M_PartMaker" Multiplicity="0..1" />
-          <End Role="T_PartDemandDetail" Type="Self.T_PartDemandDetail" Multiplicity="*" />
+          <End Role="PartDemandDetail" Type="Self.PartDemandDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="M_PartMaker">
               <PropertyRef Name="PartMakerID" />
             </Principal>
-            <Dependent Role="T_PartDemandDetail">
+            <Dependent Role="PartDemandDetail">
               <PropertyRef Name="PartMakerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PartDemandDetail_PartDemandHeader">
-          <End Role="T_PartDemandHeader" Type="Self.T_PartDemandHeader" Multiplicity="0..1" />
-          <End Role="T_PartDemandDetail" Type="Self.T_PartDemandDetail" Multiplicity="*" />
+          <End Role="PartDemandHeader" Type="Self.PartDemandHeader" Multiplicity="0..1" />
+          <End Role="PartDemandDetail" Type="Self.PartDemandDetail" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="T_PartDemandHeader">
+            <Principal Role="PartDemandHeader">
               <PropertyRef Name="PartDemandHeaderID" />
             </Principal>
-            <Dependent Role="T_PartDemandDetail">
+            <Dependent Role="PartDemandDetail">
               <PropertyRef Name="PartDemandHeaderID" />
             </Dependent>
           </ReferentialConstraint>
@@ -2329,18 +2238,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_T_LogisticDayHeader_M_FileManager">
-          <End Role="M_FileManager" Type="Self.M_FileManager" Multiplicity="1" />
-          <End Role="T_LogisticDayHeader" Type="Self.T_LogisticDayHeader" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticDayHeader">
-              <PropertyRef Name="FileManagerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_T_LogisticDayUploadDetail_T_LogisticDayUploadHeader">
           <End Role="T_LogisticDayUploadHeader" Type="Self.T_LogisticDayUploadHeader" Multiplicity="1" />
           <End Role="T_LogisticDayUploadDetail" Type="Self.T_LogisticDayUploadDetail" Multiplicity="*" />
@@ -2365,18 +2262,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_T_LogisticDayUploadHeader_M_FileManager">
-          <End Role="M_FileManager" Type="Self.M_FileManager" Multiplicity="1" />
-          <End Role="T_LogisticDayUploadHeader" Type="Self.T_LogisticDayUploadHeader" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticDayUploadHeader">
-              <PropertyRef Name="FileManagerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_T_LogisticDayWiseDetail_T_LogisticDayWiseHeader">
           <End Role="T_LogisticDayWiseHeader" Type="Self.T_LogisticDayWiseHeader" Multiplicity="1" />
           <End Role="T_LogisticDayWiseDetail" Type="Self.T_LogisticDayWiseDetail" Multiplicity="*" />
@@ -2391,25 +2276,13 @@
         </Association>
         <Association Name="FK_T_LogisticDayWiseHeader_M_Company">
           <End Role="M_Company" Type="Self.M_Company" Multiplicity="1" />
-          <End Role="T_LogisticDayWiseHeader" Type="Self.T_LogisticDayWiseHeader" Multiplicity="*" />
+          <End Role="T_LogisticDayWiseHeader" Type="Self.T_LogisticDayWiseHeader" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="M_Company">
               <PropertyRef Name="CompanyID" />
             </Principal>
             <Dependent Role="T_LogisticDayWiseHeader">
-              <PropertyRef Name="CompanyID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticDayWiseHeader_M_FileManager">
-          <End Role="M_FileManager" Type="Self.M_FileManager" Multiplicity="1" />
-          <End Role="T_LogisticDayWiseHeader" Type="Self.T_LogisticDayWiseHeader" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticDayWiseHeader">
-              <PropertyRef Name="FileManagerID" />
+              <PropertyRef Name="LogisticDayWiseHeaderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2437,126 +2310,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_T_LogisticDayWiseUploadHeader_M_FileManager">
-          <End Role="M_FileManager" Type="Self.M_FileManager" Multiplicity="1" />
-          <End Role="T_LogisticDayWiseUploadHeader" Type="Self.T_LogisticDayWiseUploadHeader" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticDayWiseUploadHeader">
-              <PropertyRef Name="FileManagerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonth_T_LogisticLeadTimeMonthUpload">
-          <End Role="T_LogisticLeadTimeMonthUpload" Type="Self.T_LogisticLeadTimeMonthUpload" Multiplicity="1" />
-          <End Role="T_LogisticLeadTimeMonth" Type="Self.T_LogisticLeadTimeMonth" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_LogisticLeadTimeMonthUpload">
-              <PropertyRef Name="LogisticLeadTimeMonthUploadID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonth">
-              <PropertyRef Name="LogisticLeadTimeMonthUploadID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthDetail_T_LogisticLeadTimeMonthKi">
-          <End Role="T_LogisticLeadTimeMonthKi" Type="Self.T_LogisticLeadTimeMonthKi" Multiplicity="1" />
-          <End Role="T_LogisticLeadTimeMonthDetail" Type="Self.T_LogisticLeadTimeMonthDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_LogisticLeadTimeMonthKi">
-              <PropertyRef Name="LogisticLeadTimeMonthKi" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthDetail">
-              <PropertyRef Name="LogisticLeadTimeMonthKi" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthKi_T_LogisticLeadTimeMonth">
-          <End Role="T_LogisticLeadTimeMonth" Type="Self.T_LogisticLeadTimeMonth" Multiplicity="1" />
-          <End Role="T_LogisticLeadTimeMonthKi" Type="Self.T_LogisticLeadTimeMonthKi" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_LogisticLeadTimeMonth">
-              <PropertyRef Name="LogisticLeadTimeMonthID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthKi">
-              <PropertyRef Name="LogisticLeadTimeMonthID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthTempRow_T_LogisticLeadTimeMonthTempSheet">
-          <End Role="T_LogisticLeadTimeMonthTempSheet" Type="Self.T_LogisticLeadTimeMonthTempSheet" Multiplicity="1" />
-          <End Role="T_LogisticLeadTimeMonthTempRow" Type="Self.T_LogisticLeadTimeMonthTempRow" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_LogisticLeadTimeMonthTempSheet">
-              <PropertyRef Name="LogisticLeadTimeMonthTempSheetID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthTempRow">
-              <PropertyRef Name="LogisticLeadTimeMonthTempSheetID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthTempSheet_T_LogisticLeadTimeMonthUpload">
-          <End Role="T_LogisticLeadTimeMonthUpload" Type="Self.T_LogisticLeadTimeMonthUpload" Multiplicity="1" />
-          <End Role="T_LogisticLeadTimeMonthTempSheet" Type="Self.T_LogisticLeadTimeMonthTempSheet" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_LogisticLeadTimeMonthUpload">
-              <PropertyRef Name="LogisticLeadTimeMonthUploadID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthTempSheet">
-              <PropertyRef Name="LogisticLeadTimeMonthUploadID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthUpload_M_Company">
-          <End Role="M_Company" Type="Self.M_Company" Multiplicity="0..1" />
-          <End Role="T_LogisticLeadTimeMonthUpload" Type="Self.T_LogisticLeadTimeMonthUpload" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_Company">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthUpload">
-              <PropertyRef Name="CompanyID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthUpload_M_FileManager">
-          <End Role="M_FileManager" Type="Self.M_FileManager" Multiplicity="0..1" />
-          <End Role="T_LogisticLeadTimeMonthUpload" Type="Self.T_LogisticLeadTimeMonthUpload" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthUpload">
-              <PropertyRef Name="I_LTPath" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthUpload_M_FileManager1">
-          <End Role="M_FileManager" Type="Self.M_FileManager" Multiplicity="0..1" />
-          <End Role="T_LogisticLeadTimeMonthUpload" Type="Self.T_LogisticLeadTimeMonthUpload" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthUpload">
-              <PropertyRef Name="I_LTResultPath" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthUpload_T_LogisticLeadTime">
-          <End Role="T_LogisticLeadTime" Type="Self.T_LogisticLeadTime" Multiplicity="1" />
-          <End Role="T_LogisticLeadTimeMonthUpload" Type="Self.T_LogisticLeadTimeMonthUpload" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_LogisticLeadTime">
-              <PropertyRef Name="LogisticLeadTimeID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthUpload">
-              <PropertyRef Name="LogisticLeadTimeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_T_LogisticMonthDetail_T_LogisticMonthHeader">
           <End Role="T_LogisticMonthHeader" Type="Self.T_LogisticMonthHeader" Multiplicity="1" />
           <End Role="T_LogisticMonthDetail" Type="Self.T_LogisticMonthDetail" Multiplicity="*" />
@@ -2578,18 +2331,6 @@
             </Principal>
             <Dependent Role="T_LogisticMonthHeader">
               <PropertyRef Name="CompanyID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticMonthHeader_M_FileManager">
-          <End Role="M_FileManager" Type="Self.M_FileManager" Multiplicity="1" />
-          <End Role="T_LogisticMonthHeader" Type="Self.T_LogisticMonthHeader" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticMonthHeader">
-              <PropertyRef Name="FileManagerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2617,15 +2358,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_T_LogisticMonthUploadHeader_M_FileManager">
-          <End Role="M_FileManager" Type="Self.M_FileManager" Multiplicity="1" />
-          <End Role="T_LogisticMonthUploadHeader" Type="Self.T_LogisticMonthUploadHeader" Multiplicity="*" />
+        <Association Name="FK_T_LogisticMonthUploadHeader_T_LogisticMonthUploadHeader1">
+          <End Role="T_LogisticMonthUploadHeader" Type="Self.T_LogisticMonthUploadHeader" Multiplicity="1" />
+          <End Role="T_LogisticMonthUploadHeader1" Type="Self.T_LogisticMonthUploadHeader" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
+            <Principal Role="T_LogisticMonthUploadHeader">
+              <PropertyRef Name="LogisticMonthUploadHeaderID" />
             </Principal>
-            <Dependent Role="T_LogisticMonthUploadHeader">
-              <PropertyRef Name="FileManagerID" />
+            <Dependent Role="T_LogisticMonthUploadHeader1">
+              <PropertyRef Name="LogisticMonthUploadHeaderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2942,7 +2683,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ASHAOP_DEVModelStoreContainer">
-          <EntitySet Name="C_M_Menu" EntityType="Self.C_M_Menu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="_M_Menu" EntityType="Self._M_Menu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="L_InputOutput" EntityType="Self.L_InputOutput" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="L_SystemLog" EntityType="Self.L_SystemLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="L_Transaction" EntityType="Self.L_Transaction" Schema="dbo" store:Type="Tables" />
@@ -2986,13 +2727,14 @@
           <EntitySet Name="M_ModelTypeUpload" EntityType="Self.M_ModelTypeUpload" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_PartMaker" EntityType="Self.M_PartMaker" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_Permission" EntityType="Self.M_Permission" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="M_Permissions" EntityType="Self.M_Permissions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_Region" EntityType="Self.M_Region" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_Shipment" EntityType="Self.M_Shipment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_User" EntityType="Self.M_User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_UserRole" EntityType="Self.M_UserRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_UserRolePermission" EntityType="Self.M_UserRolePermission" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="M_YM" EntityType="Self.M_YM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PartDemandDetail" EntityType="Self.PartDemandDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PartDemandHeader" EntityType="Self.PartDemandHeader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_ComparePartKadai" EntityType="Self.T_ComparePartKadai" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_CompareProductionPlan" EntityType="Self.T_CompareProductionPlan" Schema="dbo" store:Type="Tables" />
@@ -3004,14 +2746,7 @@
           <EntitySet Name="T_LogisticDayWiseHeader" EntityType="Self.T_LogisticDayWiseHeader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_LogisticDayWiseUploadDetail" EntityType="Self.T_LogisticDayWiseUploadDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_LogisticDayWiseUploadHeader" EntityType="Self.T_LogisticDayWiseUploadHeader" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="T_LogisticLeadTime" EntityType="Self.T_LogisticLeadTime" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="T_LogisticLeadTimeDayUpload" EntityType="Self.T_LogisticLeadTimeDayUpload" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="T_LogisticLeadTimeMonth" EntityType="Self.T_LogisticLeadTimeMonth" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="T_LogisticLeadTimeMonthDetail" EntityType="Self.T_LogisticLeadTimeMonthDetail" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="T_LogisticLeadTimeMonthKi" EntityType="Self.T_LogisticLeadTimeMonthKi" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="T_LogisticLeadTimeMonthTempRow" EntityType="Self.T_LogisticLeadTimeMonthTempRow" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="T_LogisticLeadTimeMonthTempSheet" EntityType="Self.T_LogisticLeadTimeMonthTempSheet" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="T_LogisticLeadTimeMonthUpload" EntityType="Self.T_LogisticLeadTimeMonthUpload" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_LogisticLeadtime" EntityType="Self.T_LogisticLeadtime" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_LogisticMonthDetail" EntityType="Self.T_LogisticMonthDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_LogisticMonthHeader" EntityType="Self.T_LogisticMonthHeader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_LogisticMonthUploadDetail" EntityType="Self.T_LogisticMonthUploadDetail" Schema="dbo" store:Type="Tables" />
@@ -3019,15 +2754,12 @@
           <EntitySet Name="T_Maker" EntityType="Self.T_Maker" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Part" EntityType="Self.T_Part" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_PartCapacityDetail" EntityType="Self.T_PartCapacityDetail" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="T_PartCapacityErrorRow" EntityType="Self.T_PartCapacityErrorRow" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_PartCapacityHeader" EntityType="Self.T_PartCapacityHeader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_PartCapacityTemp" EntityType="Self.T_PartCapacityTemp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_PartCapacityUploadHistory" EntityType="Self.T_PartCapacityUploadHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_PartDemand" EntityType="Self.T_PartDemand" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="T_PartDemandDetail" EntityType="Self.T_PartDemandDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_PartDemandFileUploadDetail" EntityType="Self.T_PartDemandFileUploadDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_PartDemandFileUploadHeader" EntityType="Self.T_PartDemandFileUploadHeader" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="T_PartDemandHeader" EntityType="Self.T_PartDemandHeader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_PartDemandTempUploadError" EntityType="Self.T_PartDemandTempUploadError" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_PartKadai" EntityType="Self.T_PartKadai" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_ProductionPlan" EntityType="Self.T_ProductionPlan" Schema="dbo" store:Type="Tables" />
@@ -3056,6 +2788,23 @@
           <EntitySet Name="T_SUBOTempUploadError" EntityType="Self.T_SUBOTempUploadError" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="temp_GetUserDomain" EntityType="Self.temp_GetUserDomain" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="z_M_Function" EntityType="Self.z_M_Function" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="M_Permissions" EntityType="Self.M_Permissions" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [M_Permissions].[PermissionID] AS [PermissionID], 
+    [M_Permissions].[MenuID] AS [MenuID], 
+    [M_Permissions].[PermissionName] AS [PermissionName], 
+    [M_Permissions].[ControlName] AS [ControlName], 
+    [M_Permissions].[ActionName] AS [ActionName]
+    FROM [dbo].[M_Permissions] AS [M_Permissions]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="T_PartCapacityErrorRow" EntityType="Self.T_PartCapacityErrorRow" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [T_PartCapacityErrorRow].[PartCapacityErrorRowID] AS [PartCapacityErrorRowID], 
+    [T_PartCapacityErrorRow].[PartCapacityUploadHistoryID] AS [PartCapacityUploadHistoryID], 
+    [T_PartCapacityErrorRow].[RowNumber] AS [RowNumber], 
+    [T_PartCapacityErrorRow].[ErrorMessage] AS [ErrorMessage]
+    FROM [dbo].[T_PartCapacityErrorRow] AS [T_PartCapacityErrorRow]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_CapacityCheckHeader_M_Company" Association="Self.FK_CapacityCheckHeader_M_Company">
             <End Role="M_Company" EntitySet="M_Company" />
             <End Role="T_PartCapacityHeader" EntitySet="T_PartCapacityHeader" />
@@ -3184,7 +2933,7 @@
             <End Role="M_Equipment" EntitySet="M_Equipment" />
             <End Role="M_ModelTypeEquipment" EntitySet="M_ModelTypeEquipment" />
           </AssociationSet>
-          <AssociationSet Name="FK_M_ModelTypeEquipment_M_ModelTypeEngine1" Association="Self.FK_M_ModelTypeEquipment_M_ModelTypeEngine1">
+          <AssociationSet Name="FK_M_ModelTypeEquipment_M_ModelTypeEngine" Association="Self.FK_M_ModelTypeEquipment_M_ModelTypeEngine">
             <End Role="M_ModelTypeEngine" EntitySet="M_ModelTypeEngine" />
             <End Role="M_ModelTypeEquipment" EntitySet="M_ModelTypeEquipment" />
           </AssociationSet>
@@ -3258,11 +3007,11 @@
           </AssociationSet>
           <AssociationSet Name="FK_PartDemandDetail_M_PartMaker1" Association="Self.FK_PartDemandDetail_M_PartMaker1">
             <End Role="M_PartMaker" EntitySet="M_PartMaker" />
-            <End Role="T_PartDemandDetail" EntitySet="T_PartDemandDetail" />
+            <End Role="PartDemandDetail" EntitySet="PartDemandDetail" />
           </AssociationSet>
           <AssociationSet Name="FK_PartDemandDetail_PartDemandHeader" Association="Self.FK_PartDemandDetail_PartDemandHeader">
-            <End Role="T_PartDemandHeader" EntitySet="T_PartDemandHeader" />
-            <End Role="T_PartDemandDetail" EntitySet="T_PartDemandDetail" />
+            <End Role="PartDemandHeader" EntitySet="PartDemandHeader" />
+            <End Role="PartDemandDetail" EntitySet="PartDemandDetail" />
           </AssociationSet>
           <AssociationSet Name="FK_T_CapacityCheckDetail_T_CapacityCheckHeader" Association="Self.FK_T_CapacityCheckDetail_T_CapacityCheckHeader">
             <End Role="T_PartCapacityHeader" EntitySet="T_PartCapacityHeader" />
@@ -3304,20 +3053,12 @@
             <End Role="M_Company" EntitySet="M_Company" />
             <End Role="T_LogisticDayHeader" EntitySet="T_LogisticDayHeader" />
           </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticDayHeader_M_FileManager" Association="Self.FK_T_LogisticDayHeader_M_FileManager">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
-            <End Role="T_LogisticDayHeader" EntitySet="T_LogisticDayHeader" />
-          </AssociationSet>
           <AssociationSet Name="FK_T_LogisticDayUploadDetail_T_LogisticDayUploadHeader" Association="Self.FK_T_LogisticDayUploadDetail_T_LogisticDayUploadHeader">
             <End Role="T_LogisticDayUploadHeader" EntitySet="T_LogisticDayUploadHeader" />
             <End Role="T_LogisticDayUploadDetail" EntitySet="T_LogisticDayUploadDetail" />
           </AssociationSet>
           <AssociationSet Name="FK_T_LogisticDayUploadHeader_M_Company" Association="Self.FK_T_LogisticDayUploadHeader_M_Company">
             <End Role="M_Company" EntitySet="M_Company" />
-            <End Role="T_LogisticDayUploadHeader" EntitySet="T_LogisticDayUploadHeader" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticDayUploadHeader_M_FileManager" Association="Self.FK_T_LogisticDayUploadHeader_M_FileManager">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
             <End Role="T_LogisticDayUploadHeader" EntitySet="T_LogisticDayUploadHeader" />
           </AssociationSet>
           <AssociationSet Name="FK_T_LogisticDayWiseDetail_T_LogisticDayWiseHeader" Association="Self.FK_T_LogisticDayWiseDetail_T_LogisticDayWiseHeader">
@@ -3328,10 +3069,6 @@
             <End Role="M_Company" EntitySet="M_Company" />
             <End Role="T_LogisticDayWiseHeader" EntitySet="T_LogisticDayWiseHeader" />
           </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticDayWiseHeader_M_FileManager" Association="Self.FK_T_LogisticDayWiseHeader_M_FileManager">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
-            <End Role="T_LogisticDayWiseHeader" EntitySet="T_LogisticDayWiseHeader" />
-          </AssociationSet>
           <AssociationSet Name="FK_T_LogisticDayWiseUploadDetail_T_LogisticDayWiseUploadHeader" Association="Self.FK_T_LogisticDayWiseUploadDetail_T_LogisticDayWiseUploadHeader">
             <End Role="T_LogisticDayWiseUploadHeader" EntitySet="T_LogisticDayWiseUploadHeader" />
             <End Role="T_LogisticDayWiseUploadDetail" EntitySet="T_LogisticDayWiseUploadDetail" />
@@ -3340,56 +3077,12 @@
             <End Role="M_Company" EntitySet="M_Company" />
             <End Role="T_LogisticDayWiseUploadHeader" EntitySet="T_LogisticDayWiseUploadHeader" />
           </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticDayWiseUploadHeader_M_FileManager" Association="Self.FK_T_LogisticDayWiseUploadHeader_M_FileManager">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
-            <End Role="T_LogisticDayWiseUploadHeader" EntitySet="T_LogisticDayWiseUploadHeader" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonth_T_LogisticLeadTimeMonthUpload" Association="Self.FK_T_LogisticLeadTimeMonth_T_LogisticLeadTimeMonthUpload">
-            <End Role="T_LogisticLeadTimeMonthUpload" EntitySet="T_LogisticLeadTimeMonthUpload" />
-            <End Role="T_LogisticLeadTimeMonth" EntitySet="T_LogisticLeadTimeMonth" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthDetail_T_LogisticLeadTimeMonthKi" Association="Self.FK_T_LogisticLeadTimeMonthDetail_T_LogisticLeadTimeMonthKi">
-            <End Role="T_LogisticLeadTimeMonthKi" EntitySet="T_LogisticLeadTimeMonthKi" />
-            <End Role="T_LogisticLeadTimeMonthDetail" EntitySet="T_LogisticLeadTimeMonthDetail" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthKi_T_LogisticLeadTimeMonth" Association="Self.FK_T_LogisticLeadTimeMonthKi_T_LogisticLeadTimeMonth">
-            <End Role="T_LogisticLeadTimeMonth" EntitySet="T_LogisticLeadTimeMonth" />
-            <End Role="T_LogisticLeadTimeMonthKi" EntitySet="T_LogisticLeadTimeMonthKi" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthTempRow_T_LogisticLeadTimeMonthTempSheet" Association="Self.FK_T_LogisticLeadTimeMonthTempRow_T_LogisticLeadTimeMonthTempSheet">
-            <End Role="T_LogisticLeadTimeMonthTempSheet" EntitySet="T_LogisticLeadTimeMonthTempSheet" />
-            <End Role="T_LogisticLeadTimeMonthTempRow" EntitySet="T_LogisticLeadTimeMonthTempRow" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthTempSheet_T_LogisticLeadTimeMonthUpload" Association="Self.FK_T_LogisticLeadTimeMonthTempSheet_T_LogisticLeadTimeMonthUpload">
-            <End Role="T_LogisticLeadTimeMonthUpload" EntitySet="T_LogisticLeadTimeMonthUpload" />
-            <End Role="T_LogisticLeadTimeMonthTempSheet" EntitySet="T_LogisticLeadTimeMonthTempSheet" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthUpload_M_Company" Association="Self.FK_T_LogisticLeadTimeMonthUpload_M_Company">
-            <End Role="M_Company" EntitySet="M_Company" />
-            <End Role="T_LogisticLeadTimeMonthUpload" EntitySet="T_LogisticLeadTimeMonthUpload" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthUpload_M_FileManager" Association="Self.FK_T_LogisticLeadTimeMonthUpload_M_FileManager">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
-            <End Role="T_LogisticLeadTimeMonthUpload" EntitySet="T_LogisticLeadTimeMonthUpload" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthUpload_M_FileManager1" Association="Self.FK_T_LogisticLeadTimeMonthUpload_M_FileManager1">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
-            <End Role="T_LogisticLeadTimeMonthUpload" EntitySet="T_LogisticLeadTimeMonthUpload" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthUpload_T_LogisticLeadTime" Association="Self.FK_T_LogisticLeadTimeMonthUpload_T_LogisticLeadTime">
-            <End Role="T_LogisticLeadTime" EntitySet="T_LogisticLeadTime" />
-            <End Role="T_LogisticLeadTimeMonthUpload" EntitySet="T_LogisticLeadTimeMonthUpload" />
-          </AssociationSet>
           <AssociationSet Name="FK_T_LogisticMonthDetail_T_LogisticMonthHeader" Association="Self.FK_T_LogisticMonthDetail_T_LogisticMonthHeader">
             <End Role="T_LogisticMonthHeader" EntitySet="T_LogisticMonthHeader" />
             <End Role="T_LogisticMonthDetail" EntitySet="T_LogisticMonthDetail" />
           </AssociationSet>
           <AssociationSet Name="FK_T_LogisticMonthHeader_M_Company" Association="Self.FK_T_LogisticMonthHeader_M_Company">
             <End Role="M_Company" EntitySet="M_Company" />
-            <End Role="T_LogisticMonthHeader" EntitySet="T_LogisticMonthHeader" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticMonthHeader_M_FileManager" Association="Self.FK_T_LogisticMonthHeader_M_FileManager">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
             <End Role="T_LogisticMonthHeader" EntitySet="T_LogisticMonthHeader" />
           </AssociationSet>
           <AssociationSet Name="FK_T_LogisticMonthUploadDetail_T_LogisticMonthUploadHeader" Association="Self.FK_T_LogisticMonthUploadDetail_T_LogisticMonthUploadHeader">
@@ -3400,9 +3093,9 @@
             <End Role="M_Company" EntitySet="M_Company" />
             <End Role="T_LogisticMonthUploadHeader" EntitySet="T_LogisticMonthUploadHeader" />
           </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticMonthUploadHeader_M_FileManager" Association="Self.FK_T_LogisticMonthUploadHeader_M_FileManager">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
+          <AssociationSet Name="FK_T_LogisticMonthUploadHeader_T_LogisticMonthUploadHeader1" Association="Self.FK_T_LogisticMonthUploadHeader_T_LogisticMonthUploadHeader1">
             <End Role="T_LogisticMonthUploadHeader" EntitySet="T_LogisticMonthUploadHeader" />
+            <End Role="T_LogisticMonthUploadHeader1" EntitySet="T_LogisticMonthUploadHeader" />
           </AssociationSet>
           <AssociationSet Name="FK_T_PartCapacityDetail_M_PartMaker" Association="Self.FK_T_PartCapacityDetail_M_PartMaker">
             <End Role="M_PartMaker" EntitySet="M_PartMaker" />
@@ -3558,13 +3251,14 @@
           <EntitySet Name="M_ModelTypeUpload" EntityType="ASHAOP_DEVModel.M_ModelTypeUpload" />
           <EntitySet Name="M_PartMaker" EntityType="ASHAOP_DEVModel.M_PartMaker" />
           <EntitySet Name="M_Permission" EntityType="ASHAOP_DEVModel.M_Permission" />
-          <EntitySet Name="M_Permissions" EntityType="ASHAOP_DEVModel.M_Permissions" />
           <EntitySet Name="M_Region" EntityType="ASHAOP_DEVModel.M_Region" />
           <EntitySet Name="M_Shipment" EntityType="ASHAOP_DEVModel.M_Shipment" />
           <EntitySet Name="M_User" EntityType="ASHAOP_DEVModel.M_User" />
           <EntitySet Name="M_UserRole" EntityType="ASHAOP_DEVModel.M_UserRole" />
           <EntitySet Name="M_UserRolePermission" EntityType="ASHAOP_DEVModel.M_UserRolePermission" />
           <EntitySet Name="M_YM" EntityType="ASHAOP_DEVModel.M_YM" />
+          <EntitySet Name="PartDemandDetails" EntityType="ASHAOP_DEVModel.PartDemandDetail" />
+          <EntitySet Name="PartDemandHeaders" EntityType="ASHAOP_DEVModel.PartDemandHeader" />
           <EntitySet Name="sysdiagrams" EntityType="ASHAOP_DEVModel.sysdiagram" />
           <EntitySet Name="T_ComparePartKadai" EntityType="ASHAOP_DEVModel.T_ComparePartKadai" />
           <EntitySet Name="T_CompareProductionPlan" EntityType="ASHAOP_DEVModel.T_CompareProductionPlan" />
@@ -3576,14 +3270,7 @@
           <EntitySet Name="T_LogisticDayWiseHeader" EntityType="ASHAOP_DEVModel.T_LogisticDayWiseHeader" />
           <EntitySet Name="T_LogisticDayWiseUploadDetail" EntityType="ASHAOP_DEVModel.T_LogisticDayWiseUploadDetail" />
           <EntitySet Name="T_LogisticDayWiseUploadHeader" EntityType="ASHAOP_DEVModel.T_LogisticDayWiseUploadHeader" />
-          <EntitySet Name="T_LogisticLeadTime" EntityType="ASHAOP_DEVModel.T_LogisticLeadTime" />
-          <EntitySet Name="T_LogisticLeadTimeDayUpload" EntityType="ASHAOP_DEVModel.T_LogisticLeadTimeDayUpload" />
-          <EntitySet Name="T_LogisticLeadTimeMonth" EntityType="ASHAOP_DEVModel.T_LogisticLeadTimeMonth" />
-          <EntitySet Name="T_LogisticLeadTimeMonthDetail" EntityType="ASHAOP_DEVModel.T_LogisticLeadTimeMonthDetail" />
-          <EntitySet Name="T_LogisticLeadTimeMonthKi" EntityType="ASHAOP_DEVModel.T_LogisticLeadTimeMonthKi" />
-          <EntitySet Name="T_LogisticLeadTimeMonthTempRow" EntityType="ASHAOP_DEVModel.T_LogisticLeadTimeMonthTempRow" />
-          <EntitySet Name="T_LogisticLeadTimeMonthTempSheet" EntityType="ASHAOP_DEVModel.T_LogisticLeadTimeMonthTempSheet" />
-          <EntitySet Name="T_LogisticLeadTimeMonthUpload" EntityType="ASHAOP_DEVModel.T_LogisticLeadTimeMonthUpload" />
+          <EntitySet Name="T_LogisticLeadtime" EntityType="ASHAOP_DEVModel.T_LogisticLeadtime" />
           <EntitySet Name="T_LogisticMonthDetail" EntityType="ASHAOP_DEVModel.T_LogisticMonthDetail" />
           <EntitySet Name="T_LogisticMonthHeader" EntityType="ASHAOP_DEVModel.T_LogisticMonthHeader" />
           <EntitySet Name="T_LogisticMonthUploadDetail" EntityType="ASHAOP_DEVModel.T_LogisticMonthUploadDetail" />
@@ -3591,15 +3278,12 @@
           <EntitySet Name="T_Maker" EntityType="ASHAOP_DEVModel.T_Maker" />
           <EntitySet Name="T_Part" EntityType="ASHAOP_DEVModel.T_Part" />
           <EntitySet Name="T_PartCapacityDetail" EntityType="ASHAOP_DEVModel.T_PartCapacityDetail" />
-          <EntitySet Name="T_PartCapacityErrorRow" EntityType="ASHAOP_DEVModel.T_PartCapacityErrorRow" />
           <EntitySet Name="T_PartCapacityHeader" EntityType="ASHAOP_DEVModel.T_PartCapacityHeader" />
           <EntitySet Name="T_PartCapacityTemp" EntityType="ASHAOP_DEVModel.T_PartCapacityTemp" />
           <EntitySet Name="T_PartCapacityUploadHistory" EntityType="ASHAOP_DEVModel.T_PartCapacityUploadHistory" />
           <EntitySet Name="T_PartDemand" EntityType="ASHAOP_DEVModel.T_PartDemand" />
-          <EntitySet Name="T_PartDemandDetail" EntityType="ASHAOP_DEVModel.T_PartDemandDetail" />
           <EntitySet Name="T_PartDemandFileUploadDetail" EntityType="ASHAOP_DEVModel.T_PartDemandFileUploadDetail" />
           <EntitySet Name="T_PartDemandFileUploadHeader" EntityType="ASHAOP_DEVModel.T_PartDemandFileUploadHeader" />
-          <EntitySet Name="T_PartDemandHeader" EntityType="ASHAOP_DEVModel.T_PartDemandHeader" />
           <EntitySet Name="T_PartDemandTempUploadError" EntityType="ASHAOP_DEVModel.T_PartDemandTempUploadError" />
           <EntitySet Name="T_PartKadai" EntityType="ASHAOP_DEVModel.T_PartKadai" />
           <EntitySet Name="T_ProductionPlan" EntityType="ASHAOP_DEVModel.T_ProductionPlan" />
@@ -3628,6 +3312,8 @@
           <EntitySet Name="T_SUBOTempUploadError" EntityType="ASHAOP_DEVModel.T_SUBOTempUploadError" />
           <EntitySet Name="temp_GetUserDomain" EntityType="ASHAOP_DEVModel.temp_GetUserDomain" />
           <EntitySet Name="z_M_Function" EntityType="ASHAOP_DEVModel.z_M_Function" />
+          <EntitySet Name="M_Permissions" EntityType="ASHAOP_DEVModel.M_Permissions" />
+          <EntitySet Name="T_PartCapacityErrorRow" EntityType="ASHAOP_DEVModel.T_PartCapacityErrorRow" />
           <AssociationSet Name="FK_M_AdditionalConditionCriteria_M_AdditionalCondition" Association="ASHAOP_DEVModel.FK_M_AdditionalConditionCriteria_M_AdditionalCondition">
             <End Role="M_AdditionalCondition" EntitySet="M_AdditionalCondition" />
             <End Role="M_AdditionalConditionCriteria" EntitySet="M_AdditionalConditionCriteria" />
@@ -3711,10 +3397,6 @@
           <AssociationSet Name="FK_T_LogisticDayWiseUploadHeader_M_Company" Association="ASHAOP_DEVModel.FK_T_LogisticDayWiseUploadHeader_M_Company">
             <End Role="M_Company" EntitySet="M_Company" />
             <End Role="T_LogisticDayWiseUploadHeader" EntitySet="T_LogisticDayWiseUploadHeader" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthUpload_M_Company" Association="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthUpload_M_Company">
-            <End Role="M_Company" EntitySet="M_Company" />
-            <End Role="T_LogisticLeadTimeMonthUpload" EntitySet="T_LogisticLeadTimeMonthUpload" />
           </AssociationSet>
           <AssociationSet Name="FK_T_LogisticMonthHeader_M_Company" Association="ASHAOP_DEVModel.FK_T_LogisticMonthHeader_M_Company">
             <End Role="M_Company" EntitySet="M_Company" />
@@ -3812,38 +3494,6 @@
             <End Role="M_FileManager" EntitySet="M_FileManager" />
             <End Role="T_PartCapacityUploadHistory" EntitySet="T_PartCapacityUploadHistory" />
           </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticDayHeader_M_FileManager" Association="ASHAOP_DEVModel.FK_T_LogisticDayHeader_M_FileManager">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
-            <End Role="T_LogisticDayHeader" EntitySet="T_LogisticDayHeader" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticDayUploadHeader_M_FileManager" Association="ASHAOP_DEVModel.FK_T_LogisticDayUploadHeader_M_FileManager">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
-            <End Role="T_LogisticDayUploadHeader" EntitySet="T_LogisticDayUploadHeader" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticDayWiseHeader_M_FileManager" Association="ASHAOP_DEVModel.FK_T_LogisticDayWiseHeader_M_FileManager">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
-            <End Role="T_LogisticDayWiseHeader" EntitySet="T_LogisticDayWiseHeader" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticDayWiseUploadHeader_M_FileManager" Association="ASHAOP_DEVModel.FK_T_LogisticDayWiseUploadHeader_M_FileManager">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
-            <End Role="T_LogisticDayWiseUploadHeader" EntitySet="T_LogisticDayWiseUploadHeader" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthUpload_M_FileManager" Association="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthUpload_M_FileManager">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
-            <End Role="T_LogisticLeadTimeMonthUpload" EntitySet="T_LogisticLeadTimeMonthUpload" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthUpload_M_FileManager1" Association="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthUpload_M_FileManager1">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
-            <End Role="T_LogisticLeadTimeMonthUpload" EntitySet="T_LogisticLeadTimeMonthUpload" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticMonthHeader_M_FileManager" Association="ASHAOP_DEVModel.FK_T_LogisticMonthHeader_M_FileManager">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
-            <End Role="T_LogisticMonthHeader" EntitySet="T_LogisticMonthHeader" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticMonthUploadHeader_M_FileManager" Association="ASHAOP_DEVModel.FK_T_LogisticMonthUploadHeader_M_FileManager">
-            <End Role="M_FileManager" EntitySet="M_FileManager" />
-            <End Role="T_LogisticMonthUploadHeader" EntitySet="T_LogisticMonthUploadHeader" />
-          </AssociationSet>
           <AssociationSet Name="FK_M_Permission_M_Menu" Association="ASHAOP_DEVModel.FK_M_Permission_M_Menu">
             <End Role="M_Menu" EntitySet="M_Menu" />
             <End Role="M_Permission" EntitySet="M_Permission" />
@@ -3868,7 +3518,7 @@
             <End Role="M_ModelType" EntitySet="M_ModelType" />
             <End Role="M_ModelTypeEngine" EntitySet="M_ModelTypeEngine" />
           </AssociationSet>
-          <AssociationSet Name="FK_M_ModelTypeEquipment_M_ModelTypeEngine1" Association="ASHAOP_DEVModel.FK_M_ModelTypeEquipment_M_ModelTypeEngine1">
+          <AssociationSet Name="FK_M_ModelTypeEquipment_M_ModelTypeEngine" Association="ASHAOP_DEVModel.FK_M_ModelTypeEquipment_M_ModelTypeEngine">
             <End Role="M_ModelTypeEngine" EntitySet="M_ModelTypeEngine" />
             <End Role="M_ModelTypeEquipment" EntitySet="M_ModelTypeEquipment" />
           </AssociationSet>
@@ -3898,7 +3548,7 @@
           </AssociationSet>
           <AssociationSet Name="FK_PartDemandDetail_M_PartMaker1" Association="ASHAOP_DEVModel.FK_PartDemandDetail_M_PartMaker1">
             <End Role="M_PartMaker" EntitySet="M_PartMaker" />
-            <End Role="T_PartDemandDetail" EntitySet="T_PartDemandDetail" />
+            <End Role="PartDemandDetail" EntitySet="PartDemandDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_T_PartCapacityDetail_M_PartMaker" Association="ASHAOP_DEVModel.FK_T_PartCapacityDetail_M_PartMaker">
             <End Role="M_PartMaker" EntitySet="M_PartMaker" />
@@ -3911,6 +3561,10 @@
           <AssociationSet Name="FK_M_UserRolePermission_M_UserRole" Association="ASHAOP_DEVModel.FK_M_UserRolePermission_M_UserRole">
             <End Role="M_UserRole" EntitySet="M_UserRole" />
             <End Role="M_UserRolePermission" EntitySet="M_UserRolePermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PartDemandDetail_PartDemandHeader" Association="ASHAOP_DEVModel.FK_PartDemandDetail_PartDemandHeader">
+            <End Role="PartDemandHeader" EntitySet="PartDemandHeaders" />
+            <End Role="PartDemandDetail" EntitySet="PartDemandDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_T_ComparePartKadai_T_ProductionPlanAO" Association="ASHAOP_DEVModel.FK_T_ComparePartKadai_T_ProductionPlanAO">
             <End Role="T_ProductionPlanAO" EntitySet="T_ProductionPlanAO" />
@@ -3944,30 +3598,6 @@
             <End Role="T_LogisticDayWiseUploadHeader" EntitySet="T_LogisticDayWiseUploadHeader" />
             <End Role="T_LogisticDayWiseUploadDetail" EntitySet="T_LogisticDayWiseUploadDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthUpload_T_LogisticLeadTime" Association="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthUpload_T_LogisticLeadTime">
-            <End Role="T_LogisticLeadTime" EntitySet="T_LogisticLeadTime" />
-            <End Role="T_LogisticLeadTimeMonthUpload" EntitySet="T_LogisticLeadTimeMonthUpload" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonth_T_LogisticLeadTimeMonthUpload" Association="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonth_T_LogisticLeadTimeMonthUpload">
-            <End Role="T_LogisticLeadTimeMonthUpload" EntitySet="T_LogisticLeadTimeMonthUpload" />
-            <End Role="T_LogisticLeadTimeMonth" EntitySet="T_LogisticLeadTimeMonth" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthKi_T_LogisticLeadTimeMonth" Association="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthKi_T_LogisticLeadTimeMonth">
-            <End Role="T_LogisticLeadTimeMonth" EntitySet="T_LogisticLeadTimeMonth" />
-            <End Role="T_LogisticLeadTimeMonthKi" EntitySet="T_LogisticLeadTimeMonthKi" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthDetail_T_LogisticLeadTimeMonthKi" Association="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthDetail_T_LogisticLeadTimeMonthKi">
-            <End Role="T_LogisticLeadTimeMonthKi" EntitySet="T_LogisticLeadTimeMonthKi" />
-            <End Role="T_LogisticLeadTimeMonthDetail" EntitySet="T_LogisticLeadTimeMonthDetail" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthTempRow_T_LogisticLeadTimeMonthTempSheet" Association="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthTempRow_T_LogisticLeadTimeMonthTempSheet">
-            <End Role="T_LogisticLeadTimeMonthTempSheet" EntitySet="T_LogisticLeadTimeMonthTempSheet" />
-            <End Role="T_LogisticLeadTimeMonthTempRow" EntitySet="T_LogisticLeadTimeMonthTempRow" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_LogisticLeadTimeMonthTempSheet_T_LogisticLeadTimeMonthUpload" Association="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthTempSheet_T_LogisticLeadTimeMonthUpload">
-            <End Role="T_LogisticLeadTimeMonthUpload" EntitySet="T_LogisticLeadTimeMonthUpload" />
-            <End Role="T_LogisticLeadTimeMonthTempSheet" EntitySet="T_LogisticLeadTimeMonthTempSheet" />
-          </AssociationSet>
           <AssociationSet Name="FK_T_LogisticMonthDetail_T_LogisticMonthHeader" Association="ASHAOP_DEVModel.FK_T_LogisticMonthDetail_T_LogisticMonthHeader">
             <End Role="T_LogisticMonthHeader" EntitySet="T_LogisticMonthHeader" />
             <End Role="T_LogisticMonthDetail" EntitySet="T_LogisticMonthDetail" />
@@ -3976,25 +3606,25 @@
             <End Role="T_LogisticMonthUploadHeader" EntitySet="T_LogisticMonthUploadHeader" />
             <End Role="T_LogisticMonthUploadDetail" EntitySet="T_LogisticMonthUploadDetail" />
           </AssociationSet>
+          <AssociationSet Name="FK_T_LogisticMonthUploadHeader_T_LogisticMonthUploadHeader1" Association="ASHAOP_DEVModel.FK_T_LogisticMonthUploadHeader_T_LogisticMonthUploadHeader1">
+            <End Role="T_LogisticMonthUploadHeader" EntitySet="T_LogisticMonthUploadHeader" />
+            <End Role="T_LogisticMonthUploadHeader1" EntitySet="T_LogisticMonthUploadHeader" />
+          </AssociationSet>
           <AssociationSet Name="FK_T_CapacityCheckDetail_T_CapacityCheckHeader" Association="ASHAOP_DEVModel.FK_T_CapacityCheckDetail_T_CapacityCheckHeader">
             <End Role="T_PartCapacityHeader" EntitySet="T_PartCapacityHeader" />
             <End Role="T_PartCapacityDetail" EntitySet="T_PartCapacityDetail" />
-          </AssociationSet>
-          <AssociationSet Name="FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory" Association="ASHAOP_DEVModel.FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory">
-            <End Role="T_PartCapacityUploadHistory" EntitySet="T_PartCapacityUploadHistory" />
-            <End Role="T_PartCapacityErrorRow" EntitySet="T_PartCapacityErrorRow" />
           </AssociationSet>
           <AssociationSet Name="FK_T_PartCapacityTemp_T_PartCapacityUploadHistory" Association="ASHAOP_DEVModel.FK_T_PartCapacityTemp_T_PartCapacityUploadHistory">
             <End Role="T_PartCapacityUploadHistory" EntitySet="T_PartCapacityUploadHistory" />
             <End Role="T_PartCapacityTemp" EntitySet="T_PartCapacityTemp" />
           </AssociationSet>
+          <AssociationSet Name="FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory" Association="ASHAOP_DEVModel.FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory">
+            <End Role="T_PartCapacityUploadHistory" EntitySet="T_PartCapacityUploadHistory" />
+            <End Role="T_PartCapacityErrorRow" EntitySet="T_PartCapacityErrorRow" />
+          </AssociationSet>
           <AssociationSet Name="FK_T_PartDemand_T_PartDemandFileUploadDetail" Association="ASHAOP_DEVModel.FK_T_PartDemand_T_PartDemandFileUploadDetail">
             <End Role="T_PartDemandFileUploadDetail" EntitySet="T_PartDemandFileUploadDetail" />
             <End Role="T_PartDemand" EntitySet="T_PartDemand" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PartDemandDetail_PartDemandHeader" Association="ASHAOP_DEVModel.FK_PartDemandDetail_PartDemandHeader">
-            <End Role="T_PartDemandHeader" EntitySet="T_PartDemandHeader" />
-            <End Role="T_PartDemandDetail" EntitySet="T_PartDemandDetail" />
           </AssociationSet>
           <AssociationSet Name="FK_T_PartDemandFileUploadDetail_T_PartDemandFileUploadHeader" Association="ASHAOP_DEVModel.FK_T_PartDemandFileUploadDetail_T_PartDemandFileUploadHeader">
             <End Role="T_PartDemandFileUploadHeader" EntitySet="T_PartDemandFileUploadHeader" />
@@ -4095,9 +3725,9 @@
         </EntityType>
         <EntityType Name="L_InputOutput">
           <Key>
-            <PropertyRef Name="InputOutputID" />
+            <PropertyRef Name="LogID" />
           </Key>
-          <Property Name="InputOutputID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MenuID" Type="Int32" />
           <Property Name="PermissionID" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -4115,9 +3745,9 @@
         </EntityType>
         <EntityType Name="L_Transaction">
           <Key>
-            <PropertyRef Name="TransactionID" />
+            <PropertyRef Name="LogID" />
           </Key>
-          <Property Name="TransactionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MenuID" Type="Int32" />
           <Property Name="PermissionID" Type="Int32" />
           <Property Name="StatusID" Type="Int32" />
@@ -4239,7 +3869,6 @@
           <NavigationProperty Name="T_LogisticDayUploadHeader" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayUploadHeader_M_Company" FromRole="M_Company" ToRole="T_LogisticDayUploadHeader" />
           <NavigationProperty Name="T_LogisticDayWiseHeader" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayWiseHeader_M_Company" FromRole="M_Company" ToRole="T_LogisticDayWiseHeader" />
           <NavigationProperty Name="T_LogisticDayWiseUploadHeader" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayWiseUploadHeader_M_Company" FromRole="M_Company" ToRole="T_LogisticDayWiseUploadHeader" />
-          <NavigationProperty Name="T_LogisticLeadTimeMonthUpload" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthUpload_M_Company" FromRole="M_Company" ToRole="T_LogisticLeadTimeMonthUpload" />
           <NavigationProperty Name="T_LogisticMonthHeader" Relationship="ASHAOP_DEVModel.FK_T_LogisticMonthHeader_M_Company" FromRole="M_Company" ToRole="T_LogisticMonthHeader" />
           <NavigationProperty Name="T_LogisticMonthUploadHeader" Relationship="ASHAOP_DEVModel.FK_T_LogisticMonthUploadHeader_M_Company" FromRole="M_Company" ToRole="T_LogisticMonthUploadHeader" />
         </EntityType>
@@ -4450,14 +4079,6 @@
           <NavigationProperty Name="M_ModelTypeUpload1" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeUpload_M_FileManager1" FromRole="M_FileManager" ToRole="M_ModelTypeUpload" />
           <NavigationProperty Name="M_ModelTypeUpload2" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeUpload_M_FileManager2" FromRole="M_FileManager" ToRole="M_ModelTypeUpload" />
           <NavigationProperty Name="T_PartCapacityUploadHistory" Relationship="ASHAOP_DEVModel.FK_T_CapacityCheckUploadHistory_M_FileManager" FromRole="M_FileManager" ToRole="T_PartCapacityUploadHistory" />
-          <NavigationProperty Name="T_LogisticDayHeader" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayHeader_M_FileManager" FromRole="M_FileManager" ToRole="T_LogisticDayHeader" />
-          <NavigationProperty Name="T_LogisticDayUploadHeader" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayUploadHeader_M_FileManager" FromRole="M_FileManager" ToRole="T_LogisticDayUploadHeader" />
-          <NavigationProperty Name="T_LogisticDayWiseHeader" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayWiseHeader_M_FileManager" FromRole="M_FileManager" ToRole="T_LogisticDayWiseHeader" />
-          <NavigationProperty Name="T_LogisticDayWiseUploadHeader" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayWiseUploadHeader_M_FileManager" FromRole="M_FileManager" ToRole="T_LogisticDayWiseUploadHeader" />
-          <NavigationProperty Name="T_LogisticLeadTimeMonthUpload" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthUpload_M_FileManager" FromRole="M_FileManager" ToRole="T_LogisticLeadTimeMonthUpload" />
-          <NavigationProperty Name="T_LogisticLeadTimeMonthUpload1" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthUpload_M_FileManager1" FromRole="M_FileManager" ToRole="T_LogisticLeadTimeMonthUpload" />
-          <NavigationProperty Name="T_LogisticMonthHeader" Relationship="ASHAOP_DEVModel.FK_T_LogisticMonthHeader_M_FileManager" FromRole="M_FileManager" ToRole="T_LogisticMonthHeader" />
-          <NavigationProperty Name="T_LogisticMonthUploadHeader" Relationship="ASHAOP_DEVModel.FK_T_LogisticMonthUploadHeader_M_FileManager" FromRole="M_FileManager" ToRole="T_LogisticMonthUploadHeader" />
         </EntityType>
         <EntityType Name="M_Ki">
           <Key>
@@ -4547,10 +4168,6 @@
           <Property Name="YMID" Type="Int32" Nullable="false" />
           <Property Name="Version" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
           <Property Name="MTOCStatusID" Type="Int32" Nullable="false" />
-          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="M_Company" Relationship="ASHAOP_DEVModel.FK_M_ModelType_M_Company" FromRole="M_ModelType" ToRole="M_Company" />
           <NavigationProperty Name="M_Model" Relationship="ASHAOP_DEVModel.FK_M_ModelType_M_Model" FromRole="M_ModelType" ToRole="M_Model" />
           <NavigationProperty Name="M_ModelTypeUpload" Relationship="ASHAOP_DEVModel.FK_M_ModelType_M_ModelTypeUpload" FromRole="M_ModelType" ToRole="M_ModelTypeUpload" />
@@ -4578,19 +4195,19 @@
           <Property Name="ModelType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModelCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="M_ModelType" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeEngine_M_ModelType" FromRole="M_ModelTypeEngine" ToRole="M_ModelType" />
-          <NavigationProperty Name="M_ModelTypeEquipment" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeEquipment_M_ModelTypeEngine1" FromRole="M_ModelTypeEngine" ToRole="M_ModelTypeEquipment" />
+          <NavigationProperty Name="M_ModelTypeEquipment" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeEquipment_M_ModelTypeEngine" FromRole="M_ModelTypeEngine" ToRole="M_ModelTypeEquipment" />
         </EntityType>
         <EntityType Name="M_ModelTypeEquipment">
           <Key>
             <PropertyRef Name="ModelTypeEquipmentID" />
           </Key>
           <Property Name="ModelTypeEquipmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ModelTypeEngineID" Type="Int32" Nullable="false" />
+          <Property Name="ModelTypeEngine" Type="Int32" Nullable="false" />
           <Property Name="EquipmentID" Type="Int32" Nullable="false" />
           <Property Name="EquipmentValue" Type="Int32" Nullable="false" />
           <Property Name="Sequence" Type="Int32" Nullable="false" />
           <NavigationProperty Name="M_Equipment" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeEquipment_M_Equipment" FromRole="M_ModelTypeEquipment" ToRole="M_Equipment" />
-          <NavigationProperty Name="M_ModelTypeEngine" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeEquipment_M_ModelTypeEngine1" FromRole="M_ModelTypeEquipment" ToRole="M_ModelTypeEngine" />
+          <NavigationProperty Name="M_ModelTypeEngine" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeEquipment_M_ModelTypeEngine" FromRole="M_ModelTypeEquipment" ToRole="M_ModelTypeEngine" />
         </EntityType>
         <EntityType Name="M_ModelTypeTempEngine">
           <Key>
@@ -4617,7 +4234,7 @@
           <Property Name="ModelTypeTempEquipmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ModelTypeTempRowID" Type="Int32" Nullable="false" />
           <Property Name="EquipmentName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EquipmentValue" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EquipmentValue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Sequence" Type="Int32" Nullable="false" />
           <NavigationProperty Name="M_ModelTypeTempRow" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeTempEquipment_M_ModelTypeTempRow" FromRole="M_ModelTypeTempEquipment" ToRole="M_ModelTypeTempRow" />
         </EntityType>
@@ -4628,8 +4245,8 @@
           <Property Name="ModelTypeTempRowID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ModelTypeTempSheetID" Type="Int32" Nullable="false" />
           <Property Name="RowNo" Type="Int32" Nullable="false" />
-          <Property Name="PNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="VIN" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VIN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ErrorMessage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="M_ModelTypeTempEngine" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeTempEngine_M_ModelTypeTempRow" FromRole="M_ModelTypeTempRow" ToRole="M_ModelTypeTempEngine" />
           <NavigationProperty Name="M_ModelTypeTempEquipment" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeTempEquipment_M_ModelTypeTempRow" FromRole="M_ModelTypeTempRow" ToRole="M_ModelTypeTempEquipment" />
@@ -4683,10 +4300,10 @@
           <Property Name="O_ModelTypeFile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UploadStatusID" Type="Int32" />
           <Property Name="Result" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdatedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="M_Company" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeUpload_M_Company" FromRole="M_ModelTypeUpload" ToRole="M_Company" />
           <NavigationProperty Name="M_FileManager" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeUpload_M_FileManager" FromRole="M_ModelTypeUpload" ToRole="M_FileManager" />
           <NavigationProperty Name="M_FileManager1" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeUpload_M_FileManager1" FromRole="M_ModelTypeUpload" ToRole="M_FileManager" />
@@ -4705,7 +4322,7 @@
           <Property Name="PartNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MakerCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="M_Company" Relationship="ASHAOP_DEVModel.FK_M_PartMaker_M_Company" FromRole="M_PartMaker" ToRole="M_Company" />
-          <NavigationProperty Name="T_PartDemandDetail" Relationship="ASHAOP_DEVModel.FK_PartDemandDetail_M_PartMaker1" FromRole="M_PartMaker" ToRole="T_PartDemandDetail" />
+          <NavigationProperty Name="PartDemandDetails" Relationship="ASHAOP_DEVModel.FK_PartDemandDetail_M_PartMaker1" FromRole="M_PartMaker" ToRole="PartDemandDetail" />
           <NavigationProperty Name="T_PartCapacityDetail" Relationship="ASHAOP_DEVModel.FK_T_PartCapacityDetail_M_PartMaker" FromRole="M_PartMaker" ToRole="T_PartCapacityDetail" />
         </EntityType>
         <EntityType Name="M_Permission">
@@ -4718,18 +4335,6 @@
           <Property Name="ControlName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ActionName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="M_Menu" Relationship="ASHAOP_DEVModel.FK_M_Permission_M_Menu" FromRole="M_Permission" ToRole="M_Menu" />
-        </EntityType>
-        <EntityType Name="M_Permissions">
-          <Key>
-            <PropertyRef Name="PermissionID" />
-            <PropertyRef Name="MenuID" />
-            <PropertyRef Name="PermissionName" />
-          </Key>
-          <Property Name="PermissionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MenuID" Type="Int32" Nullable="false" />
-          <Property Name="PermissionName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ControlName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ActionName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="M_Region">
           <Key>
@@ -4825,6 +4430,29 @@
           <NavigationProperty Name="M_ModelType" Relationship="ASHAOP_DEVModel.FK_M_ModelType_M_YM" FromRole="M_YM" ToRole="M_ModelType" />
           <NavigationProperty Name="M_ModelTypeUpload" Relationship="ASHAOP_DEVModel.FK_M_ModelTypeUpload_M_YM" FromRole="M_YM" ToRole="M_ModelTypeUpload" />
         </EntityType>
+        <EntityType Name="PartDemandDetail">
+          <Key>
+            <PropertyRef Name="PartDemandDetailID" />
+          </Key>
+          <Property Name="PartDemandDetailID" Type="Int32" Nullable="false" />
+          <Property Name="PartDemandHeaderID" Type="Int32" />
+          <Property Name="PartMakerID" Type="Int32" />
+          <Property Name="Ki" Type="Int32" />
+          <Property Name="DemandMonth" Type="Int32" />
+          <Property Name="Demand" Type="Int32" />
+          <NavigationProperty Name="M_PartMaker" Relationship="ASHAOP_DEVModel.FK_PartDemandDetail_M_PartMaker1" FromRole="PartDemandDetail" ToRole="M_PartMaker" />
+          <NavigationProperty Name="PartDemandHeader" Relationship="ASHAOP_DEVModel.FK_PartDemandDetail_PartDemandHeader" FromRole="PartDemandDetail" ToRole="PartDemandHeader" />
+        </EntityType>
+        <EntityType Name="PartDemandHeader">
+          <Key>
+            <PropertyRef Name="PartDemandHeaderID" />
+          </Key>
+          <Property Name="PartDemandHeaderID" Type="Int32" Nullable="false" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="SeihanMonth" Type="Int32" />
+          <Property Name="SeihanYear" Type="Int32" />
+          <NavigationProperty Name="PartDemandDetails" Relationship="ASHAOP_DEVModel.FK_PartDemandDetail_PartDemandHeader" FromRole="PartDemandHeader" ToRole="PartDemandDetail" />
+        </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -4865,6 +4493,8 @@
           <Property Name="LogisticDayDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LogisticDayHeaderID" Type="Int32" Nullable="false" />
           <Property Name="RowNo" Type="Int32" Nullable="false" />
+          <Property Name="SupplyRegion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SupplyPlant" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ReceiveRegion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ReceivePlant" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Shipment" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
@@ -4882,8 +4512,8 @@
           <Property Name="Year" Type="Int32" Nullable="false" />
           <Property Name="Ki" Type="Int32" Nullable="false" />
           <Property Name="FileManagerID" Type="Int32" Nullable="false" />
-          <Property Name="UploadOriginalFile" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="UploadSystemFile" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UploadOriginalFile" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UploadSystemFile" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UploadVersion" Type="Int32" Nullable="false" />
           <Property Name="UploadStatusID" Type="Int32" Nullable="false" />
           <Property Name="UploadBy" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
@@ -4899,7 +4529,6 @@
           <Property Name="LastUpdatedBy" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="M_Company" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayHeader_M_Company" FromRole="T_LogisticDayHeader" ToRole="M_Company" />
-          <NavigationProperty Name="M_FileManager" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayHeader_M_FileManager" FromRole="T_LogisticDayHeader" ToRole="M_FileManager" />
           <NavigationProperty Name="T_LogisticDayDetail" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayDetail_T_LogisticDayHeader" FromRole="T_LogisticDayHeader" ToRole="T_LogisticDayDetail" />
         </EntityType>
         <EntityType Name="T_LogisticDayUploadDetail">
@@ -4910,6 +4539,8 @@
           <Property Name="LogisticDayUploadDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LogisticDayUploadHeaderID" Type="Int32" Nullable="false" />
           <Property Name="RowNo" Type="Int32" Nullable="false" />
+          <Property Name="SupplyRegion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SupplyPlant" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ReceiveRegion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ReceivePlant" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Shipment" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
@@ -4945,7 +4576,6 @@
           <Property Name="LastUpdatedBy" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="M_Company" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayUploadHeader_M_Company" FromRole="T_LogisticDayUploadHeader" ToRole="M_Company" />
-          <NavigationProperty Name="M_FileManager" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayUploadHeader_M_FileManager" FromRole="T_LogisticDayUploadHeader" ToRole="M_FileManager" />
           <NavigationProperty Name="T_LogisticDayUploadDetail" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayUploadDetail_T_LogisticDayUploadHeader" FromRole="T_LogisticDayUploadHeader" ToRole="T_LogisticDayUploadDetail" />
         </EntityType>
         <EntityType Name="T_LogisticDayWiseDetail">
@@ -4998,7 +4628,6 @@
           <Property Name="LastUpdatedBy" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="M_Company" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayWiseHeader_M_Company" FromRole="T_LogisticDayWiseHeader" ToRole="M_Company" />
-          <NavigationProperty Name="M_FileManager" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayWiseHeader_M_FileManager" FromRole="T_LogisticDayWiseHeader" ToRole="M_FileManager" />
           <NavigationProperty Name="T_LogisticDayWiseDetail" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayWiseDetail_T_LogisticDayWiseHeader" FromRole="T_LogisticDayWiseHeader" ToRole="T_LogisticDayWiseDetail" />
         </EntityType>
         <EntityType Name="T_LogisticDayWiseUploadDetail">
@@ -5052,123 +4681,14 @@
           <Property Name="LastUpdatedBy" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="M_Company" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayWiseUploadHeader_M_Company" FromRole="T_LogisticDayWiseUploadHeader" ToRole="M_Company" />
-          <NavigationProperty Name="M_FileManager" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayWiseUploadHeader_M_FileManager" FromRole="T_LogisticDayWiseUploadHeader" ToRole="M_FileManager" />
           <NavigationProperty Name="T_LogisticDayWiseUploadDetail" Relationship="ASHAOP_DEVModel.FK_T_LogisticDayWiseUploadDetail_T_LogisticDayWiseUploadHeader" FromRole="T_LogisticDayWiseUploadHeader" ToRole="T_LogisticDayWiseUploadDetail" />
         </EntityType>
-        <EntityType Name="T_LogisticLeadTime">
+        <EntityType Name="T_LogisticLeadtime">
           <Key>
-            <PropertyRef Name="LogisticLeadTimeID" />
+            <PropertyRef Name="LogisticLTID" />
           </Key>
-          <Property Name="LogisticLeadTimeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Month" Type="Int32" Nullable="false" />
-          <Property Name="Year" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ActiveStatus" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="T_LogisticLeadTimeMonthUpload" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthUpload_T_LogisticLeadTime" FromRole="T_LogisticLeadTime" ToRole="T_LogisticLeadTimeMonthUpload" />
-        </EntityType>
-        <EntityType Name="T_LogisticLeadTimeDayUpload">
-          <Key>
-            <PropertyRef Name="LogisticLeadTimeDayUploadID" />
-          </Key>
-          <Property Name="LogisticLeadTimeDayUploadID" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="LogisticLeadTimeID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-        </EntityType>
-        <EntityType Name="T_LogisticLeadTimeMonth">
-          <Key>
-            <PropertyRef Name="LogisticLeadTimeMonthID" />
-          </Key>
-          <Property Name="LogisticLeadTimeMonthID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LogisticLeadTimeMonthUploadID" Type="Int32" Nullable="false" />
-          <Property Name="ExportRegion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ExportPlant" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="O_LTPath" Type="Int32" />
-          <Property Name="O_LTFileName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PlantStatus" Type="Int32" Nullable="false" />
-          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdatedBy" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="T_LogisticLeadTimeMonthUpload" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonth_T_LogisticLeadTimeMonthUpload" FromRole="T_LogisticLeadTimeMonth" ToRole="T_LogisticLeadTimeMonthUpload" />
-          <NavigationProperty Name="T_LogisticLeadTimeMonthKi" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthKi_T_LogisticLeadTimeMonth" FromRole="T_LogisticLeadTimeMonth" ToRole="T_LogisticLeadTimeMonthKi" />
-        </EntityType>
-        <EntityType Name="T_LogisticLeadTimeMonthDetail">
-          <Key>
-            <PropertyRef Name="LogisticLeadTimeMonthDetailID" />
-          </Key>
-          <Property Name="LogisticLeadTimeMonthDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LogisticLeadTimeMonthKi" Type="Int32" Nullable="false" />
-          <Property Name="ImportRegion" Type="Int32" />
-          <Property Name="ImportPlant" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ShipAir" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="OceanLT" Type="Int32" Nullable="false" />
-          <Property Name="InlandLT" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="T_LogisticLeadTimeMonthKi" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthDetail_T_LogisticLeadTimeMonthKi" FromRole="T_LogisticLeadTimeMonthDetail" ToRole="T_LogisticLeadTimeMonthKi" />
-        </EntityType>
-        <EntityType Name="T_LogisticLeadTimeMonthKi">
-          <Key>
-            <PropertyRef Name="LogisticLeadTimeMonthKi" />
-          </Key>
-          <Property Name="LogisticLeadTimeMonthKi" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LogisticLeadTimeMonthID" Type="Int32" Nullable="false" />
-          <Property Name="Ki" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="T_LogisticLeadTimeMonth" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthKi_T_LogisticLeadTimeMonth" FromRole="T_LogisticLeadTimeMonthKi" ToRole="T_LogisticLeadTimeMonth" />
-          <NavigationProperty Name="T_LogisticLeadTimeMonthDetail" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthDetail_T_LogisticLeadTimeMonthKi" FromRole="T_LogisticLeadTimeMonthKi" ToRole="T_LogisticLeadTimeMonthDetail" />
-        </EntityType>
-        <EntityType Name="T_LogisticLeadTimeMonthTempRow">
-          <Key>
-            <PropertyRef Name="LogisticLeadTimeMonthTempRowID" />
-          </Key>
-          <Property Name="LogisticLeadTimeMonthTempRowID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LogisticLeadTimeMonthTempSheetID" Type="Int32" Nullable="false" />
-          <Property Name="RowNo" Type="Int32" Nullable="false" />
-          <Property Name="ExportRegion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ExportPlant" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ImportRegion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ImportPlant" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ShipAir" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="OceanLT" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="InlandLT" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TotalLT" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ErrorMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="T_LogisticLeadTimeMonthTempSheet" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthTempRow_T_LogisticLeadTimeMonthTempSheet" FromRole="T_LogisticLeadTimeMonthTempRow" ToRole="T_LogisticLeadTimeMonthTempSheet" />
-        </EntityType>
-        <EntityType Name="T_LogisticLeadTimeMonthTempSheet">
-          <Key>
-            <PropertyRef Name="LogisticLeadTimeMonthTempSheetID" />
-          </Key>
-          <Property Name="LogisticLeadTimeMonthTempSheetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LogisticLeadTimeMonthUploadID" Type="Int32" Nullable="false" />
-          <Property Name="SheetNo" Type="Int32" Nullable="false" />
-          <Property Name="Month" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Year" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Ki" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="T_LogisticLeadTimeMonthTempRow" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthTempRow_T_LogisticLeadTimeMonthTempSheet" FromRole="T_LogisticLeadTimeMonthTempSheet" ToRole="T_LogisticLeadTimeMonthTempRow" />
-          <NavigationProperty Name="T_LogisticLeadTimeMonthUpload" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthTempSheet_T_LogisticLeadTimeMonthUpload" FromRole="T_LogisticLeadTimeMonthTempSheet" ToRole="T_LogisticLeadTimeMonthUpload" />
-        </EntityType>
-        <EntityType Name="T_LogisticLeadTimeMonthUpload">
-          <Key>
-            <PropertyRef Name="LogisticLeadTimeMonthUploadID" />
-          </Key>
-          <Property Name="LogisticLeadTimeMonthUploadID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LogisticLeadTimeID" Type="Int32" Nullable="false" />
-          <Property Name="CompanyID" Type="Int32" />
-          <Property Name="UploadVersion" Type="Int32" Nullable="false" />
-          <Property Name="I_LTPath" Type="Int32" />
-          <Property Name="I_LTFileNameOriginal" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="I_LTFileNameSystem" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="I_LTResultPath" Type="Int32" />
-          <Property Name="I_LTResultFileName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="UploadStatusID" Type="Int32" Nullable="false" />
-          <Property Name="Result" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="M_Company" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthUpload_M_Company" FromRole="T_LogisticLeadTimeMonthUpload" ToRole="M_Company" />
-          <NavigationProperty Name="M_FileManager" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthUpload_M_FileManager" FromRole="T_LogisticLeadTimeMonthUpload" ToRole="M_FileManager" />
-          <NavigationProperty Name="M_FileManager1" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthUpload_M_FileManager1" FromRole="T_LogisticLeadTimeMonthUpload" ToRole="M_FileManager" />
-          <NavigationProperty Name="T_LogisticLeadTime" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthUpload_T_LogisticLeadTime" FromRole="T_LogisticLeadTimeMonthUpload" ToRole="T_LogisticLeadTime" />
-          <NavigationProperty Name="T_LogisticLeadTimeMonth" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonth_T_LogisticLeadTimeMonthUpload" FromRole="T_LogisticLeadTimeMonthUpload" ToRole="T_LogisticLeadTimeMonth" />
-          <NavigationProperty Name="T_LogisticLeadTimeMonthTempSheet" Relationship="ASHAOP_DEVModel.FK_T_LogisticLeadTimeMonthTempSheet_T_LogisticLeadTimeMonthUpload" FromRole="T_LogisticLeadTimeMonthUpload" ToRole="T_LogisticLeadTimeMonthTempSheet" />
+          <Property Name="LogisticLTID" Type="Int32" Nullable="false" />
+          <Property Name="WorkDayWiseID" Type="Int32" />
         </EntityType>
         <EntityType Name="T_LogisticMonthDetail">
           <Key>
@@ -5183,9 +4703,9 @@
           <Property Name="ImportRegion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ImportPlant" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Shipment" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Ocean" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Inland" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Total" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Ocean" Type="Int32" />
+          <Property Name="Inland" Type="Int32" Nullable="false" />
+          <Property Name="Total" Type="Int32" Nullable="false" />
           <NavigationProperty Name="T_LogisticMonthHeader" Relationship="ASHAOP_DEVModel.FK_T_LogisticMonthDetail_T_LogisticMonthHeader" FromRole="T_LogisticMonthDetail" ToRole="T_LogisticMonthHeader" />
         </EntityType>
         <EntityType Name="T_LogisticMonthHeader">
@@ -5215,7 +4735,6 @@
           <Property Name="LastUpdatedBy" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="M_Company" Relationship="ASHAOP_DEVModel.FK_T_LogisticMonthHeader_M_Company" FromRole="T_LogisticMonthHeader" ToRole="M_Company" />
-          <NavigationProperty Name="M_FileManager" Relationship="ASHAOP_DEVModel.FK_T_LogisticMonthHeader_M_FileManager" FromRole="T_LogisticMonthHeader" ToRole="M_FileManager" />
           <NavigationProperty Name="T_LogisticMonthDetail" Relationship="ASHAOP_DEVModel.FK_T_LogisticMonthDetail_T_LogisticMonthHeader" FromRole="T_LogisticMonthHeader" ToRole="T_LogisticMonthDetail" />
         </EntityType>
         <EntityType Name="T_LogisticMonthUploadDetail">
@@ -5231,9 +4750,9 @@
           <Property Name="ImportRegion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ImportPlant" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Shipment" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Ocean" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Inland" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Total" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Ocean" Type="Int32" />
+          <Property Name="Inland" Type="Int32" Nullable="false" />
+          <Property Name="Total" Type="Int32" Nullable="false" />
           <Property Name="ErrorMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="T_LogisticMonthUploadHeader" Relationship="ASHAOP_DEVModel.FK_T_LogisticMonthUploadDetail_T_LogisticMonthUploadHeader" FromRole="T_LogisticMonthUploadDetail" ToRole="T_LogisticMonthUploadHeader" />
         </EntityType>
@@ -5264,8 +4783,9 @@
           <Property Name="LastUpdatedBy" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="M_Company" Relationship="ASHAOP_DEVModel.FK_T_LogisticMonthUploadHeader_M_Company" FromRole="T_LogisticMonthUploadHeader" ToRole="M_Company" />
-          <NavigationProperty Name="M_FileManager" Relationship="ASHAOP_DEVModel.FK_T_LogisticMonthUploadHeader_M_FileManager" FromRole="T_LogisticMonthUploadHeader" ToRole="M_FileManager" />
           <NavigationProperty Name="T_LogisticMonthUploadDetail" Relationship="ASHAOP_DEVModel.FK_T_LogisticMonthUploadDetail_T_LogisticMonthUploadHeader" FromRole="T_LogisticMonthUploadHeader" ToRole="T_LogisticMonthUploadDetail" />
+          <NavigationProperty Name="T_LogisticMonthUploadHeader1" Relationship="ASHAOP_DEVModel.FK_T_LogisticMonthUploadHeader_T_LogisticMonthUploadHeader1" FromRole="T_LogisticMonthUploadHeader" ToRole="T_LogisticMonthUploadHeader1" />
+          <NavigationProperty Name="T_LogisticMonthUploadHeader2" Relationship="ASHAOP_DEVModel.FK_T_LogisticMonthUploadHeader_T_LogisticMonthUploadHeader1" FromRole="T_LogisticMonthUploadHeader1" ToRole="T_LogisticMonthUploadHeader" />
         </EntityType>
         <EntityType Name="T_Maker">
           <Key>
@@ -5313,16 +4833,6 @@
           <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="M_PartMaker" Relationship="ASHAOP_DEVModel.FK_T_PartCapacityDetail_M_PartMaker" FromRole="T_PartCapacityDetail" ToRole="M_PartMaker" />
           <NavigationProperty Name="T_PartCapacityHeader" Relationship="ASHAOP_DEVModel.FK_T_CapacityCheckDetail_T_CapacityCheckHeader" FromRole="T_PartCapacityDetail" ToRole="T_PartCapacityHeader" />
-        </EntityType>
-        <EntityType Name="T_PartCapacityErrorRow">
-          <Key>
-            <PropertyRef Name="PartCapacityErrorRowID" />
-          </Key>
-          <Property Name="PartCapacityErrorRowID" Type="Int32" Nullable="false" />
-          <Property Name="PartCapacityUploadHistoryID" Type="Int32" />
-          <Property Name="RowNumber" Type="Int32" />
-          <Property Name="ErrorMessage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="T_PartCapacityUploadHistory" Relationship="ASHAOP_DEVModel.FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory" FromRole="T_PartCapacityErrorRow" ToRole="T_PartCapacityUploadHistory" />
         </EntityType>
         <EntityType Name="T_PartCapacityHeader">
           <Key>
@@ -5376,8 +4886,8 @@
           <Property Name="FailRecords" Type="Int32" />
           <NavigationProperty Name="M_Company" Relationship="ASHAOP_DEVModel.FK_T_CapacityCheckUploadHistory_M_Company" FromRole="T_PartCapacityUploadHistory" ToRole="M_Company" />
           <NavigationProperty Name="M_FileManager" Relationship="ASHAOP_DEVModel.FK_T_CapacityCheckUploadHistory_M_FileManager" FromRole="T_PartCapacityUploadHistory" ToRole="M_FileManager" />
-          <NavigationProperty Name="T_PartCapacityErrorRow" Relationship="ASHAOP_DEVModel.FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory" FromRole="T_PartCapacityUploadHistory" ToRole="T_PartCapacityErrorRow" />
           <NavigationProperty Name="T_PartCapacityTemp" Relationship="ASHAOP_DEVModel.FK_T_PartCapacityTemp_T_PartCapacityUploadHistory" FromRole="T_PartCapacityUploadHistory" ToRole="T_PartCapacityTemp" />
+          <NavigationProperty Name="T_PartCapacityErrorRow" Relationship="ASHAOP_DEVModel.FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory" FromRole="T_PartCapacityUploadHistory" ToRole="T_PartCapacityErrorRow" />
         </EntityType>
         <EntityType Name="T_PartDemand">
           <Key>
@@ -5415,19 +4925,6 @@
           <Property Name="Space2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Space3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="T_PartDemandFileUploadDetail" Relationship="ASHAOP_DEVModel.FK_T_PartDemand_T_PartDemandFileUploadDetail" FromRole="T_PartDemand" ToRole="T_PartDemandFileUploadDetail" />
-        </EntityType>
-        <EntityType Name="T_PartDemandDetail">
-          <Key>
-            <PropertyRef Name="PartDemandDetailID" />
-          </Key>
-          <Property Name="PartDemandDetailID" Type="Int32" Nullable="false" />
-          <Property Name="PartDemandHeaderID" Type="Int32" />
-          <Property Name="PartMakerID" Type="Int32" />
-          <Property Name="Ki" Type="Int32" />
-          <Property Name="DemandMonth" Type="Int32" />
-          <Property Name="Demand" Type="Int32" />
-          <NavigationProperty Name="M_PartMaker" Relationship="ASHAOP_DEVModel.FK_PartDemandDetail_M_PartMaker1" FromRole="T_PartDemandDetail" ToRole="M_PartMaker" />
-          <NavigationProperty Name="T_PartDemandHeader" Relationship="ASHAOP_DEVModel.FK_PartDemandDetail_PartDemandHeader" FromRole="T_PartDemandDetail" ToRole="T_PartDemandHeader" />
         </EntityType>
         <EntityType Name="T_PartDemandFileUploadDetail">
           <Key>
@@ -5470,18 +4967,7 @@
           <Property Name="MainProcessStatusID" Type="Int32" />
           <Property Name="UploadedDate" Type="DateTime" Precision="3" />
           <Property Name="UploadedBy" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="SendMailDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="T_PartDemandFileUploadDetail" Relationship="ASHAOP_DEVModel.FK_T_PartDemandFileUploadDetail_T_PartDemandFileUploadHeader" FromRole="T_PartDemandFileUploadHeader" ToRole="T_PartDemandFileUploadDetail" />
-        </EntityType>
-        <EntityType Name="T_PartDemandHeader">
-          <Key>
-            <PropertyRef Name="PartDemandHeaderID" />
-          </Key>
-          <Property Name="PartDemandHeaderID" Type="Int32" Nullable="false" />
-          <Property Name="CompanyID" Type="Int32" />
-          <Property Name="SeihanMonth" Type="Int32" />
-          <Property Name="SeihanYear" Type="Int32" />
-          <NavigationProperty Name="T_PartDemandDetail" Relationship="ASHAOP_DEVModel.FK_PartDemandDetail_PartDemandHeader" FromRole="T_PartDemandHeader" ToRole="T_PartDemandDetail" />
         </EntityType>
         <EntityType Name="T_PartDemandTempUploadError">
           <Key>
@@ -5781,8 +5267,8 @@
           <Property Name="DestinationID" Type="Int32" Nullable="false" />
           <Property Name="YM" Type="Int32" Nullable="false" />
           <Property Name="SEDFlow" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="StartUp" Type="DateTime" Precision="3" />
-          <Property Name="BuildOut" Type="DateTime" Precision="3" />
+          <Property Name="StartUp" Type="DateTime" Precision="0" />
+          <Property Name="BuildOut" Type="DateTime" Precision="0" />
           <Property Name="IsDiscon" Type="Boolean" />
           <Property Name="IsASHUpdate" Type="Boolean" />
         </EntityType>
@@ -5803,7 +5289,6 @@
           <Property Name="ApprovedBy" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ApprovedDate" Type="DateTime" Precision="3" />
           <Property Name="IsFinal" Type="Boolean" />
-          <Property Name="SendMailDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="T_SUBOControlVersionHeader">
           <Key>
@@ -5841,7 +5326,7 @@
           <Property Name="FileNameSystem" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UploadResult" Type="Int32" Nullable="false" />
           <Property Name="UploadedBy" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="UploadedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UploadedDate" Type="DateTime" Nullable="false" Precision="0" />
         </EntityType>
         <EntityType Name="T_SUBOTempUploadError">
           <Key>
@@ -5886,6 +5371,28 @@
           <Property Name="ActionName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="RoleTypeID" Type="Int32" />
           <Property Name="RoleType" Type="Int32" />
+        </EntityType>
+        <EntityType Name="M_Permissions">
+          <Key>
+            <PropertyRef Name="PermissionID" />
+            <PropertyRef Name="MenuID" />
+            <PropertyRef Name="PermissionName" />
+          </Key>
+          <Property Name="PermissionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MenuID" Type="Int32" Nullable="false" />
+          <Property Name="PermissionName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ControlName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ActionName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="T_PartCapacityErrorRow">
+          <Key>
+            <PropertyRef Name="PartCapacityErrorRowID" />
+          </Key>
+          <Property Name="PartCapacityErrorRowID" Type="Int32" Nullable="false" />
+          <Property Name="PartCapacityUploadHistoryID" Type="Int32" />
+          <Property Name="RowNumber" Type="Int32" />
+          <Property Name="ErrorMessage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="T_PartCapacityUploadHistory" Relationship="ASHAOP_DEVModel.FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory" FromRole="T_PartCapacityErrorRow" ToRole="T_PartCapacityUploadHistory" />
         </EntityType>
         <Association Name="FK_M_AdditionalConditionCriteria_M_AdditionalCondition">
           <End Type="ASHAOP_DEVModel.M_AdditionalCondition" Role="M_AdditionalCondition" Multiplicity="1" />
@@ -6117,13 +5624,13 @@
         </Association>
         <Association Name="FK_T_LogisticDayWiseHeader_M_Company">
           <End Type="ASHAOP_DEVModel.M_Company" Role="M_Company" Multiplicity="1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticDayWiseHeader" Role="T_LogisticDayWiseHeader" Multiplicity="*" />
+          <End Type="ASHAOP_DEVModel.T_LogisticDayWiseHeader" Role="T_LogisticDayWiseHeader" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="M_Company">
               <PropertyRef Name="CompanyID" />
             </Principal>
             <Dependent Role="T_LogisticDayWiseHeader">
-              <PropertyRef Name="CompanyID" />
+              <PropertyRef Name="LogisticDayWiseHeaderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6135,18 +5642,6 @@
               <PropertyRef Name="CompanyID" />
             </Principal>
             <Dependent Role="T_LogisticDayWiseUploadHeader">
-              <PropertyRef Name="CompanyID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthUpload_M_Company">
-          <End Type="ASHAOP_DEVModel.M_Company" Role="M_Company" Multiplicity="0..1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTimeMonthUpload" Role="T_LogisticLeadTimeMonthUpload" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_Company">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthUpload">
               <PropertyRef Name="CompanyID" />
             </Dependent>
           </ReferentialConstraint>
@@ -6439,102 +5934,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_T_LogisticDayHeader_M_FileManager">
-          <End Type="ASHAOP_DEVModel.M_FileManager" Role="M_FileManager" Multiplicity="1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticDayHeader" Role="T_LogisticDayHeader" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticDayHeader">
-              <PropertyRef Name="FileManagerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticDayUploadHeader_M_FileManager">
-          <End Type="ASHAOP_DEVModel.M_FileManager" Role="M_FileManager" Multiplicity="1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticDayUploadHeader" Role="T_LogisticDayUploadHeader" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticDayUploadHeader">
-              <PropertyRef Name="FileManagerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticDayWiseHeader_M_FileManager">
-          <End Type="ASHAOP_DEVModel.M_FileManager" Role="M_FileManager" Multiplicity="1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticDayWiseHeader" Role="T_LogisticDayWiseHeader" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticDayWiseHeader">
-              <PropertyRef Name="FileManagerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticDayWiseUploadHeader_M_FileManager">
-          <End Type="ASHAOP_DEVModel.M_FileManager" Role="M_FileManager" Multiplicity="1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticDayWiseUploadHeader" Role="T_LogisticDayWiseUploadHeader" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticDayWiseUploadHeader">
-              <PropertyRef Name="FileManagerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthUpload_M_FileManager">
-          <End Type="ASHAOP_DEVModel.M_FileManager" Role="M_FileManager" Multiplicity="0..1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTimeMonthUpload" Role="T_LogisticLeadTimeMonthUpload" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthUpload">
-              <PropertyRef Name="I_LTPath" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthUpload_M_FileManager1">
-          <End Type="ASHAOP_DEVModel.M_FileManager" Role="M_FileManager" Multiplicity="0..1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTimeMonthUpload" Role="T_LogisticLeadTimeMonthUpload" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthUpload">
-              <PropertyRef Name="I_LTResultPath" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticMonthHeader_M_FileManager">
-          <End Type="ASHAOP_DEVModel.M_FileManager" Role="M_FileManager" Multiplicity="1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticMonthHeader" Role="T_LogisticMonthHeader" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticMonthHeader">
-              <PropertyRef Name="FileManagerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticMonthUploadHeader_M_FileManager">
-          <End Type="ASHAOP_DEVModel.M_FileManager" Role="M_FileManager" Multiplicity="1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticMonthUploadHeader" Role="T_LogisticMonthUploadHeader" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="M_FileManager">
-              <PropertyRef Name="FileManagerID" />
-            </Principal>
-            <Dependent Role="T_LogisticMonthUploadHeader">
-              <PropertyRef Name="FileManagerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_M_Permission_M_Menu">
           <End Type="ASHAOP_DEVModel.M_Menu" Role="M_Menu" Multiplicity="1" />
           <End Type="ASHAOP_DEVModel.M_Permission" Role="M_Permission" Multiplicity="*" />
@@ -6607,7 +6006,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_M_ModelTypeEquipment_M_ModelTypeEngine1">
+        <Association Name="FK_M_ModelTypeEquipment_M_ModelTypeEngine">
           <End Type="ASHAOP_DEVModel.M_ModelTypeEngine" Role="M_ModelTypeEngine" Multiplicity="1" />
           <End Type="ASHAOP_DEVModel.M_ModelTypeEquipment" Role="M_ModelTypeEquipment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -6615,7 +6014,7 @@
               <PropertyRef Name="ModelTypeEngineID" />
             </Principal>
             <Dependent Role="M_ModelTypeEquipment">
-              <PropertyRef Name="ModelTypeEngineID" />
+              <PropertyRef Name="ModelTypeEngine" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6693,12 +6092,12 @@
         </Association>
         <Association Name="FK_PartDemandDetail_M_PartMaker1">
           <End Type="ASHAOP_DEVModel.M_PartMaker" Role="M_PartMaker" Multiplicity="0..1" />
-          <End Type="ASHAOP_DEVModel.T_PartDemandDetail" Role="T_PartDemandDetail" Multiplicity="*" />
+          <End Type="ASHAOP_DEVModel.PartDemandDetail" Role="PartDemandDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="M_PartMaker">
               <PropertyRef Name="PartMakerID" />
             </Principal>
-            <Dependent Role="T_PartDemandDetail">
+            <Dependent Role="PartDemandDetail">
               <PropertyRef Name="PartMakerID" />
             </Dependent>
           </ReferentialConstraint>
@@ -6736,6 +6135,18 @@
             </Principal>
             <Dependent Role="M_UserRolePermission">
               <PropertyRef Name="UserRoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PartDemandDetail_PartDemandHeader">
+          <End Type="ASHAOP_DEVModel.PartDemandHeader" Role="PartDemandHeader" Multiplicity="0..1" />
+          <End Type="ASHAOP_DEVModel.PartDemandDetail" Role="PartDemandDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PartDemandHeader">
+              <PropertyRef Name="PartDemandHeaderID" />
+            </Principal>
+            <Dependent Role="PartDemandDetail">
+              <PropertyRef Name="PartDemandHeaderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6835,78 +6246,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthUpload_T_LogisticLeadTime">
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTime" Role="T_LogisticLeadTime" Multiplicity="1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTimeMonthUpload" Role="T_LogisticLeadTimeMonthUpload" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_LogisticLeadTime">
-              <PropertyRef Name="LogisticLeadTimeID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthUpload">
-              <PropertyRef Name="LogisticLeadTimeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonth_T_LogisticLeadTimeMonthUpload">
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTimeMonthUpload" Role="T_LogisticLeadTimeMonthUpload" Multiplicity="1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTimeMonth" Role="T_LogisticLeadTimeMonth" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_LogisticLeadTimeMonthUpload">
-              <PropertyRef Name="LogisticLeadTimeMonthUploadID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonth">
-              <PropertyRef Name="LogisticLeadTimeMonthUploadID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthKi_T_LogisticLeadTimeMonth">
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTimeMonth" Role="T_LogisticLeadTimeMonth" Multiplicity="1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTimeMonthKi" Role="T_LogisticLeadTimeMonthKi" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_LogisticLeadTimeMonth">
-              <PropertyRef Name="LogisticLeadTimeMonthID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthKi">
-              <PropertyRef Name="LogisticLeadTimeMonthID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthDetail_T_LogisticLeadTimeMonthKi">
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTimeMonthKi" Role="T_LogisticLeadTimeMonthKi" Multiplicity="1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTimeMonthDetail" Role="T_LogisticLeadTimeMonthDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_LogisticLeadTimeMonthKi">
-              <PropertyRef Name="LogisticLeadTimeMonthKi" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthDetail">
-              <PropertyRef Name="LogisticLeadTimeMonthKi" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthTempRow_T_LogisticLeadTimeMonthTempSheet">
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTimeMonthTempSheet" Role="T_LogisticLeadTimeMonthTempSheet" Multiplicity="1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTimeMonthTempRow" Role="T_LogisticLeadTimeMonthTempRow" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_LogisticLeadTimeMonthTempSheet">
-              <PropertyRef Name="LogisticLeadTimeMonthTempSheetID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthTempRow">
-              <PropertyRef Name="LogisticLeadTimeMonthTempSheetID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_LogisticLeadTimeMonthTempSheet_T_LogisticLeadTimeMonthUpload">
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTimeMonthUpload" Role="T_LogisticLeadTimeMonthUpload" Multiplicity="1" />
-          <End Type="ASHAOP_DEVModel.T_LogisticLeadTimeMonthTempSheet" Role="T_LogisticLeadTimeMonthTempSheet" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_LogisticLeadTimeMonthUpload">
-              <PropertyRef Name="LogisticLeadTimeMonthUploadID" />
-            </Principal>
-            <Dependent Role="T_LogisticLeadTimeMonthTempSheet">
-              <PropertyRef Name="LogisticLeadTimeMonthUploadID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_T_LogisticMonthDetail_T_LogisticMonthHeader">
           <End Type="ASHAOP_DEVModel.T_LogisticMonthHeader" Role="T_LogisticMonthHeader" Multiplicity="1" />
           <End Type="ASHAOP_DEVModel.T_LogisticMonthDetail" Role="T_LogisticMonthDetail" Multiplicity="*" />
@@ -6931,6 +6270,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_T_LogisticMonthUploadHeader_T_LogisticMonthUploadHeader1">
+          <End Type="ASHAOP_DEVModel.T_LogisticMonthUploadHeader" Role="T_LogisticMonthUploadHeader" Multiplicity="1" />
+          <End Type="ASHAOP_DEVModel.T_LogisticMonthUploadHeader" Role="T_LogisticMonthUploadHeader1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="T_LogisticMonthUploadHeader">
+              <PropertyRef Name="LogisticMonthUploadHeaderID" />
+            </Principal>
+            <Dependent Role="T_LogisticMonthUploadHeader1">
+              <PropertyRef Name="LogisticMonthUploadHeaderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_T_CapacityCheckDetail_T_CapacityCheckHeader">
           <End Type="ASHAOP_DEVModel.T_PartCapacityHeader" Role="T_PartCapacityHeader" Multiplicity="1" />
           <End Type="ASHAOP_DEVModel.T_PartCapacityDetail" Role="T_PartCapacityDetail" Multiplicity="*" />
@@ -6940,18 +6291,6 @@
             </Principal>
             <Dependent Role="T_PartCapacityDetail">
               <PropertyRef Name="PartCapacityHeaderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory">
-          <End Type="ASHAOP_DEVModel.T_PartCapacityUploadHistory" Role="T_PartCapacityUploadHistory" Multiplicity="0..1" />
-          <End Type="ASHAOP_DEVModel.T_PartCapacityErrorRow" Role="T_PartCapacityErrorRow" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_PartCapacityUploadHistory">
-              <PropertyRef Name="PartCapacityUploadHistoryID" />
-            </Principal>
-            <Dependent Role="T_PartCapacityErrorRow">
-              <PropertyRef Name="PartCapacityUploadHistoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6967,6 +6306,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_T_PartCapacityErrorRow_T_PartCapacityUploadHistory">
+          <End Type="ASHAOP_DEVModel.T_PartCapacityUploadHistory" Role="T_PartCapacityUploadHistory" Multiplicity="0..1" />
+          <End Type="ASHAOP_DEVModel.T_PartCapacityErrorRow" Role="T_PartCapacityErrorRow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_PartCapacityUploadHistory">
+              <PropertyRef Name="PartCapacityUploadHistoryID" />
+            </Principal>
+            <Dependent Role="T_PartCapacityErrorRow">
+              <PropertyRef Name="PartCapacityUploadHistoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_T_PartDemand_T_PartDemandFileUploadDetail">
           <End Type="ASHAOP_DEVModel.T_PartDemandFileUploadDetail" Role="T_PartDemandFileUploadDetail" Multiplicity="1" />
           <End Type="ASHAOP_DEVModel.T_PartDemand" Role="T_PartDemand" Multiplicity="*" />
@@ -6976,18 +6327,6 @@
             </Principal>
             <Dependent Role="T_PartDemand">
               <PropertyRef Name="UploadDetailID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PartDemandDetail_PartDemandHeader">
-          <End Type="ASHAOP_DEVModel.T_PartDemandHeader" Role="T_PartDemandHeader" Multiplicity="0..1" />
-          <End Type="ASHAOP_DEVModel.T_PartDemandDetail" Role="T_PartDemandDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="T_PartDemandHeader">
-              <PropertyRef Name="PartDemandHeaderID" />
-            </Principal>
-            <Dependent Role="T_PartDemandDetail">
-              <PropertyRef Name="PartDemandHeaderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7243,7 +6582,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -7251,7 +6590,7 @@
         <EntityContainerMapping StorageEntityContainer="ASHAOP_DEVModelStoreContainer" CdmEntityContainer="ASHAOP_DEVEntities">
           <EntitySetMapping Name="C_M_Menu">
             <EntityTypeMapping TypeName="ASHAOP_DEVModel.C_M_Menu">
-              <MappingFragment StoreEntitySet="C_M_Menu">
+              <MappingFragment StoreEntitySet="_M_Menu">
                 <ScalarProperty Name="StatusID" ColumnName="StatusID" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
@@ -7270,7 +6609,7 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
                 <ScalarProperty Name="MenuID" ColumnName="MenuID" />
-                <ScalarProperty Name="InputOutputID" ColumnName="InputOutputID" />
+                <ScalarProperty Name="LogID" ColumnName="LogID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7293,7 +6632,7 @@
                 <ScalarProperty Name="StatusID" ColumnName="StatusID" />
                 <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
                 <ScalarProperty Name="MenuID" ColumnName="MenuID" />
-                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+                <ScalarProperty Name="LogID" ColumnName="LogID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7660,10 +6999,6 @@
           <EntitySetMapping Name="M_ModelType">
             <EntityTypeMapping TypeName="ASHAOP_DEVModel.M_ModelType">
               <MappingFragment StoreEntitySet="M_ModelType">
-                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="MTOCStatusID" ColumnName="MTOCStatusID" />
                 <ScalarProperty Name="Version" ColumnName="Version" />
                 <ScalarProperty Name="YMID" ColumnName="YMID" />
@@ -7702,7 +7037,7 @@
                 <ScalarProperty Name="Sequence" ColumnName="Sequence" />
                 <ScalarProperty Name="EquipmentValue" ColumnName="EquipmentValue" />
                 <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
-                <ScalarProperty Name="ModelTypeEngineID" ColumnName="ModelTypeEngineID" />
+                <ScalarProperty Name="ModelTypeEngine" ColumnName="ModelTypeEngine" />
                 <ScalarProperty Name="ModelTypeEquipmentID" ColumnName="ModelTypeEquipmentID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -7821,17 +7156,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="M_Permissions">
-            <EntityTypeMapping TypeName="ASHAOP_DEVModel.M_Permissions">
-              <MappingFragment StoreEntitySet="M_Permissions">
-                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
-                <ScalarProperty Name="ControlName" ColumnName="ControlName" />
-                <ScalarProperty Name="PermissionName" ColumnName="PermissionName" />
-                <ScalarProperty Name="MenuID" ColumnName="MenuID" />
-                <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="M_Region">
             <EntityTypeMapping TypeName="ASHAOP_DEVModel.M_Region">
               <MappingFragment StoreEntitySet="M_Region">
@@ -7921,6 +7245,28 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PartDemandDetails">
+            <EntityTypeMapping TypeName="ASHAOP_DEVModel.PartDemandDetail">
+              <MappingFragment StoreEntitySet="PartDemandDetail">
+                <ScalarProperty Name="Demand" ColumnName="Demand" />
+                <ScalarProperty Name="DemandMonth" ColumnName="DemandMonth" />
+                <ScalarProperty Name="Ki" ColumnName="Ki" />
+                <ScalarProperty Name="PartMakerID" ColumnName="PartMakerID" />
+                <ScalarProperty Name="PartDemandHeaderID" ColumnName="PartDemandHeaderID" />
+                <ScalarProperty Name="PartDemandDetailID" ColumnName="PartDemandDetailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PartDemandHeaders">
+            <EntityTypeMapping TypeName="ASHAOP_DEVModel.PartDemandHeader">
+              <MappingFragment StoreEntitySet="PartDemandHeader">
+                <ScalarProperty Name="SeihanYear" ColumnName="SeihanYear" />
+                <ScalarProperty Name="SeihanMonth" ColumnName="SeihanMonth" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="PartDemandHeaderID" ColumnName="PartDemandHeaderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
             <EntityTypeMapping TypeName="ASHAOP_DEVModel.sysdiagram">
               <MappingFragment StoreEntitySet="sysdiagrams">
@@ -7959,6 +7305,8 @@
                 <ScalarProperty Name="Shipment" ColumnName="Shipment" />
                 <ScalarProperty Name="ReceivePlant" ColumnName="ReceivePlant" />
                 <ScalarProperty Name="ReceiveRegion" ColumnName="ReceiveRegion" />
+                <ScalarProperty Name="SupplyPlant" ColumnName="SupplyPlant" />
+                <ScalarProperty Name="SupplyRegion" ColumnName="SupplyRegion" />
                 <ScalarProperty Name="RowNo" ColumnName="RowNo" />
                 <ScalarProperty Name="LogisticDayHeaderID" ColumnName="LogisticDayHeaderID" />
                 <ScalarProperty Name="LogisticDayDetailID" ColumnName="LogisticDayDetailID" />
@@ -8002,6 +7350,8 @@
                 <ScalarProperty Name="Shipment" ColumnName="Shipment" />
                 <ScalarProperty Name="ReceivePlant" ColumnName="ReceivePlant" />
                 <ScalarProperty Name="ReceiveRegion" ColumnName="ReceiveRegion" />
+                <ScalarProperty Name="SupplyPlant" ColumnName="SupplyPlant" />
+                <ScalarProperty Name="SupplyRegion" ColumnName="SupplyRegion" />
                 <ScalarProperty Name="RowNo" ColumnName="RowNo" />
                 <ScalarProperty Name="LogisticDayUploadHeaderID" ColumnName="LogisticDayUploadHeaderID" />
                 <ScalarProperty Name="LogisticDayUploadDetailID" ColumnName="LogisticDayUploadDetailID" />
@@ -8137,111 +7487,11 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="T_LogisticLeadTime">
-            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_LogisticLeadTime">
-              <MappingFragment StoreEntitySet="T_LogisticLeadTime">
-                <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Month" ColumnName="Month" />
-                <ScalarProperty Name="LogisticLeadTimeID" ColumnName="LogisticLeadTimeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_LogisticLeadTimeDayUpload">
-            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_LogisticLeadTimeDayUpload">
-              <MappingFragment StoreEntitySet="T_LogisticLeadTimeDayUpload">
-                <ScalarProperty Name="LogisticLeadTimeID" ColumnName="LogisticLeadTimeID" />
-                <ScalarProperty Name="LogisticLeadTimeDayUploadID" ColumnName="LogisticLeadTimeDayUploadID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_LogisticLeadTimeMonth">
-            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_LogisticLeadTimeMonth">
-              <MappingFragment StoreEntitySet="T_LogisticLeadTimeMonth">
-                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="PlantStatus" ColumnName="PlantStatus" />
-                <ScalarProperty Name="O_LTFileName" ColumnName="O_LTFileName" />
-                <ScalarProperty Name="O_LTPath" ColumnName="O_LTPath" />
-                <ScalarProperty Name="ExportPlant" ColumnName="ExportPlant" />
-                <ScalarProperty Name="ExportRegion" ColumnName="ExportRegion" />
-                <ScalarProperty Name="LogisticLeadTimeMonthUploadID" ColumnName="LogisticLeadTimeMonthUploadID" />
-                <ScalarProperty Name="LogisticLeadTimeMonthID" ColumnName="LogisticLeadTimeMonthID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_LogisticLeadTimeMonthDetail">
-            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_LogisticLeadTimeMonthDetail">
-              <MappingFragment StoreEntitySet="T_LogisticLeadTimeMonthDetail">
-                <ScalarProperty Name="InlandLT" ColumnName="InlandLT" />
-                <ScalarProperty Name="OceanLT" ColumnName="OceanLT" />
-                <ScalarProperty Name="ShipAir" ColumnName="ShipAir" />
-                <ScalarProperty Name="ImportPlant" ColumnName="ImportPlant" />
-                <ScalarProperty Name="ImportRegion" ColumnName="ImportRegion" />
-                <ScalarProperty Name="LogisticLeadTimeMonthKi" ColumnName="LogisticLeadTimeMonthKi" />
-                <ScalarProperty Name="LogisticLeadTimeMonthDetailID" ColumnName="LogisticLeadTimeMonthDetailID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_LogisticLeadTimeMonthKi">
-            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_LogisticLeadTimeMonthKi">
-              <MappingFragment StoreEntitySet="T_LogisticLeadTimeMonthKi">
-                <ScalarProperty Name="Ki" ColumnName="Ki" />
-                <ScalarProperty Name="LogisticLeadTimeMonthID" ColumnName="LogisticLeadTimeMonthID" />
-                <ScalarProperty Name="LogisticLeadTimeMonthKi" ColumnName="LogisticLeadTimeMonthKi" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_LogisticLeadTimeMonthTempRow">
-            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_LogisticLeadTimeMonthTempRow">
-              <MappingFragment StoreEntitySet="T_LogisticLeadTimeMonthTempRow">
-                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
-                <ScalarProperty Name="TotalLT" ColumnName="TotalLT" />
-                <ScalarProperty Name="InlandLT" ColumnName="InlandLT" />
-                <ScalarProperty Name="OceanLT" ColumnName="OceanLT" />
-                <ScalarProperty Name="ShipAir" ColumnName="ShipAir" />
-                <ScalarProperty Name="ImportPlant" ColumnName="ImportPlant" />
-                <ScalarProperty Name="ImportRegion" ColumnName="ImportRegion" />
-                <ScalarProperty Name="ExportPlant" ColumnName="ExportPlant" />
-                <ScalarProperty Name="ExportRegion" ColumnName="ExportRegion" />
-                <ScalarProperty Name="RowNo" ColumnName="RowNo" />
-                <ScalarProperty Name="LogisticLeadTimeMonthTempSheetID" ColumnName="LogisticLeadTimeMonthTempSheetID" />
-                <ScalarProperty Name="LogisticLeadTimeMonthTempRowID" ColumnName="LogisticLeadTimeMonthTempRowID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_LogisticLeadTimeMonthTempSheet">
-            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_LogisticLeadTimeMonthTempSheet">
-              <MappingFragment StoreEntitySet="T_LogisticLeadTimeMonthTempSheet">
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="Ki" ColumnName="Ki" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Month" ColumnName="Month" />
-                <ScalarProperty Name="SheetNo" ColumnName="SheetNo" />
-                <ScalarProperty Name="LogisticLeadTimeMonthUploadID" ColumnName="LogisticLeadTimeMonthUploadID" />
-                <ScalarProperty Name="LogisticLeadTimeMonthTempSheetID" ColumnName="LogisticLeadTimeMonthTempSheetID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_LogisticLeadTimeMonthUpload">
-            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_LogisticLeadTimeMonthUpload">
-              <MappingFragment StoreEntitySet="T_LogisticLeadTimeMonthUpload">
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="Result" ColumnName="Result" />
-                <ScalarProperty Name="UploadStatusID" ColumnName="UploadStatusID" />
-                <ScalarProperty Name="I_LTResultFileName" ColumnName="I_LTResultFileName" />
-                <ScalarProperty Name="I_LTResultPath" ColumnName="I_LTResultPath" />
-                <ScalarProperty Name="I_LTFileNameSystem" ColumnName="I_LTFileNameSystem" />
-                <ScalarProperty Name="I_LTFileNameOriginal" ColumnName="I_LTFileNameOriginal" />
-                <ScalarProperty Name="I_LTPath" ColumnName="I_LTPath" />
-                <ScalarProperty Name="UploadVersion" ColumnName="UploadVersion" />
-                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
-                <ScalarProperty Name="LogisticLeadTimeID" ColumnName="LogisticLeadTimeID" />
-                <ScalarProperty Name="LogisticLeadTimeMonthUploadID" ColumnName="LogisticLeadTimeMonthUploadID" />
+          <EntitySetMapping Name="T_LogisticLeadtime">
+            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_LogisticLeadtime">
+              <MappingFragment StoreEntitySet="T_LogisticLeadtime">
+                <ScalarProperty Name="WorkDayWiseID" ColumnName="WorkDayWiseID" />
+                <ScalarProperty Name="LogisticLTID" ColumnName="LogisticLTID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8380,16 +7630,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="T_PartCapacityErrorRow">
-            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_PartCapacityErrorRow">
-              <MappingFragment StoreEntitySet="T_PartCapacityErrorRow">
-                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
-                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
-                <ScalarProperty Name="PartCapacityUploadHistoryID" ColumnName="PartCapacityUploadHistoryID" />
-                <ScalarProperty Name="PartCapacityErrorRowID" ColumnName="PartCapacityErrorRowID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="T_PartCapacityHeader">
             <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_PartCapacityHeader">
               <MappingFragment StoreEntitySet="T_PartCapacityHeader">
@@ -8478,18 +7718,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="T_PartDemandDetail">
-            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_PartDemandDetail">
-              <MappingFragment StoreEntitySet="T_PartDemandDetail">
-                <ScalarProperty Name="Demand" ColumnName="Demand" />
-                <ScalarProperty Name="DemandMonth" ColumnName="DemandMonth" />
-                <ScalarProperty Name="Ki" ColumnName="Ki" />
-                <ScalarProperty Name="PartMakerID" ColumnName="PartMakerID" />
-                <ScalarProperty Name="PartDemandHeaderID" ColumnName="PartDemandHeaderID" />
-                <ScalarProperty Name="PartDemandDetailID" ColumnName="PartDemandDetailID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="T_PartDemandFileUploadDetail">
             <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_PartDemandFileUploadDetail">
               <MappingFragment StoreEntitySet="T_PartDemandFileUploadDetail">
@@ -8515,7 +7743,6 @@
           <EntitySetMapping Name="T_PartDemandFileUploadHeader">
             <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_PartDemandFileUploadHeader">
               <MappingFragment StoreEntitySet="T_PartDemandFileUploadHeader">
-                <ScalarProperty Name="SendMailDate" ColumnName="SendMailDate" />
                 <ScalarProperty Name="UploadedBy" ColumnName="UploadedBy" />
                 <ScalarProperty Name="UploadedDate" ColumnName="UploadedDate" />
                 <ScalarProperty Name="MainProcessStatusID" ColumnName="MainProcessStatusID" />
@@ -8529,16 +7756,6 @@
                 <ScalarProperty Name="SeihanYear" ColumnName="SeihanYear" />
                 <ScalarProperty Name="SeihanMonth" ColumnName="SeihanMonth" />
                 <ScalarProperty Name="UploadHeaderID" ColumnName="UploadHeaderID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_PartDemandHeader">
-            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_PartDemandHeader">
-              <MappingFragment StoreEntitySet="T_PartDemandHeader">
-                <ScalarProperty Name="SeihanYear" ColumnName="SeihanYear" />
-                <ScalarProperty Name="SeihanMonth" ColumnName="SeihanMonth" />
-                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
-                <ScalarProperty Name="PartDemandHeaderID" ColumnName="PartDemandHeaderID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8823,7 +8040,6 @@
           <EntitySetMapping Name="T_SUBOControlVersionDetail">
             <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_SUBOControlVersionDetail">
               <MappingFragment StoreEntitySet="T_SUBOControlVersionDetail">
-                <ScalarProperty Name="SendMailDate" ColumnName="SendMailDate" />
                 <ScalarProperty Name="IsFinal" ColumnName="IsFinal" />
                 <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
                 <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
@@ -8922,6 +8138,27 @@
                 <ScalarProperty Name="FunctionCode" ColumnName="FunctionCode" />
                 <ScalarProperty Name="MenuID" ColumnName="MenuID" />
                 <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="M_Permissions">
+            <EntityTypeMapping TypeName="ASHAOP_DEVModel.M_Permissions">
+              <MappingFragment StoreEntitySet="M_Permissions">
+                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+                <ScalarProperty Name="ControlName" ColumnName="ControlName" />
+                <ScalarProperty Name="PermissionName" ColumnName="PermissionName" />
+                <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+                <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_PartCapacityErrorRow">
+            <EntityTypeMapping TypeName="ASHAOP_DEVModel.T_PartCapacityErrorRow">
+              <MappingFragment StoreEntitySet="T_PartCapacityErrorRow">
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="PartCapacityUploadHistoryID" ColumnName="PartCapacityUploadHistoryID" />
+                <ScalarProperty Name="PartCapacityErrorRowID" ColumnName="PartCapacityErrorRowID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -44,7 +44,6 @@ namespace DataLayer
         public System.DateTime LastUpdatedDate { get; set; }
     
         public virtual M_Company M_Company { get; set; }
-        public virtual M_FileManager M_FileManager { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<T_LogisticMonthDetail> T_LogisticMonthDetail { get; set; }
     }

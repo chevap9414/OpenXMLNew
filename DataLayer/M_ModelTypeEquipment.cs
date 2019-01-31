@@ -15,7 +15,7 @@ namespace DataLayer
     public partial class M_ModelTypeEquipment
     {
         public int ModelTypeEquipmentID { get; set; }
-        public int ModelTypeEngineID { get; set; }
+        public int ModelTypeEngine { get; set; }
         public int EquipmentID { get; set; }
         public int EquipmentValue { get; set; }
         public int Sequence { get; set; }

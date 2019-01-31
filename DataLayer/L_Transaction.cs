@@ -14,7 +14,7 @@ namespace DataLayer
     
     public partial class L_Transaction
     {
-        public int TransactionID { get; set; }
+        public int LogID { get; set; }
         public Nullable<int> MenuID { get; set; }
         public Nullable<int> PermissionID { get; set; }
         public Nullable<int> StatusID { get; set; }

@@ -218,6 +218,12 @@
     <Compile Include="M_YM.cs">
       <DependentUpon>ASH_RASA.tt</DependentUpon>
     </Compile>
+    <Compile Include="PartDemandDetail.cs">
+      <DependentUpon>ASH_RASA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PartDemandHeader.cs">
+      <DependentUpon>ASH_RASA.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="sysdiagram.cs">
       <DependentUpon>ASH_RASA.tt</DependentUpon>
@@ -255,28 +261,7 @@
     <Compile Include="T_LogisticDayWiseUploadHeader.cs">
       <DependentUpon>ASH_RASA.tt</DependentUpon>
     </Compile>
-    <Compile Include="T_LogisticLeadTime.cs">
-      <DependentUpon>ASH_RASA.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T_LogisticLeadTimeDayUpload.cs">
-      <DependentUpon>ASH_RASA.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T_LogisticLeadTimeMonth.cs">
-      <DependentUpon>ASH_RASA.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T_LogisticLeadTimeMonthDetail.cs">
-      <DependentUpon>ASH_RASA.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T_LogisticLeadTimeMonthKi.cs">
-      <DependentUpon>ASH_RASA.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T_LogisticLeadTimeMonthTempRow.cs">
-      <DependentUpon>ASH_RASA.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T_LogisticLeadTimeMonthTempSheet.cs">
-      <DependentUpon>ASH_RASA.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T_LogisticLeadTimeMonthUpload.cs">
+    <Compile Include="T_LogisticLeadtime.cs">
       <DependentUpon>ASH_RASA.tt</DependentUpon>
     </Compile>
     <Compile Include="T_LogisticMonthDetail.cs">
@@ -315,16 +300,10 @@
     <Compile Include="T_PartDemand.cs">
       <DependentUpon>ASH_RASA.tt</DependentUpon>
     </Compile>
-    <Compile Include="T_PartDemandDetail.cs">
-      <DependentUpon>ASH_RASA.tt</DependentUpon>
-    </Compile>
     <Compile Include="T_PartDemandFileUploadDetail.cs">
       <DependentUpon>ASH_RASA.tt</DependentUpon>
     </Compile>
     <Compile Include="T_PartDemandFileUploadHeader.cs">
-      <DependentUpon>ASH_RASA.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T_PartDemandHeader.cs">
       <DependentUpon>ASH_RASA.tt</DependentUpon>
     </Compile>
     <Compile Include="T_PartDemandTempUploadError.cs">

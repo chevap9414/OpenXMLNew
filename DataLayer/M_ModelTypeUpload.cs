@@ -38,9 +38,9 @@ namespace DataLayer
         public Nullable<int> UploadStatusID { get; set; }
         public string Result { get; set; }
         public string CreatedBy { get; set; }
-        public System.DateTime CreatedDate { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
         public string UpdatedBy { get; set; }
-        public System.DateTime UpdatedDate { get; set; }
+        public Nullable<System.DateTime> UpdatedDate { get; set; }
     
         public virtual M_Company M_Company { get; set; }
         public virtual M_FileManager M_FileManager { get; set; }
