@@ -261,7 +261,7 @@
     <Compile Include="T_LogisticDayWiseUploadHeader.cs">
       <DependentUpon>ASH_RASA.tt</DependentUpon>
     </Compile>
-    <Compile Include="T_LogisticLeadTime.cs">
+    <Compile Include="T_LogisticLeadtime.cs">
       <DependentUpon>ASH_RASA.tt</DependentUpon>
     </Compile>
     <Compile Include="T_LogisticMonthDetail.cs">

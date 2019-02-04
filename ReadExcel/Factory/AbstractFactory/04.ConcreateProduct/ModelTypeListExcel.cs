@@ -12,42 +12,17 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Globalization;
+using ReadExcel.Resources;
 
 namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
 {
     public class ModelTypeListExcel : IModelTypeList
     {
-        struct Engine
-        {
-            private string _ss;
-            private string _disp;
-            private string _comcarb;
-            private string _grade;
-            private string _mis;
-            private string _model01;
-            private string _model02;
-            private string _model03;
-            private string _model04;
-            private string _model05;
-            public string SS { get { return _ss; } set { _ss = value; } }
-            public string DISP { get { return _disp; } set { _disp = value; } }
-            public string COMCARB { get { return _comcarb; } set { _comcarb = value; } }
-            public string GRADE { get { return _grade; } set { _grade = value; } }
-            public string MIS { get { return _mis; } set { _mis = value; } }
-            public string MODELCODE01 { get { return _model01; } set { _model01 = value; } }
-            public string MODELCODE02 { get { return _model02; } set { _model02 = value; } }
-            public string MODELCODE03 { get { return _model03; } set { _model03 = value; } }
-            public string MODELCODE04 { get { return _model04; } set { _model04 = value; } }
-            public string MODELCODE05 { get { return _model05; } set { _model05 = value; } }
-
-        }
-
         readonly List<string> engineColumn = new List<string>() { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
         readonly List<string> cellHeaderValueChecks = new List<string>() { "A6", "B6", "C6", "D6", "E6", "F6" }; // Read From Config
         List<string> columnEquipmentIndexs = new List<string>();
         List<string> columnEngineIndexs = new List<string>();
         List<string> columnTypeIndex = new List<string>();
-        Engine en = new Engine();
         
         public ModelTypeListExcel()
         {
@@ -113,68 +88,134 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
         {
             ModelTypeUploadModel completeModel = new ModelTypeUploadModel();
             // Type: Error Warning Success
-
+            ModelTypeTempRowModel tempRow = new ModelTypeTempRowModel();
             List<string> errorMessage;
             string requiredColumn = string.Empty;
-            foreach(var row in model.ModelTypeTempRowModels)
+
+            foreach(var sheet in model.ModelTypeTempSheetModels)
             {
-                #region Error
-                errorMessage = new List<string>();
-                // Check Engine Section are required data {ERR019} Ex => Invalid A10, B10.
-
-                foreach (ModelTypeTempEngineModel engine in row.ModelTypeTempEngineModels)
+                foreach (var row in sheet.ModelTypeTempRowModels)
                 {
-                    if (string.IsNullOrEmpty(engine.SS)) errorMessage.Add("A" + row.RowNo);
-                    if (string.IsNullOrEmpty(engine.DISP)) errorMessage.Add("B" + row.RowNo);
-                    if (string.IsNullOrEmpty(engine.COMCARB)) errorMessage.Add("C" + row.RowNo);
-                    if (string.IsNullOrEmpty(engine.Grade)) errorMessage.Add("D" + row.RowNo);
-                    if (string.IsNullOrEmpty(engine.Mis)) errorMessage.Add("E" + row.RowNo);
-                    if (string.IsNullOrEmpty(engine.ModelCode01)) errorMessage.Add("F" + row.RowNo);
-                    if (string.IsNullOrEmpty(engine.ModelCode02)) errorMessage.Add("G" + row.RowNo);
-                    if (string.IsNullOrEmpty(engine.ModelCode03)) errorMessage.Add("H" + row.RowNo);
-                    if (string.IsNullOrEmpty(engine.ModelCode04)) errorMessage.Add("I" + row.RowNo);
-                    if (string.IsNullOrEmpty(engine.ModelCode05)) errorMessage.Add("J" + row.RowNo);
-                }
 
-                // Check Equipment are "O" or "" {ERR019} Ex => Invalid A10, B10.
-                List<string> equipValue = new List<string>() { "O", "" };
-                
-                for(var i = 0; i < row.ModelTypeTempEquipmentModels.Count; i++)
-                {
-                    if (!equipValue.Contains(row.ModelTypeTempEquipmentModels[i].EquipmentValue))
+                    #region Error
+                    errorMessage = new List<string>();
+                    // Check Engine Section are required data {ERR019} Ex => Invalid A10, B10.
+                    List<string> errorInvalids = new List<string>();
+                    foreach (ModelTypeTempEngineModel engine in row.ModelTypeTempEngineModels)
                     {
-                        errorMessage.Add(columnEquipmentIndexs[i]);
+                        if (string.IsNullOrEmpty(engine.SS)) errorInvalids.Add("A" + row.RowNo);
+                        if (string.IsNullOrEmpty(engine.DISP)) errorInvalids.Add("B" + row.RowNo);
+                        if (string.IsNullOrEmpty(engine.COMCARB)) errorInvalids.Add("C" + row.RowNo);
+                        if (string.IsNullOrEmpty(engine.Grade)) errorInvalids.Add("D" + row.RowNo);
+                        if (string.IsNullOrEmpty(engine.Mis)) errorInvalids.Add("E" + row.RowNo);
+                        if (string.IsNullOrEmpty(engine.ModelCode01)) errorInvalids.Add("F" + row.RowNo);
+                        if (string.IsNullOrEmpty(engine.ModelCode02)) errorInvalids.Add("G" + row.RowNo);
+                        if (string.IsNullOrEmpty(engine.ModelCode03)) errorInvalids.Add("H" + row.RowNo);
+                        if (string.IsNullOrEmpty(engine.ModelCode04)) errorInvalids.Add("I" + row.RowNo);
+                        if (string.IsNullOrEmpty(engine.ModelCode05)) errorInvalids.Add("J" + row.RowNo);
                     }
+                    
+                    
+                    // Check Equipment are "O" or "" {ERR019} Ex => Invalid A10, B10.
+                    List<string> equipValue = new List<string>() { "O", "" };
+                    for (var i = 0; i < row.ModelTypeTempEquipmentModels.Count; i++)
+                    {
+                        if (!equipValue.Contains(row.ModelTypeTempEquipmentModels[i].EquipmentValue))
+                        {
+                            errorInvalids.Add(this.columnEquipmentIndexs[i]);
+                        }
+                    }
+
+                    // Check Model Code is only one per row {ERR019} Ex => Invalid A10, B10.
+                    var listTypeValues = row.ModelTypeTempTypeModels.Where(x => !string.IsNullOrEmpty(x.ModelCode)).ToList();
+                    if (listTypeValues.Count > 1)
+                    {
+                        for (var i = 0; i < listTypeValues.Count; i++)
+                        {
+                            errorInvalids.Add(this.columnTypeIndex[listTypeValues[i].Sequence - 1]);
+                        }
+                    }
+                    if (errorInvalids.Count > 0)
+                    {
+                        errorMessage.Add("Invalid " + string.Join(", ", errorInvalids.ToArray()));
+                    }
+
+                    // Check Duplication Row {ERR021} Ex => Please check duplicate Row10 Row13
+                    string rowValueCompare = GetRowValue(row);
+                    List<string> rowDups = new List<string>();
+                    foreach (var ros in sheet.ModelTypeTempRowModels)
+                    {
+                        if (row.RowNo == ros.RowNo) continue;
+                        string rosCompare = GetRowValue(ros);
+                        if (rowValueCompare.Equals(rosCompare))
+                            rowDups.Add("Row" + ros.RowNo.ToString());
+                    }
+                    string resultrowDup = string.Join(" ", rowDups.ToArray());
+                    if(rowDups.Count > 0)
+                    {
+                        errorMessage.Add("Please check duplicate " + resultrowDup);
+                    }
+
+                    requiredColumn = string.Join(", ", errorMessage.ToArray());
+                    #endregion
+                    row.ErrorMessage = requiredColumn;
                 }
-
-                // Check Model Code is only one per row {ERR019} Ex => Invalid A10, B10.
-                var listTypeValues = row.ModelTypeTempTypeModels
-                                                              .Where(x => !string.IsNullOrEmpty(x.ModelCode)).ToList();
-                for(var i = 0; i < listTypeValues.Count; i++)
-                {
-                    errorMessage.Add(columnTypeIndex[listTypeValues[i].Sequence - 1]);
-                }
-
-                // Check Duplication Row {ERR021} Ex => Please check duplicate Row10 Row13
-                List<string> dupCols = new List<string>();
-
-                foreach(var engine in row.ModelTypeTempEngineModels)
-                {
-
-                }
-                   
-                //for(var i = 0; i < LsDup.Count; i++)
-                //{
-                //    dupCols.Add(row.RowNo.ToString());
-                //}
-                errorMessage.Add("Please check duplicate " + string.Join(" ", dupCols.ToArray()));                                      
-
-                requiredColumn = string.Join(", ", errorMessage.ToArray());
-                #endregion
 
             }
 
-            return completeModel;
+            return model;
+        }
+
+        private string GetRowValue(ModelTypeTempRowModel row)
+        {
+            List<string> LsEngine = new List<string>();
+            foreach (var col in row.ModelTypeTempEngineModels)
+            {
+                foreach (var propName in GetPropertiesName(col))
+                {
+                    if (!propName.ToLower().Contains("id")) LsEngine.Add(GetPropValue(col, propName).ToString());
+                }
+            }
+            List<string> LsEquip = new List<string>();
+            foreach (var col in row.ModelTypeTempEquipmentModels)
+            {
+                foreach (var propName in GetPropertiesName(col))
+                {
+                    if (propName.ToLower().Contains("value")) LsEquip.Add(GetPropValue(col, propName).ToString());
+                }
+            }
+            List<string> LsType = new List<string>();
+            foreach (var col in row.ModelTypeTempTypeModels)
+            {
+                foreach (var propName in GetPropertiesName(col))
+                {
+                    if (propName.ToLower().Contains("code")) LsType.Add(GetPropValue(col, propName).ToString());
+                }
+            }
+            string joinEn = string.Join("", LsEngine.ToArray());
+            string joinEq = string.Join("", LsEquip.ToArray());
+            string joinTy = string.Join("", LsType.ToArray());
+            return (joinEn + joinEq + joinTy).Trim();
+        }
+
+        private object GetPropValue(object src, string propName)
+        {
+            return src.GetType().GetProperty(propName).GetValue(src, null);
+        }
+
+        private List<string> GetPropertiesName(object pObject)
+        {
+            List<string> propNames = new List<string>();
+            if(pObject != null)
+            {
+                foreach (var prop in pObject.GetType().GetProperties())
+                {
+                    
+                    propNames.Add(prop.Name);
+                }
+            }
+            
+            return propNames;
         }
 
         public ModelTypeUploadModel ReadExcel(UploadFileImportModel model)
@@ -546,5 +587,19 @@ namespace ReadExcel.Factory.AbstractFactory._04.ConcreateProduct
             }
             return mergecellPosition;
         }
+    }
+
+    struct Engine
+    {
+        public string SS { get; set; } 
+        public string DISP { get; set; }
+        public string COMCARB { get; set; }
+        public string GRADE { get; set; }
+        public string MIS { get; set; }
+        public string MODELCODE01 { get; set; }
+        public string MODELCODE02 { get; set; }
+        public string MODELCODE03 { get; set; }
+        public string MODELCODE04 { get; set; }
+        public string MODELCODE05 { get; set; }
     }
 }

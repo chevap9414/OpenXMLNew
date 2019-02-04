@@ -17,6 +17,8 @@ namespace DataLayer
         public int LogisticDayUploadDetailID { get; set; }
         public int LogisticDayUploadHeaderID { get; set; }
         public int RowNo { get; set; }
+        public string SupplyRegion { get; set; }
+        public string SupplyPlant { get; set; }
         public string ReceiveRegion { get; set; }
         public string ReceivePlant { get; set; }
         public string Shipment { get; set; }

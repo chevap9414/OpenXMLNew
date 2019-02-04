@@ -22,9 +22,9 @@ namespace DataLayer
         public string ImportRegion { get; set; }
         public string ImportPlant { get; set; }
         public string Shipment { get; set; }
-        public string Ocean { get; set; }
-        public string Inland { get; set; }
-        public string Total { get; set; }
+        public Nullable<int> Ocean { get; set; }
+        public int Inland { get; set; }
+        public int Total { get; set; }
         public string ErrorMessage { get; set; }
     
         public virtual T_LogisticMonthUploadHeader T_LogisticMonthUploadHeader { get; set; }

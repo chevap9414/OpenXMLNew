@@ -88,7 +88,7 @@ namespace DataLayer
         public virtual DbSet<T_LogisticDayWiseHeader> T_LogisticDayWiseHeader { get; set; }
         public virtual DbSet<T_LogisticDayWiseUploadDetail> T_LogisticDayWiseUploadDetail { get; set; }
         public virtual DbSet<T_LogisticDayWiseUploadHeader> T_LogisticDayWiseUploadHeader { get; set; }
-        public virtual DbSet<T_LogisticLeadTime> T_LogisticLeadTime { get; set; }
+        public virtual DbSet<T_LogisticLeadtime> T_LogisticLeadtime { get; set; }
         public virtual DbSet<T_LogisticMonthDetail> T_LogisticMonthDetail { get; set; }
         public virtual DbSet<T_LogisticMonthHeader> T_LogisticMonthHeader { get; set; }
         public virtual DbSet<T_LogisticMonthUploadDetail> T_LogisticMonthUploadDetail { get; set; }

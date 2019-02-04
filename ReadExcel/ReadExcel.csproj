@@ -111,6 +111,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseExcel.cs" />
     <Compile Include="Business\QueryableCondition.cs" />
     <Compile Include="Business\QueryableExtension.cs" />
     <Compile Include="CompanyModel.cs" />
@@ -154,7 +155,9 @@
     <Compile Include="YMModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Import\Test.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
