@@ -1,0 +1,134 @@
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Models.Models;
+using Service.IServiceExcel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Service.ServiceExcel
+{
+    public class ModelTypeImport : BaseExcel
+    {
+        IImportExcelFactory importExcelFactory;
+        IModelTypeImportExcel modelTypeImportExcel;
+        private Thread threadImport;
+        public UploadFileImportModel UploadFileImportModel { get; private set; }
+        readonly List<string> cellHeaderValueChecks = new List<string>() { "A6", "B6", "C6", "D6", "E6", "F6" }; // Read From Config
+
+        public ModelTypeImport(IImportExcelFactory factory)  : base(factory.ToString())
+        {
+            modelTypeImportExcel = factory.ModelType();
+        }
+
+        public UploadFileReturnModel Import(UploadFileImportModel uploadFileImportModel)
+        {
+            this.UploadFileImportModel = uploadFileImportModel;
+            var results = modelTypeImportExcel.PreValidation(this.UploadFileImportModel);
+            if (results.Count == 0)
+            {
+                // Create Header Table in ModelTypeUpload return bool
+                CreateHeaderTable();
+
+                // Call thread
+                this.threadImport = new Thread(new ThreadStart(CallThreadMTList));
+                this.threadImport.Start();
+                return new UploadFileReturnModel() { StatusMessage = "Processing" }; // waiting
+            }
+            else
+            {
+                string errorMessage = string.Join(", ", results.ToArray());
+                return new UploadFileReturnModel() { StatusMessage = $"{ errorMessage } is required." };
+            }
+        }
+
+        private List<string> Prevalidate(UploadFileImportModel uploadFileImportModel)
+        {
+            List<string> results = new List<string>();
+            using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(uploadFileImportModel.FileName, false))
+            {
+                WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
+
+                foreach (Sheet sheet in workbookPart.Workbook.Sheets)
+                {
+                    foreach (string columnName in cellHeaderValueChecks)
+                    {
+                        string result = string.Empty;
+                        if (string.IsNullOrEmpty(base.GetCellValue(workbookPart, sheet, columnName)))
+                        {
+                            switch (columnName)
+                            {
+                                case "A6":
+                                    result = columnName + "(YM)";
+                                    break;
+                                case "B6":
+                                    result = columnName + "(Model)";
+                                    break;
+                                case "C6":
+                                    result = columnName + "(Door)";
+                                    break;
+                                case "D6":
+                                    result = columnName + "(Engine)";
+                                    break;
+                                case "E6":
+                                    result = columnName + "(Plant)";
+                                    break;
+                                case "F6":
+                                    result = columnName + "(Status)";
+                                    break;
+                            }
+                            results.Add(result);
+                        }
+                    }
+                }
+            }
+            return results;
+        }
+
+        
+        private void CreateHeaderTable()
+        {
+            // Insert ModelTypeUpload
+        }
+
+        private void CallThreadMTList()
+        {
+
+            // Read File to datatable
+            var excelHeader = 1;
+            // Create Header Excel
+
+            // Read 2 to retrieve data
+            var excelData = modelTypeImportExcel.Import(this.UploadFileImportModel, excelHeader);
+
+            // Full Validate 
+            FullValidateFlag fullValidate = FullValidate(excelHeader, excelData);
+
+            // Add To Staging
+            bool IsSuccess = AddModelTypeUploadToStagingexcelHeader(excelHeader, excelData);
+
+
+            if (fullValidate == FullValidateFlag.Error)
+            {
+                // Export Excel Original with error
+                // Update MOdelTypeUpload Header to Error result
+            }
+            else if(fullValidate == FullValidateFlag.Warning)
+            {
+                // Export Excel Original with error
+                // Insert to PRD
+                // Update MOdelTypeUpload to Error result
+                // Export MT
+            }
+            else
+            {
+                // Insert to PRD
+                // Update MOdelTypeUpload  to Error result
+                // Export MT (return Id)
+            }
+        }
+    }
+}
