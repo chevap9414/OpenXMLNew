@@ -1,0 +1,21 @@
+                // Read 3 Rows
+                DataExcelTable dataExcel = new DataExcelTable
+                {
+                    ExcelRowList = new List<DataExcelRow>()
+                };
+                string resultFullValidate = cResultFullVerify.Success;
+                uint _startRowGorup = _startRowDetail;
+                uint _maxRow = (uint)dataTable.ExcelRowList.Count;
+                uint _countGroupRow = _maxRow / _rowStep;
+                uint _countRow = 1;
+                while (_countRow <= _countGroupRow)
+                {
+                    DataExcelTable groupexcelDataTable = base.GetExcelTableData(_filenameSystem, sheet, _startRowGorup, _startColumn, _startRowGorup + (_rowStep - 1), base.GetMaxColumnNumber(_filenameSystem, sheet));
+                    if (cResultFullVerify.Error == FullValidate(ref groupexcelDataTable))
+                    {
+                        resultFullValidate = cResultFullVerify.Error;
+                    }
+                    dataExcel.ExcelRowList.AddRange(groupexcelDataTable.ExcelRowList);
+                    _startRowGorup += _rowStep;
+                    _countRow++;
+                }
