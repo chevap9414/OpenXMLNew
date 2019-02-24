@@ -19,3 +19,51 @@
                     _startRowGorup += _rowStep;
                     _countRow++;
                 }
+				
+				
+				
+				private DataExcelTable ValidateMaxCapGatherThanStandardCap(DataExcelTable dataExcelRows)
+        {
+            // ERR083 {0} is invalid. Max. Cap must more than or equal Std. Cap.
+
+            string _planedVol = string.Empty;
+            List<DataExcelCell> _stdCaps = new List<DataExcelCell>();
+            List<DataExcelCell> _maxCaps = new List<DataExcelCell>();
+
+            foreach (DataExcelRow row in dataExcelRows.ExcelRowList)
+            {
+                if (row.GetCellValue((int)ColumnIndex.ItemName) == StdCap)
+                {
+                    foreach (DataExcelCell cell in row.ExcelCellList)
+                    {
+                        if (cell.ExcelColumnNumber >= GetStartPositionDataColumn()) _stdCaps.Add(cell);
+                    }
+                }
+                if (row.GetCellValue((int)ColumnIndex.ItemName) == MaxCap)
+                {
+                    foreach (DataExcelCell cell in row.ExcelCellList)
+                    {
+                        if (cell.ExcelColumnNumber >= GetStartPositionDataColumn()) _maxCaps.Add(cell);
+                    }
+                }
+            }
+
+            for (int i = 0; i < _maxCaps.Count; i++)
+            {
+                if (int.Parse(_maxCaps[i].ExcelCellValue) < int.Parse(_stdCaps[i].ExcelCellValue))
+                {
+                    dataExcelRows.ExcelRowList
+                        .Where(s => s.GetCellValue((int)ColumnIndex.ItemName) == MaxCap)
+                        .SelectMany(s => s.ExcelCellList)
+                        //.Where(s => s.ExcelColumnNumber >= GetStartPositionDataColumn())
+                        .Where(s => s.ExcelColumnNumber == _maxCaps[i].ExcelColumnNumber)
+                        .All(s =>
+                        {
+                            s.Dummy01 = WriteErrorMessage(s.Dummy01, string.Format(MessageList.ERR083, s.ExcelCellRef));
+                            return true;
+                        });
+                }
+            }
+
+            return dataExcelRows;
+        }
