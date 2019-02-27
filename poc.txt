@@ -1,0 +1,237 @@
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace POCStyleBorder
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string sFile = @"D:\Temp\Excel\Test.xlsx";
+            //if (File.Exists(sFile))
+            //{
+            //    File.Delete(sFile);
+            //}
+            BuildWorkBook(sFile);
+        }
+
+        private static void BuildWorkBook(string filename)
+        {
+            try
+            {
+                using(SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filename, true))
+                {
+                    WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
+                    Workbook workbook = workbookPart.Workbook;
+                    Sheet sheet = workbook.Descendants<Sheet>()
+                        .Where(s => s.Name == "Sheet1").FirstOrDefault();
+                    UInt32Value BorderAroundStyleId = null;
+                    UInt32Value BorderRLStyleId = null;
+                    UInt32Value BorderRLBStyleId = null;
+                    RL_BorderStylesheet(workbookPart, ref BorderRLStyleId);
+                    RLB_BorderStylesheet(workbookPart, ref BorderRLBStyleId);
+                    ALL_BorderStylesheet(workbookPart, ref BorderAroundStyleId);
+                    if (workbookPart.GetPartById(sheet.Id) is WorksheetPart worksheetPart)
+                    {
+                        Worksheet worksheet = worksheetPart.Worksheet;
+                        SheetData sheetData = worksheet.Descendants<SheetData>().FirstOrDefault();
+                        int countRow = 0;
+                        foreach (Row row in sheetData.Descendants<Row>()) // Todo Fix
+                        {
+                            if (row.RowIndex < 5) continue;
+                            countRow++;
+                            if (countRow > 3) countRow = 0;
+                            foreach (Cell cell in row.Descendants<Cell>())
+                            {
+                                cell.StyleIndex = BorderAroundStyleId;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                Console.ReadLine();
+            }
+        }
+
+        private static Stylesheet ALL_BorderStylesheet(WorkbookPart workbookPart, ref UInt32Value StyleId)
+        {
+            WorkbookStylesPart workbookStylesPart = workbookPart.GetPartsOfType<WorkbookStylesPart>().ToList()[0];
+            Stylesheet ss = workbookStylesPart.Stylesheet;
+
+            Borders BS = ss.Borders;
+            UInt32Value BorderId = null;
+            Border B = new Border();
+            LeftBorder LB = new LeftBorder()
+            {
+                Style = BorderStyleValues.Thin
+            };
+            Color LBC = new Color() { Auto = true };
+            LB.Append(LBC);
+            B.Append(LB);
+            RightBorder RB = new RightBorder()
+            {
+                Style = BorderStyleValues.Thin
+            };
+            Color RBC = new Color() { Auto = true };
+            RB.Append(RBC);
+            B.Append(RB);
+            TopBorder TB = new TopBorder()
+            {
+                Style = BorderStyleValues.Thin
+            };
+            Color TBC = new Color() { Auto = true };
+            TB.Append(TBC);
+            B.Append(TB);
+            BottomBorder BB = new BottomBorder()
+            {
+                Style = BorderStyleValues.Thin
+            };
+            Color BBC = new Color() { Auto = true };
+            BB.Append(BBC);
+            B.Append(BB);
+            BS.Append(B);
+            BorderId = UInt32Value.FromUInt32((uint)(BS
+                .Descendants<Border>().Count() - 1));
+            CellFormats CFS = ss.CellFormats;
+            CellFormat CF = new CellFormat()
+            {
+                //NumberFormatId = (UInt32Value)0U,
+                //FontId = (UInt32Value)0U,
+                //FillId = FillId,
+                BorderId = BorderId,
+                //FormatId = (UInt32Value)0U,
+                //ApplyFill = true,
+                ApplyBorder = true
+            };
+            CFS.Append(CF);
+            StyleId = UInt32Value.FromUInt32((uint)(CFS
+                .Descendants<CellFormat>().Count() - 1));
+
+            return ss;
+        }
+
+        private static Stylesheet RL_BorderStylesheet(WorkbookPart workbookPart, ref UInt32Value StyleId)
+        {
+            WorkbookStylesPart workbookStylesPart = workbookPart.GetPartsOfType<WorkbookStylesPart>().ToList()[0];
+            Stylesheet ss = workbookStylesPart.Stylesheet;
+
+            Borders BS = ss.Borders;
+            UInt32Value BorderId = null;
+            Border B = new Border();
+            LeftBorder LB = new LeftBorder()
+            {
+                Style = BorderStyleValues.Thin
+            };
+            Color LBC = new Color() { Auto = true };
+            LB.Append(LBC);
+            B.Append(LB);
+            RightBorder RB = new RightBorder()
+            {
+                Style = BorderStyleValues.Thin
+            };
+            Color RBC = new Color() { Auto = true };
+            RB.Append(RBC);
+            B.Append(RB);
+            //TopBorder TB = new TopBorder()
+            //{
+            //    Style = BorderStyleValues.Thin
+            //};
+            //Color TBC = new Color() { Auto = true };
+            //TB.Append(TBC);
+            //B.Append(TB);
+            //BottomBorder BB = new BottomBorder()
+            //{
+            //    Style = BorderStyleValues.Thin
+            //};
+            //Color BBC = new Color() { Auto = true };
+            //BB.Append(BBC);
+            //B.Append(BB);
+            //BS.Append(B);
+            BorderId = UInt32Value.FromUInt32((uint)(BS
+                .Descendants<Border>().Count() - 1));
+            CellFormats CFS = ss.CellFormats;
+            CellFormat CF = new CellFormat()
+            {
+                //NumberFormatId = (UInt32Value)0U,
+                //FontId = (UInt32Value)0U,
+                //FillId = FillId,
+                BorderId = BorderId,
+                //FormatId = (UInt32Value)0U,
+                //ApplyFill = true,
+                ApplyBorder = true
+            };
+            CFS.Append(CF);
+            StyleId = UInt32Value.FromUInt32((uint)(CFS
+                .Descendants<CellFormat>().Count() - 1));
+
+            return ss;
+        }
+
+        private static Stylesheet RLB_BorderStylesheet(WorkbookPart workbookPart, ref UInt32Value StyleId)
+        {
+            WorkbookStylesPart workbookStylesPart = workbookPart.GetPartsOfType<WorkbookStylesPart>().ToList()[0];
+            Stylesheet ss = workbookStylesPart.Stylesheet;
+
+            Borders BS = ss.Borders;
+            UInt32Value BorderId = null;
+            Border B = new Border();
+            LeftBorder LB = new LeftBorder()
+            {
+                Style = BorderStyleValues.Thin
+            };
+            Color LBC = new Color() { Auto = true };
+            LB.Append(LBC);
+            B.Append(LB);
+            RightBorder RB = new RightBorder()
+            {
+                Style = BorderStyleValues.Thin
+            };
+            Color RBC = new Color() { Auto = true };
+            RB.Append(RBC);
+            B.Append(RB);
+            //TopBorder TB = new TopBorder()
+            //{
+            //    Style = BorderStyleValues.Thin
+            //};
+            //Color TBC = new Color() { Auto = true };
+            //TB.Append(TBC);
+            //B.Append(TB);
+            BottomBorder BB = new BottomBorder()
+            {
+                Style = BorderStyleValues.Thin
+            };
+            Color BBC = new Color() { Auto = true };
+            BB.Append(BBC);
+            B.Append(BB);
+            BS.Append(B);
+            BorderId = UInt32Value.FromUInt32((uint)(BS
+                .Descendants<Border>().Count() - 1));
+            CellFormats CFS = ss.CellFormats;
+            CellFormat CF = new CellFormat()
+            {
+                NumberFormatId = (UInt32Value)0U,
+                FontId = (UInt32Value)0U,
+                //FillId = FillId,
+                BorderId = BorderId,
+                FormatId = (UInt32Value)0U,
+                ApplyFill = true,
+                ApplyBorder = true
+            };
+            CFS.Append(CF);
+            StyleId = UInt32Value.FromUInt32((uint)(CFS
+                .Descendants<CellFormat>().Count() - 1));
+
+            return ss;
+        }
+    }
+}
