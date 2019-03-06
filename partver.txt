@@ -1,0 +1,29 @@
+
+IDictionary<string, string> param = new Dictionary<string, string>();
+            param.Add("CompanyID", "1");
+            param.Add("MLCode", "45359");
+            param.Add("BasicPart", "958010803008");
+            param.Add("SeihanMonth", "");
+            param.Add("SeihanYear", "");
+            param.Add("CapMonth", "");
+
+            UploadFileImportModel upload = new UploadFileImportModel()
+            {
+                PassParameter = param,
+                ServiceProcess = UploadFileImportModel.ServiceMode.PartVerifyExport,
+            };
+
+            UploadFileReturnModel returnModel = excelService.ExecService(upload);
+
+
+select d.* from T_PartDemandDetail d
+inner join T_PartDemandHeader h on h.PartDemandHeaderID = d.PartDemandHeaderID
+inner join M_PartMaker pm on pm.PartMakerID = d.PartMakerID
+inner join T_Part p on p.PartNumber = pm.PartNumber
+inner join T_Maker m on m.MakerCode = pm.MakerCode
+inner join M_Company c on c.CompanyID = pm.CompanyID
+where
+c.Plant in ('HATC')
+and h.SeihanMonth = 3 and h.SeihanYear = 2019
+and p.PartNumber = '958010803008'
+and m.MakerCode = '45359'
